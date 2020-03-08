@@ -10,11 +10,12 @@ CREATE TABLE IF NOT EXISTS library.classes (
   class_start DATE NULL DEFAULT NULL,
   class_duration INT(11) NULL DEFAULT NULL,
   PRIMARY KEY (class_id));
-   
+
  CREATE TABLE IF NOT EXISTS library.users (
   user_id INT(11) NOT NULL AUTO_INCREMENT,
   first_name VARCHAR(45) NOT NULL,
   last_name VARCHAR(45) NOT NULL,
+  birth_date date DEFAULT NULL,
   address_name VARCHAR(45) NULL DEFAULT NULL,
   address_street VARCHAR(45) NULL DEFAULT NULL,
   address_town VARCHAR(45) NULL DEFAULT NULL,
@@ -24,7 +25,9 @@ CREATE TABLE IF NOT EXISTS library.classes (
   mobile_tel INT(9) UNSIGNED ZEROFILL NULL DEFAULT NULL,
   email VARCHAR(45) NULL DEFAULT NULL,
   age_group ENUM('Standard', 'Discounted') NULL DEFAULT NULL COMMENT 'Enumerated to Standard or Discounted for Student or Senior Citizen',
-  category ENUM('Staff', 'Manager', 'Walk-in customer', 'Customer') NULL DEFAULT NULL,
+  category ENUM('STAFF', 'MANAGER', 'WALK_IN_CUSTOMER', 'CUSTOMER') NOT NULL,
+  college_name VARCHAR(45) DEFAULT NULL,
+  account_balance decimal(2,0) DEFAULT '0',
   PRIMARY KEY (user_id));
 
 CREATE TABLE IF NOT EXISTS library.membership (
@@ -35,7 +38,7 @@ CREATE TABLE IF NOT EXISTS library.membership (
   CONSTRAINT userId
     FOREIGN KEY (memberId)
     REFERENCES library.users (user_id));
-    
+
 CREATE TABLE IF NOT EXISTS library.registration (
   registrationId INT(11) NOT NULL AUTO_INCREMENT,
   classId INT(11) NOT NULL,
@@ -58,3 +61,15 @@ CREATE TABLE IF NOT EXISTS library.registration (
     ON DELETE CASCADE
     ON UPDATE CASCADE);
 
+CREATE TABLE IF NOT EXISTS library.authentication (
+	id INT(11) NOT NULL AUTO_INCREMENT,
+	username VARCHAR(25) NOT NULL,
+	password VARCHAR(25) NOT NULL,
+	user_id INT(11) NOT NULL,
+	PRIMARY KEY (id),
+	CONSTRAINT fk_authentication_users_user_id
+	 FOREIGN KEY (user_id)
+	 REFERENCES library.users (user_id)
+	 ON DELETE CASCADE
+     ON UPDATE CASCADE
+);
