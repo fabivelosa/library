@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Library login</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--includes the bootstrap 4 from a CDN -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+    <!--includes the local css and script files-->
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/main.js"></script>
+</head>
+<body>
+
+<div class="container" id="main-container">
+    <h6> Welcome to our Library!</h6>
+
+    <form class="was-validated p-3 w-50 mt-5 mx-auto" id="loginForm">
+        <div class="alert alert-warning alert-dismissible fade" id="invalid-login">
+            <strong>Invalid login!</strong> Incorrect username or password.
+        </div>
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" class="form-control" id="username" placeholder="Enter username"
+                   name="username" maxlength="20" required>
+            <div class="invalid-feedback">Username field is mandatory.</div>
+        </div>
+        <div class="form-group">
+            <label for="pwd">Password:</label>
+            <input type="password" class="form-control" id="pwd" placeholder="Enter password"
+                   name="pswd" maxlength="15" required>
+            <div class="invalid-feedback">Password field is mandatory.</div>
+        </div>
+        <button id="loginBtn" type="submit" class="btn btn-success">Login</button>
+    </form>
+</div>
+
+</body>
+</html>
