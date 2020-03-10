@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS library.membership (
   startDate DATE NOT NULL,
   endDate DATE NULL DEFAULT NULL,
   PRIMARY KEY (userId,startDate),
-  CONSTRAINT userId
+  CONSTRAINT fk_members_users_member_id
     FOREIGN KEY (userId)
     REFERENCES library.users (user_id));
     
@@ -81,14 +81,14 @@ CREATE TABLE IF NOT EXISTS library.registration (
 --
 DROP TABLE IF EXISTS authentication;   
 
-CREATE TABLE IF NOT EXISTS library.membership (
+CREATE TABLE IF NOT EXISTS library.authentication (
   id INT(11) NOT NULL AUTO_INCREMENT,
   username VARCHAR(25) NOT NULL,
   password VARCHAR(25) NOT NULL,
-  userId INT(11) NOT NULL ,
+  user_id INT(11) NOT NULL ,
   PRIMARY KEY (id),
-  CONSTRAINT userId
-    FOREIGN KEY (userId)
+  CONSTRAINT fk_authentication_users_user_id
+    FOREIGN KEY (user_id)
     REFERENCES library.users (user_id));
         
 --
