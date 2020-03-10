@@ -98,7 +98,7 @@ public class ClassesDAO {
 	public List<ClassesDTO> findByTitleAndCategory(String Class_title, String Class_category) {
 		List<ClassesDTO> list = new ArrayList<ClassesDTO>();
 		Connection c = null;
-		String sql = "SELECT * FROM classes as e " + "WHERE UPPER(class_title) LIKE ? " + "AND UPPER(model) LIKE ? " + "ORDER BY make";
+		String sql = "SELECT * FROM classes as e " + "WHERE UPPER(class_title) LIKE ? " + "AND UPPER(class_category) LIKE ? " + "ORDER BY class_title";
 		try {
 			c= DataBaseConnection.getConnection();
 			PreparedStatement ps = c.prepareStatement(sql);
