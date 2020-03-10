@@ -14,11 +14,11 @@ CREATE TABLE IF NOT EXISTS library.classes (
   class_start DATE NULL DEFAULT NULL,
   class_duration INT(11) NULL DEFAULT NULL,
   PRIMARY KEY (class_id));
-  
+
 --
 -- Table structure for table users
 --
-DROP TABLE IF EXISTS users;   
+DROP TABLE IF EXISTS users;
  CREATE TABLE IF NOT EXISTS library.users (
   user_id INT(11) NOT NULL AUTO_INCREMENT,
   first_name VARCHAR(45) NOT NULL,
@@ -32,15 +32,15 @@ DROP TABLE IF EXISTS users;
   mobile_tel INT(9) UNSIGNED ZEROFILL NULL DEFAULT NULL,
   email VARCHAR(45) NULL DEFAULT NULL,
   age_group ENUM('Standard', 'Discounted') NULL DEFAULT NULL COMMENT 'Enumerated to Standard or Discounted for Student or Senior Citizen',
-  category ENUM('Staff', 'Manager', 'Walk-in customer', 'Customer') NULL DEFAULT NULL,
+  category ENUM('STAFF', 'MANAGER', 'WALK_IN_CUSTOMER', 'CUSTOMER') NOT NULL,
   created_at datetime DEFAULT CURRENT_TIMESTAMP,
   modified_at datetime DEFAULT NULL,
   PRIMARY KEY (user_id));
-  
+
 --
 -- Table structure for table membership
 --
-DROP TABLE IF EXISTS membership;   
+DROP TABLE IF EXISTS membership;
 
 CREATE TABLE IF NOT EXISTS library.membership (
   userId INT(11) NOT NULL AUTO_INCREMENT,
@@ -50,11 +50,11 @@ CREATE TABLE IF NOT EXISTS library.membership (
   CONSTRAINT fk_members_users_member_id
     FOREIGN KEY (userId)
     REFERENCES library.users (user_id));
-    
+
 --
 -- Table structure for table registration
 --
-DROP TABLE IF EXISTS registration;       
+DROP TABLE IF EXISTS registration;
 CREATE TABLE IF NOT EXISTS library.registration (
   registrationId INT(11) NOT NULL AUTO_INCREMENT,
   classId INT(11) NOT NULL,
@@ -77,10 +77,9 @@ CREATE TABLE IF NOT EXISTS library.registration (
     ON DELETE CASCADE
     ON UPDATE CASCADE);
 --
--- Table structure for table membership
+-- Table structure for table authentication
 --
-DROP TABLE IF EXISTS authentication;   
-
+DROP TABLE IF EXISTS authentication;
 CREATE TABLE IF NOT EXISTS library.authentication (
   id INT(11) NOT NULL AUTO_INCREMENT,
   username VARCHAR(25) NOT NULL,
@@ -90,7 +89,7 @@ CREATE TABLE IF NOT EXISTS library.authentication (
   CONSTRAINT fk_authentication_users_user_id
     FOREIGN KEY (user_id)
     REFERENCES library.users (user_id));
-        
+
 --
 -- Table structure for table transactions
 --
