@@ -23,6 +23,7 @@ DROP TABLE IF EXISTS users;
   user_id INT(11) NOT NULL AUTO_INCREMENT,
   first_name VARCHAR(45) NOT NULL,
   last_name VARCHAR(45) NOT NULL,
+  birth_date date DEFAULT NULL,
   address_name VARCHAR(45) NULL DEFAULT NULL,
   address_street VARCHAR(45) NULL DEFAULT NULL,
   address_town VARCHAR(45) NULL DEFAULT NULL,
@@ -33,6 +34,8 @@ DROP TABLE IF EXISTS users;
   email VARCHAR(45) NULL DEFAULT NULL,
   age_group ENUM('Standard', 'Discounted') NULL DEFAULT NULL COMMENT 'Enumerated to Standard or Discounted for Student or Senior Citizen',
   category ENUM('STAFF', 'MANAGER', 'WALK_IN_CUSTOMER', 'CUSTOMER') NOT NULL,
+  college_name VARCHAR(45) DEFAULT NULL,
+  account_balance decimal(2,0) DEFAULT '0',
   created_at datetime DEFAULT CURRENT_TIMESTAMP,
   modified_at datetime DEFAULT NULL,
   PRIMARY KEY (user_id));
