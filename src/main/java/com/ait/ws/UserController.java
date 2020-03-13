@@ -16,7 +16,7 @@ import javax.ws.rs.core.MediaType;
 import com.ait.dao.UserDAO;
 import com.ait.dto.UserEntity;
 
-@Path("/library/user")
+@Path("user")
 
 public class UserController {
 

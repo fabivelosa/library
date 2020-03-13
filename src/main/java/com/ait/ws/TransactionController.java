@@ -16,7 +16,7 @@ import javax.ws.rs.core.MediaType;
 import com.ait.dao.TransactionDAO;
 import com.ait.dto.TransactionEntity;
 
-@Path("/library/transaction")
+@Path("transaction")
 
 public class TransactionController {
 

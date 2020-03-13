@@ -36,6 +36,7 @@ public class MembershipDAO {
 
 	public MembershipDTO findById(int id) {
 		String sql = "SELECT * FROM library.membership where userId = ?";
+		System.out.println(sql);
 		MembershipDTO membership = null;
 		Connection c = null;
 		try {
@@ -69,15 +70,11 @@ public class MembershipDAO {
 		try {
 			c = DataBaseConnection.getConnection();
 			sql = "INSERT INTO library.membership ( userId, startDate, endDate ) " + "VALUES (?,?,?);";
-			PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			PreparedStatement ps = c.prepareStatement(sql);
 			ps.setInt(1, membership.getUserId());
 			ps.setDate(2, new java.sql.Date(membership.getStartDate().getTime()));
 			ps.setDate(3, new java.sql.Date(membership.getEndDate().getTime()));
 			ps.executeUpdate();
-			ResultSet rs = ps.getGeneratedKeys();
-			rs.next();
-			int id = rs.getInt(1);
-			membership.setUserId(id);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
@@ -92,11 +89,9 @@ public class MembershipDAO {
 		Connection c = null;
 		try {
 			c = DataBaseConnection.getConnection();
-			PreparedStatement ps = c
-					.prepareStatement("UPDATE library.membership set startDate =?, endDate =? WHERE Userid=?;");
-			ps.setDate(1, new java.sql.Date(membership.getStartDate().getTime()));
-			ps.setDate(2, new java.sql.Date(membership.getEndDate().getTime()));
-			ps.setInt(3, membership.getUserId());
+			PreparedStatement ps = c.prepareStatement("UPDATE library.membership set endDate =? WHERE Userid=?;");
+			ps.setDate(1, new java.sql.Date(membership.getEndDate().getTime()));
+			ps.setInt(2, membership.getUserId());
 			ps.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
