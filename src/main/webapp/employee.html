@@ -1,2 +1,300 @@
 <!DOCTYPE html>
-<h6>Authenticated as EMPLOYEE</h6>
+
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	
+<title> Authenticated as STAFF </title>
+
+<link rel="shortcut icon" href="images/book.jpeg">
+
+<!-- JQuery ui-->
+<script src="js/jquery-3.4.1.js"></script>
+<script src="js/jquery-ui.js"></script>
+<link rel="stylesheet" href="css/jquery-ui.css">
+
+<!-- Bootstrap core CSS -->
+<link rel="stylesheet" href="css/bootstrap.min.css" >
+<script src="js/bootstrap.min.js"></script>
+<script src="js/bootstrap.min.js.map"></script>
+
+ <!-- Font Awesome Solid + Brands -->
+  <link href="css/solid.css" rel="stylesheet">
+  <link href="css/fontawesome.css" rel="stylesheet">
+  <script defer src="js/solid.js"></script>
+  <script defer src="js/fontawesome.js"></script>
+
+<!-- Custom styles for Data Tables -->
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.1/css/buttons.dataTables.min.css">
+
+<!-- JavaScript -->
+<script src="js/employee.js"></script>
+
+<!-- CSS -->
+<link rel="stylesheet" href="css/style.css">
+   
+</head>
+<body>
+
+<br>
+
+<div class="container">
+ 
+ <img src="images/library1.jpeg" alt="library" style="width:1000px;height:300px;">
+  <h2>WELCOME STAFF :)</h2>
+  
+  <br>
+  <div id="tabs">
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link active" data-toggle="tab" href="#home"> Sign People in</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#menu1"> Verify Account</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#menu2"> Update Classes</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#menu3"> Add or Remove from Class</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#menu4"> Reports </a>
+    </li>
+     <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#menu5"> E-mail </a>
+    </li>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+				<div id="home" class="container tab-pane active">
+					<div class="container">
+
+						<form class="well form-horizontal" action=" " method="post"
+							id="contact_form">
+							<fieldset>
+								<!-- Form Name -->
+								<div style="text-align:center;"> <b> Registration Form </b> </div>
+								<br>
+								<!-- Text input-->
+								<div class="form-group">
+									<label class="col-md-4 control-label">First Name</label>
+									<div class="col-md-4 inputGroupContainer">
+										<div class="input-group">
+											<span class="input-group-addon"><i
+												class="glyphicon glyphicon-user"></i></span> <input
+												name="first_name" placeholder="First Name"
+												class="form-control" type="text">
+										</div>
+									</div>
+								</div>
+								<!-- Text input-->
+								<div class="form-group">
+									<label class="col-md-4 control-label">Last Name</label>
+									<div class="col-md-4 inputGroupContainer">
+										<div class="input-group">
+											<span class="input-group-addon"><i
+												class="glyphicon glyphicon-user"></i></span> <input
+												name="last_name" placeholder="Last Name"
+												class="form-control" type="text">
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-md-4 control-label">Category</label>
+									<div class="col-md-4 selectContainer">
+										<div class="input-group">
+											<span class="input-group-addon"><i
+												class="glyphicon glyphicon-list"></i></span> <select
+												name="department" class="form-control selectpicker">
+												<option value="">Select user Category</option>
+												<option>CUSTOMER</option>
+												<option>WALK_IN_CUSTOMER</option>
+												<option>MANAGER</option>
+												<option>STAFF</option>
+											</select>
+										</div>
+									</div>
+								</div>
+
+								<!-- Text input-->
+								<div class="form-group">
+									<label class="col-md-4 control-label">Username</label>
+									<div class="col-md-4 inputGroupContainer">
+										<div class="input-group">
+											<span class="input-group-addon"><i
+												class="glyphicon glyphicon-user"></i></span> <input
+												name="user_name" placeholder="Username" class="form-control"
+												type="text">
+										</div>
+									</div>
+								</div>
+
+								<!-- Text input-->
+								<div class="form-group">
+									<label class="col-md-4 control-label">Password</label>
+									<div class="col-md-4 inputGroupContainer">
+										<div class="input-group">
+											<span class="input-group-addon"><i
+												class="glyphicon glyphicon-user"></i></span> <input
+												name="user_password" placeholder="Password"
+												class="form-control" type="password">
+										</div>
+									</div>
+								</div>
+
+								<!-- Text input-->
+								<div class="form-group">
+									<label class="col-md-4 control-label">Confirm Password</label>
+									<div class="col-md-4 inputGroupContainer">
+										<div class="input-group">
+											<span class="input-group-addon"><i
+												class="glyphicon glyphicon-user"></i></span> <input
+												name="confirm_password" placeholder="Confirm Password"
+												class="form-control" type="password">
+										</div>
+									</div>
+								</div>
+
+								<!-- Text input-->
+								<div class="form-group">
+									<label class="col-md-4 control-label">E-Mail</label>
+									<div class="col-md-4 inputGroupContainer">
+										<div class="input-group">
+											<span class="input-group-addon"><i
+												class="glyphicon glyphicon-envelope"></i></span> <input
+												name="email" placeholder="E-Mail Address"
+												class="form-control" type="text">
+										</div>
+									</div>
+								</div>
+								<!-- Text input-->
+								<div class="form-group">
+									<label class="col-md-4 control-label">Contact No.</label>
+									<div class="col-md-4 inputGroupContainer">
+										<div class="input-group">
+											<span class="input-group-addon"><i
+												class="glyphicon glyphicon-earphone"></i></span> <input
+												name="contact_no" placeholder="(+353)" class="form-control"
+												type="text">
+										</div>
+									</div>
+								</div>
+
+								<!-- Select Basic -->
+
+								<!-- Success message -->
+								<div class="alert alert-success" role="alert"
+									id="success_message">
+									Success <i class="glyphicon glyphicon-thumbs-up"></i> Success!.
+								</div>
+
+								<!-- Button -->
+								<div class="form-group">
+									<label class="col-md-4 control-label"></label>
+									<div class="col-md-4">
+										<br>
+										<button type="submit" class="btn btn-warning">SUBMIT <span
+												class="glyphicon glyphicon-send"></span>
+										</button>
+									</div>
+								</div>
+							</fieldset>
+						</form>
+					</div>
+				</div> <!-- /.container -->
+    <div id="menu1" class="container tab-pane fade"><br>
+      <h3>Verify Customer Account</h3>
+      <p> Welcome  </p>	   
+    </div>
+    <div id="menu2" class="container tab-pane fade"><br>
+		<!-- Page Content -->
+			<div class="container">
+				<!-- Page Features -->
+				<div id="classes-row" class="row text-center">
+					<div id="classes-item" class="col-lg-3 col-md-6 mb-4" style="display: none;">
+						<div class="card h-100">
+							<img class="card-img-top classes-image" src="images/library1.jpeg"
+								alt="">
+							<div class="card-body">
+								<h3 class="card-title classes-title">Title</h3>
+								<h4 class="card-text classes-category">Category</h4>
+								<h4 class="card-text classes-slot">Slot</h4>
+								<h4 class="card-text classes-fee">Fee</h4>
+								<h4 class="card-text classes-start">Start</h4>
+								<h4 class="card-text classes-duration">Duration</h4>
+							</div>
+							<div class="card-footer">
+								<a href="#" class="btn btn-update">Update</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /.container -->
+     <div id="menu3" class="container tab-pane fade"><br>
+      <h3>Add or Remove from Class</h3>
+      <p> List the Customers to be assigned to a class. Also list the class subscriptions. </p>
+			<table id="table_id-1" class="display" style="width: 100%">
+				<thead>
+					<tr>
+						<th>Title</th>
+						<th>Category</th>
+						<th>Slot</th>
+						<th>Fee</th>
+						<th>Start</th>
+						<th>Duration</th>
+					</tr>
+				<tbody id="table_body-1">
+				</tbody>
+			</table>
+			<br>
+			<table id="table_id-2" class="display" style="width: 100%">
+				<thead>
+					<tr>
+						<th>First Name</th>
+						<th>Last Name</th>
+						<th>Age Group</th>
+						<th>College Name</th>
+						<th>Account Balance</th>
+						<th>Mobile Tel</th>
+					</tr>
+				<tbody id="table_body-2">
+				</tbody>
+			</table>
+			<br>
+			<table id="table_id-3" class="display" style="width: 100%">
+				<thead>
+					<tr>
+						<th>Title</th>
+						<th>Categry</th>
+						<th>Slot</th>
+						<th>Fee</th>
+						<th>Start</th>
+						<th>Duration</th>
+					</tr>
+				<tbody id="table_body-3">
+				</tbody>
+			</table>			
+		</div>      
+    <div id="menu4" class="container tab-pane fade"><br>
+      <h3>Reports</h3>
+      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+    </div>
+    <div id="menu5" class="container tab-pane fade"><br>
+      <h3>E-mail</h3>
+      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+    </div>
+  </div>
+      </div>
+    </div>
+</body>
+</html>
