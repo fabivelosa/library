@@ -18,17 +18,19 @@ $(document).ready(function() {
 	var custId = customer.userId;
 	var updatedCustBalance = 0;
 	
-	var membership = true;
+	var membership = true; //Maryanna???
+	var payfull = true;  //Maryanna???
 	
-	
+	 
 	//Constants for Debits
 	var membershipFee = 20;
-	var classFee =40;   //Example Class fee which will be obtained in advance (Connor)
+	
+	var classFee =40;   //Example Class fee which will be obtained in advance (Connor)??????
 	var calculatedClassFee; 
 	
 	//Constants for Credits
-	var paymentName;   //What payment is for i.e. Class registration/ Membership etc
-	var paymentAmount;
+	var paymentName = "Class Payment";   //What payment is for i.e. Class registration/ Membership etc (Fabi)?????
+	var paymentAmount =10; //From Form done by (Fabi)?????
 	
 	
 	
@@ -72,10 +74,11 @@ $(document).ready(function() {
 				e.preventDefault();
 				//findCustBalanceById(custId);   //Get Customer current Balance
 				name= "Membership Fee"; 
-				MemberUpdateCustomerBalance(custBalance, membershipFee) //Business Logic Function for Membership Fee 
+				amount = membershipFee;
+				memberUpdateCustomerBalance(custBalance, membershipFee) //Business Logic Function for Membership Fee 
 				console.log(updatedCustBalance);
 				updateCustomerBalance(custId, updatedCustBalance); //Update Customer Balance first
-				debitTransaction(custId, name, membershipFee, custBalance, updatedCustBalance); //Add Transaction to log
+				debitTransaction(custId, name, amount, custBalance, updatedCustBalance); //Add Transaction to log
 				
 				return false;
 			});
@@ -87,11 +90,13 @@ $(document).ready(function() {
 			function(e) {
 				alert("The btn Class register was clicked.");
 				e.preventDefault();
-				findCustBalanceById(2);   //Get Customer current Balance
-				name= "Class Registration";
-				amount= calculatedClassFee; 
-				debitTransaction(id, custBalance, updatedCustBalance, name, amount);
-				updateCustomerBalance(custBalance, calculatedClassFee); //Update Customer Balance
+				//findCustBalanceById(custId);   //Get Customer current Balance
+				name = "Class Registration";
+				calculateClassFee(); 
+				amount = calculatedClassFee;
+				updatedCustBalance = Number(custBalance) + Number(calculatedClassFee);
+				updateCustomerBalance(custId, updatedCustBalance); //Update Customer Balance first
+				debitTransaction(custId, name, amount, custBalance, updatedCustBalance); //Add Transaction to log
 				return false;
 			});
 	
@@ -102,9 +107,12 @@ $(document).ready(function() {
 			function(e) {
 				alert("The btn Pay was clicked.");
 				e.preventDefault();
-				findCustBalanceById(2); //Get Customer current Balance
-				creditTransaction(id, custBalance, updatedCustBalance);
-				updateCustomerBalance(custBalance, membershipFee); //Update Customer Balance
+				//findCustBalanceById(custId);   //Get Customer current Balance
+				name = paymentName;
+				amount = paymentAmount;
+				paymentUpdateCustomerBalance();
+				updateCustomerBalance(custId, updatedCustBalance); //Update Customer Balance first
+				creditTransaction(custId, name, amount, custBalance, updatedCustBalance); //Add Transaction to log
 				return false;
 			});
 	
@@ -114,7 +122,7 @@ $(document).ready(function() {
 	/*BUSINESS LOGIC***************************************/
 	
 	//Update the Customer Balance for Membership
-	function MemberUpdateCustomerBalance(custBalance, membershipFee){
+	function memberUpdateCustomerBalance(custBalance, membershipFee){
 		console.log('MemberUpdateCustomerBalance Function');
 		updatedCustBalance = Number(custBalance) + Number(membershipFee);
 		console.log('New Customer Balance: ' + updatedCustBalance);
@@ -122,18 +130,32 @@ $(document).ready(function() {
 	
 	
 	//Calculate the class Fee
-	function calculateClassFee(classFee, membership, custBalance, payfull){
+	function calculateClassFee(){
+		console.log('calculateClassFee');
 		fullClassFee = classFee * 12;
+		console.log('fullClassFee' +fullClassFee);
 		if (membership){
-			fullClassFee =fullClassFee- 50; //€50 Discount on Membership
+			fullClassFee =fullClassFee - 50; //€50 Discount on Membership
+			console.log('fullClassFee Membership Discount €50' +fullClassFee);
 		}
 		if (custBalance ==0){
-			fullClassFee =fullClassFee- (fullClassFee * 0.1); //10% Discount on Clear Balance
+			fullClassFee =fullClassFee - (fullClassFee * 0.1); //10% Discount on Clear Balance
+			console.log('fullClassFee Clear Balance Discount 10%' +fullClassFee);
 		}
 		if (payfull){
-			fullClassFee =fullClassFee- (fullClassFee * 0.1); //10% Discount on Payment in Advance
+			fullClassFee =fullClassFee - (fullClassFee * 0.1); //10% Discount on Payment in Advance
+			console.log('fullClassFee Pay in Advance Discount 10%' +fullClassFee);
 		}
 		calculatedClassFee = fullClassFee;
+		console.log('calculated Class Fee is '+ calculatedClassFee );
+	}
+	
+	
+	//Update the Customer Balance after Payment
+	function paymentUpdateCustomerBalance(){
+		console.log('paymentUpdateCustomerBalance Function');
+		updatedCustBalance = Number(custBalance) - Number(paymentAmount);
+		console.log('New Customer Balance: ' + updatedCustBalance);
 	}
 	
 	
@@ -181,7 +203,7 @@ function debitTransaction(customer, custBalance){
 			contentType : 'application/json',
 			url : transURL,
 			dataType : "json",
-			data : debitTransToJSON(custId, name, membershipFee, custBalance, updatedCustBalance),
+			data : debitTransToJSON(custId, name, amount, custBalance, updatedCustBalance),
 			success : function(data, textStatus, jqXHR) {
 				alert('Debit transaction added successfully');
 				$('#btnMbr').hide();
@@ -195,7 +217,7 @@ function debitTransaction(customer, custBalance){
 }
 
 /*Post Credit Transaction to Transaction logs*/
-function creditTransaction(id, custBalance, updatedCustBalance){
+function creditTransaction(customer, custBalance){
 		console.log('POST creditTransaction');
 		console.log('Updated balance is '+ updatedCustBalance);
 		/*Post to Transaction Ledger*/
@@ -265,7 +287,7 @@ function debitTransToJSON(custId, name, amount) {
 //JSON for Credit Transaction//
 function creditTransToJSON(custId, name, amount) {
 	console.log('creditTransTOJSON');
-	console.log('User ID is '+ customer.userId);
+	console.log('User ID is '+ custId);
 	var stringified = JSON.stringify({
 		"user_id" : custId,
 		"date" : '2020-03-03',
