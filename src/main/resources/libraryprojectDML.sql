@@ -4,8 +4,8 @@
 INSERT INTO library.users(user_id, first_name, last_name, category) VALUES (1, 'Will', 'Smith', 'STAFF'),
 																		   (2, 'Brad', 'Pitt', 'MANAGER'),
 																		   (3, 'Angelina', 'Jolie', 'CUSTOMER');
-INSERT INTO users VALUES (4,'Peter','Jameson','The Gables','Ard Blathna','Athlone','Westmeath','H45B435',0086538523,087653422,NULL,NULL,'STAFF',now(),null),
-						 (5,'Mary','Walsh','The Sands','Sany view','Ballinasloe','Galway','U43563',0038859322,093847532,'marywalsh@gmail.com',NULL,'STAFF','2020-03-01 20:07:23',NULL);
+INSERT INTO library.users VALUES (4,'Peter','Jameson', null, 'Ard Blathna', 'Ard', 'Athlone','Westmeath','H45B435',0086538523,087653422,NULL,NULL,'STAFF', 'AIT', 0.0, now(),null);
+						 #(5,'Mary','Walsh','The Sands','Sany view','Ballinasloe','Galway','U43563',0038859322,093847532,'marywalsh@gmail.com',NULL,'STAFF','2020-03-01 20:07:23',NULL);
 
 --
 -- data for table authentication
@@ -29,7 +29,15 @@ INSERT INTO library.membership(userId, startDate, endDate ) VALUES (3, '2021-03-
 -- data for table classes
 --
 INSERT INTO library.classes(class_Id,class_title,class_category,class_slot,class_fee,class_start,class_duration ) VALUES (1, 'Story time for kids','Children',40,5,'2021-02-10',60),
-																														(2, 'English literature for beginners ','Adults',30,10,'2021-02-10',60);
+																														(2, 'English literature for beginners ','Adults',30,10,'2021-02-10',60),
+																														(3, 'Creative writing for beginners', 'Adults', 30, 15, '2020-05-18', 60),
+																														(4, 'Computers for beginners', 'Children', 30, 20, '2020-07-11', 60),
+																														(5, 'Technology for the over 60s', 'Adults', 20, 5, '2020-09-08', 60),
+                                                                                                                        (6, 'The Art of Drawing for kids', 'Children', 40, 10, '2020-06-12', 60),
+                                                                                                                        (7, 'Photography for passionates', 'Adults', 30, 15, '2021-07-13', 60),
+                                                                                                                        (8, 'Music time for adults', 'Adults', 40, 20, '2021-03-22', 60),
+                                                                                                                        (9, 'Animation and Design', 'Adults', 30, 25, '2020-02-17', 60),
+                                                                                                                        (10, 'Public speaking', 'Adults', 40, 30, '2020-11-17', 60);
 
 --
 -- data for table registration

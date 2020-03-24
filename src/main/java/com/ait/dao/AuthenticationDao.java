@@ -1,5 +1,6 @@
 package com.ait.dao;
 
+import com.ait.dto.AuthenticationInfo;
 import com.ait.rsc.DataBaseConnection;
 
 import java.sql.Connection;
@@ -9,9 +10,9 @@ import java.sql.SQLException;
 
 public class AuthenticationDao {
 
-	public String authenticate(String username, String password) {
+	public AuthenticationInfo authenticate(String username, String password) {
 		Connection connection = null;
-		final String query = "SELECT u.category FROM authentication as a " +
+		final String query = "SELECT u.category, u.user_id FROM authentication as a " +
 								"INNER JOIN users AS u ON a.user_id=u.user_id " +
 								"WHERE a.username=? AND a.password=?";
 		try {
@@ -22,7 +23,8 @@ public class AuthenticationDao {
 			ResultSet resultSet = ps.executeQuery();
 			if (resultSet.next()) {
 				String userCategory = resultSet.getString("category");
-				return userCategory;
+				int userId = resultSet.getInt("user_id");
+				return new AuthenticationInfo(userId, username, userCategory);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

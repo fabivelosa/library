@@ -32,6 +32,14 @@ public class ClassesWS {
 		return dao.findAll();
 	}
 	
+	@GET
+	@Path("{userId}")
+	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	public List<ClassesDTO> findAllByRegisterStatus(@PathParam("userId") int userId) {
+		System.out.println("findAllByRegisterStatus.classes: " + userId);
+		return dao.findAllByRegisterStatus(userId);
+	}
+	
 	/*
 	 * CREATE a class
 	 */

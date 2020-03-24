@@ -8,11 +8,11 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ait.dao.ClassesDAO;
 import com.ait.rsc.DataBaseConnection;
 import com.ait.dto.ClassesDTO;
 
 public class ClassesDAO {
+
 	public List<ClassesDTO> findAll() {
         List<ClassesDTO> list = new ArrayList<ClassesDTO>();
         Connection c = null;
@@ -33,8 +33,31 @@ public class ClassesDAO {
         return list;
     }
 
-    
-   
+	public List<ClassesDTO> findAllByRegisterStatus(int memberId) {
+        List<ClassesDTO> list = new ArrayList<ClassesDTO>();
+        Connection c = null;
+    	String sql = "SELECT c.*, r.registrationId FROM classes as c "
+    			+ " LEFT JOIN registration as r ON c.class_id=r.classId AND r.memberId = ? "
+    			+ " ORDER BY r.registrationId DESC";
+        try {
+            c = DataBaseConnection.getConnection();
+            PreparedStatement ps = c.prepareStatement(sql);
+			ps.setInt(1, memberId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+            	ClassesDTO classDTO = processRow(rs);
+            	classDTO.setRegistrationId(rs.getInt("registrationId"));
+                list.add(classDTO);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+		} finally {
+			DataBaseConnection.close(c);
+		}
+        return list;
+    }
+
     protected ClassesDTO processRow(ResultSet rs) throws SQLException {
     	ClassesDTO classesDTO = new ClassesDTO();
         classesDTO.setClass_id(rs.getInt("class_id"));
@@ -46,8 +69,6 @@ public class ClassesDAO {
         classesDTO.setClass_duration(rs.getInt("class_duration"));
         return classesDTO;
     }
-
-
 
 	public ClassesDTO findById(int id) {
 		String sql = "SELECT * FROM classes WHERE id = ?";
@@ -154,7 +175,7 @@ public class ClassesDAO {
 		try {
 			c = DataBaseConnection.getConnection();
 			PreparedStatement ps = c.prepareStatement("UPDATE classes SET Class_id=?, Class_title=?, Class_category=?, "+"Class_slot=?, Class_fee=?, Class_start=?, Class_duration=? WHERE Class_id=?");
-			
+
 			ps.setInt(1, classesDTO.getClass_id());
 			ps.setString(2, classesDTO.getClass_title());
 			ps.setString(3, classesDTO.getClass_category());

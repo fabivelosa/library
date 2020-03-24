@@ -21,10 +21,10 @@ public class AuthenticationResource {
     @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public Response authenticateUser(Credentials credentials) {
         System.out.println("/login invoked, " + credentials.getUsername());
-		String category = authenticationDao.authenticate(credentials.getUsername(), credentials.getPassword());
+        AuthenticationInfo authenticationInfo = authenticationDao.authenticate(credentials.getUsername(), credentials.getPassword());
 
-		if (category != null) {
-			AuthenticationInfo authenticationInfo = TokensController.issueNewToken(credentials.getUsername(), category);
+		if (authenticationInfo != null) {
+			authenticationInfo = TokensController.issueNewToken(authenticationInfo);
 			return Response.ok(authenticationInfo).build();
 		} else {
 			return Response.status(Response.Status.FORBIDDEN).build();

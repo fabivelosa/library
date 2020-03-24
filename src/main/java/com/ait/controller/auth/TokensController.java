@@ -10,10 +10,10 @@ public class TokensController {
 
     private static final Map<String, AuthenticationInfo> TOKEN_HOLDER = new ConcurrentHashMap<>();
 
-    public static AuthenticationInfo issueNewToken(String username, String category) {
+    public static AuthenticationInfo issueNewToken(AuthenticationInfo auth) {
         String token = UUID.randomUUID().toString();
-		AuthenticationInfo auth = new AuthenticationInfo(username, token, category);
-        TOKEN_HOLDER.put(token, auth);
+        auth.setToken(token);
+		TOKEN_HOLDER.put(token, auth);
         return auth;
     }
 

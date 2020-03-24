@@ -3,6 +3,7 @@ package com.ait.dto;
 public class ClassesDTO {
 	private int class_id, class_duration;
 	private String class_title, class_category, class_slot, class_fee, class_start;
+	private int registrationId;
 	
 	
 	public int getClass_id() {
@@ -46,6 +47,18 @@ public class ClassesDTO {
 	}
 	public void setClass_start(String class_start) {
 		this.class_start = class_start;
+	}
+	
+	public int getRegistrationId() {
+		return registrationId;
+	}
+	
+	public void setRegistrationId(int registrationId) {
+		this.registrationId = registrationId;
+	}
+	@Override
+	public String toString() {
+		return "ClassesDTO [class_id=" + class_id + "]";
 	}
 	
 	
