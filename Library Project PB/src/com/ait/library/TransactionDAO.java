@@ -45,14 +45,16 @@ public class TransactionDAO {
 		return list;
 	}
 
-	public List<TransactionEntity> findByName(String last_name) {
+	/*Get all Transactions for a particular customer*/
+	public List<TransactionEntity> findByCustomerId(int custId) {
+		System.out.println("Inside find customer transactions by ID");
 		List<TransactionEntity> list = new ArrayList<TransactionEntity>();
 		Connection c = null;
-		String sql = "SELECT * FROM transactions as e " + "WHERE UPPER(name) LIKE ? " + "ORDER BY name";
+		String sql = "SELECT * FROM transactions as e " + "WHERE user_id = ? " + "ORDER BY date";
 		try {
 			c = ConnectionHelper.getConnection();
 			PreparedStatement ps = c.prepareStatement(sql);
-			ps.setString(1, "%" + last_name.toUpperCase() + "%");
+			ps.setInt(1, custId);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				list.add(processRow(rs));

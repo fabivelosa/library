@@ -231,6 +231,30 @@ public class UserDAO {
 		// java.sql.Date contains only date information (without time)
 		return new java.sql.Date(date.getTime());
 	}
+
+	public void updateUserBalanceById(Integer id, float account_balance) {
+		// TODO Auto-generated method stub
+		Connection c = null;
+		try {
+			c = ConnectionHelper.getConnection();
+			PreparedStatement ps = c.prepareStatement(
+					"UPDATE users SET account_balance=? WHERE user_id=?");
+
+			ps.setFloat(1, account_balance);
+
+			ps.setInt(2, id);
+				
+			ps.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		} finally {
+			ConnectionHelper.close(c);
+		}
+		
+	
+	}
 	
 
 
