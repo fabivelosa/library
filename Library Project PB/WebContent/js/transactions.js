@@ -5,40 +5,48 @@ $(document).ready(function() {
 	var transURL = "http://localhost:8080/Library_Project_PB/rest/library/transaction";
 	var userURL = "http://localhost:8080/Library_Project_PB/rest/library/user";
 	var userbalURL = "http://localhost:8080/Library_Project_PB/rest/library/user/balance";
-	var customer;
 	
+
 	var custBalance =0;
 	var updatedCustBalance = 0;
-	var a = 10;
 	var membershipFee = 25;
 
 	
-
-
-	myFunction();
-
-	function myFunction(){
-	   a = custBalance + membershipFee;
-	}
-
-	alert("Value of 'a' outside the function " + a);
-	
 	/*Run process without Button for test purposes*/
 	
-	findById(2);
+	//Get Latest Customer Balance
+	var customer = findCustBalanceById(2);
+	console.log(customer);
+	
+	/*
+	//Update Customer Balance with Membership fee
+	updateCustBalanceMember(custBalance, membershipFee);
+	
+	//Update Transaction logs for Membership fee
+	console.log(customer);
+	memberTransaction(customer,custBalance,updatedCustBalance);
+	
+	
+	//Test Generate DataTables list for Customer with ID of 2
 	findTransactionsByCustomerId(2);
 	
+	*/
 	
 	
-	/*Perform Business logic*/
-	function updateCustBalance(custBalance, membershipFee){
+	
+	/*Perform Business logic***************************************/
+	
+	//Update the Customer Balance for Membership
+	function updateCustBalanceMember(custBalance, membershipFee){
 		updatedCustBalance = Number(custBalance) + Number(membershipFee);
 		console.log('New Customer Balance: ' + updatedCustBalance);
 	}
 	
 	
+	/*END Perform Business logic***************************************/
 	
 	
+	/*Buttons********************************************/
 	
 	// Membership button listener
 	$('#btnMbr').on(
@@ -46,40 +54,60 @@ $(document).ready(function() {
 			function(e) {
 				alert("The btn Add Member was clicked.");
 				e.preventDefault();
-				findById(2);
-				memberTransaction(id, custBalance);
+				findCustBalanceById(2);   //Get Customer current Balance
+				memberTransaction(id, custBalance, updatedCustBalance);
+				updateCustBalanceMember(custBalance, membershipFee); //Update Customer Balance
+				
 				return false;
 			});
 	
-	/*Get the Customer details*/
-	function findById(id) {
-		console.log('findById: ' + id);
-		$.ajax({
+	// Payment button listener
+	$('#btnPay').on(
+			'click',
+			function(e) {
+				alert("The btn Pay was clicked.");
+				e.preventDefault();
+				findCustBalanceById(2); //Get Customer current Balance
+				paymentTransaction(id, custBalance, updatedCustBalance);
+				updateCustBalanceMember(custBalance, membershipFee); //Update Customer Balance
+				return false;
+			});
+	
+	/*END Buttons********************************************/
+	
+	
+	
+	/*Data Retrieval********************************************/
+	
+	//Get the Customer Account Balance details        //Need to be able to pass data to Global Variable
+	function findCustBalanceById(id) {
+		console.log('findCustBalanceById: ' + id);
+		customer = $.ajax({
 			type : 'GET',
 			url : userURL + '/' + id,
 			dataType : "json",
-			success : function(data) {
+		
+		success : function(data) {
+				console.log(data);
 				customer = data;
-				console.log('findById success: ' + customer.userId);
+				console.log('findCustBalanceById success: ' + customer.userId);
 				custBalance = parseInt(customer.account_balance);
 				console.log('Customer Current Balance: ' + customer.account_balance);
-				updateCustBalance(custBalance, membershipFee);
-				myFunction();
-				alert("Value of 'a' outside the function " + a);
-				memberTransaction(data,custBalance,a);
-			
+				
 									}
+			
 				});
 		
-		
+		return customer;
 							}
+	/*END Data Retrieval*************************************************/
 	
 	
 
+	/*TRANSACTION LOGS REGION********************************************/
 	
 	
-	
-	/*Post Transaction to Transaction logs*/
+/*Post Membership Transaction to Transaction logs*/
 function memberTransaction(customer, custBalance, updatedCustBalance){
 		console.log('memberTransaction');
 		console.log('Updated balance is '+ updatedCustBalance);
@@ -89,7 +117,7 @@ function memberTransaction(customer, custBalance, updatedCustBalance){
 			contentType : 'application/json',
 			url : transURL,
 			dataType : "json",
-			data : transToJSON(customer),
+			data : debitTransToJSON(customer),
 			success : function(data, textStatus, jqXHR) {
 				alert('Member transaction added successfully');
 				$('#btnMbr').hide();
@@ -99,35 +127,68 @@ function memberTransaction(customer, custBalance, updatedCustBalance){
 				alert('memberTransaciton log error: ' + textStatus);
 			}
 		});
-		console.log('memberbalanceUpdate');
+		
+}
+
+/*Post Payment Transaction to Transaction logs*/
+function paymentTransaction(id, custBalance, updatedCustBalance){
+		console.log('paymentTransaction');
 		console.log('Updated balance is '+ updatedCustBalance);
-		/*Update User Customer Balance*/
+		/*Post to Transaction Ledger*/
 		$.ajax({
-			type : 'PUT',
+			type : 'POST',
 			contentType : 'application/json',
-			
-			url : userbalURL + '/' + customer.userId + '/' + a,
+			url : transURL,
 			dataType : "json",
-			/*data : {account_balance: updatedCustBalance },*/
+			data : creditTransToJSON(customer),
 			success : function(data, textStatus, jqXHR) {
-				alert('Member account balance updated successfully');
+				alert('Payment transaction added successfully');
 				$('#btnMbr').hide();
 				
 			},
 			error : function(jqXHR, textStatus, errorThrown) {
-				alert('memberTransaciton Account balance error: ' + textStatus);
+				alert('paymnetTransaciton log error: ' + textStatus);
 			}
 		});
-		return false;
+		
+}
+		
+/*Update Customer Balance for all types of Transactions*/
+		
+function updateBalance(customer,updatedCustBalance){
+	console.log('updateBalance');
+	$.ajax({
+	type : 'PUT',
+	contentType : 'application/json',
+	
+	url : userbalURL + '/' + customer.userId + '/' + updatedCustBalance,
+	dataType : "json",
+	success : function(data, textStatus, jqXHR) {
+		alert('Account balance updated successfully');
+		$('#btnMbr').hide();
+		
+	},
+	error : function(jqXHR, textStatus, errorThrown) {
+		alert('updateBalance error: ' + textStatus);
 	}
-function transToJSON(customer) {
+});
+	
+	console.log('Updated balance is '+ updatedCustBalance);
+return false;
+}
+		
+
+/*Generate JSON Data*/
+
+//JSON for Debit Transaction//
+function debitTransToJSON(customer) {
 	console.log('transTOJSON');
 	console.log('User ID is '+ customer.userId);
 	var stringified = JSON.stringify({
 		"user_id" : customer.userId,
 		"date" : '2020-03-03',
-		"name" : 'Membership Fee',
-		"amount" : membershipFee,
+		"name" : 'Membership Fee', //Need to set this Variable from HTML form, currently fixed
+		"amount" : membershipFee, //Need to set this Variable from HTML form, currently fixed
 		"type" : 'DEBIT',
 		"user_ob" : customer.account_balance,
 		"user_cb" : updatedCustBalance
@@ -137,7 +198,28 @@ function transToJSON(customer) {
 	return stringified;
 }
 
-/*Datatables **************************************/
+//JSON for Credit Transaction//
+function creditTransToJSON(customer) {
+	console.log('transTOJSON');
+	console.log('User ID is '+ customer.userId);
+	var stringified = JSON.stringify({
+		"user_id" : customer.userId,
+		"date" : '2020-03-03',
+		"name" : 'paymentType', //Need to set this Variable
+		"amount" : paymentAmount, //Need to set this Variable
+		"type" : 'Credit',
+		"user_ob" : customer.account_balance,
+		"user_cb" : updatedCustBalance
+	  
+	});
+	console.log(stringified);
+	return stringified;
+}
+/*END TRANSACTION LOGS REGION********************************************/
+
+
+
+/*DataTables *************************************************************/
 
 
 /*Get all Transactions by Customer*/
@@ -185,6 +267,8 @@ function findTransactionsByCustomerId(custId) {
 			  
 
 			    var table = $('#table_id').DataTable();
+			    
+			    //List Selection Formula
 			    
 			    $('#table_id tbody').on(
 			        'click',
