@@ -99,28 +99,27 @@ public class TransactionDAO {
 		try {
 			c = ConnectionHelper.getConnection();
 			ps = c.prepareStatement(
-					"INSERT INTO transactions (`date`,\n" + 
-					"`name`,\n" + 
+					"INSERT INTO transactions (`name`,\n" + 
 					"`type`,\n" + 
 					"`amount`,\n" + 
 					"`user_id`,\n" + 
 					"`user_ob`,\n" + 
-					"`user_cb` ) VALUES (?,?,?,?,?,?,?)",
+					"`user_cb` ) VALUES (?,?,?,?,?,?)",
 					new String[] { "ID" });
 			
-			Date date = transaction.getDate();
+			/*Date date = transaction.getDate();
         	java.sql.Date sqlDate = convertJavaDateToSqlDate(date);
-    		System.out.println("java.sql.Date : " + sqlDate);
+    		System.out.println("java.sql.Date : " + sqlDate);*/
 
-			ps.setDate(1, sqlDate);
-			ps.setString(2, transaction.getName());
+			/*ps.setDate(1, sqlDate);*/
+			ps.setString(1, transaction.getName());
 			
-			ps.setString(3, transaction.getType());
+			ps.setString(2, transaction.getType());
 
-			ps.setFloat(4, transaction.getAmount());
-			ps.setInt(5, transaction.getUser_id());
-			ps.setFloat(6, transaction.getUser_ob());
-			ps.setFloat(7, transaction.getUser_cb());
+			ps.setFloat(3, transaction.getAmount());
+			ps.setInt(4, transaction.getUser_id());
+			ps.setFloat(5, transaction.getUser_ob());
+			ps.setFloat(6, transaction.getUser_cb());
 
 
 			ps.executeUpdate();

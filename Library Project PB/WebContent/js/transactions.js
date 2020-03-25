@@ -14,22 +14,27 @@ $(document).ready(function() {
 	console.log('Customer ID is: '+customer.userId);
 	console.log('Customer Acount Balance is: '+customer.account_balance);
 	
+	//Variables/Constants for Customers
 	var custBalance =customer.account_balance;
 	var custId = customer.userId;
-	var updatedCustBalance = 0;
-	
 	var membership = true; //Maryanna???
-	var payfull = true;  //Maryanna???
+	var ageGroup = "standard";  //Maryanna???
 	
+	var updatedCustBalance = 0;
 	 
-	//Constants for Debits
+	//Variables/Constants for Debits
 	var membershipFee = 20;
+	var walkinFeeStandard = 10;
+	var walkinFeeDiscounted = 5;
+	var walkinFeeApplied;
 	
+	//Variables/Constants for Classes
 	var classFee =40;   //Example Class fee which will be obtained in advance (Connor)??????
+	var payfull = true;  //Maryanna???
 	var calculatedClassFee; 
 	
-	//Constants for Credits
-	var paymentName = "Class Payment";   //What payment is for i.e. Class registration/ Membership etc (Fabi)?????
+	//Variables/Constants for Credits
+	var paymentName = "Class Payment";   //What payment is for i.e. Class registration/ Membership/ Walkin etc (Fabi)?????
 	var paymentAmount =10; //From Form done by (Fabi)?????
 	
 	
@@ -116,6 +121,23 @@ $(document).ready(function() {
 				return false;
 			});
 	
+	// Wlakin button listener
+	$('#btnWlk').on(
+			'click',
+			function(e) {
+				alert("The btn Walkin Service was clicked.");
+				e.preventDefault();
+				//findCustBalanceById(custId);   //Get Customer current Balance
+				name= "Walk-In Fee"; 
+				walkinUpdateCustomerBalance(custBalance, walkinFeeApplied) //Business Logic Function for Walk-in Fee 
+				console.log(updatedCustBalance);
+				amount = walkinFeeApplied;
+				updateCustomerBalance(custId, updatedCustBalance); //Update Customer Balance first
+				debitTransaction(custId, name, amount, custBalance, updatedCustBalance); //Add Transaction to log
+				
+				return false;
+			});
+	
 	/*END BUTTONS ********************************************/
 	
 	
@@ -125,6 +147,19 @@ $(document).ready(function() {
 	function memberUpdateCustomerBalance(custBalance, membershipFee){
 		console.log('MemberUpdateCustomerBalance Function');
 		updatedCustBalance = Number(custBalance) + Number(membershipFee);
+		console.log('New Customer Balance: ' + updatedCustBalance);
+	}
+	
+	//Update the Customer Balance for Walk-In Service
+	function walkinUpdateCustomerBalance(){
+		console.log('walkinUpdateCustomerBalance Function');
+		if(ageGroup === "discounted"){
+			updatedCustBalance = Number(custBalance) + Number(walkinFeeDiscounted);
+			walkinFeeApplied = walkinFeeDiscounted;
+		}else{
+		updatedCustBalance = Number(custBalance) + Number(walkinFeeStandard);
+		walkinFeeApplied = walkinFeeStandard;}
+		
 		console.log('New Customer Balance: ' + updatedCustBalance);
 	}
 	
@@ -272,7 +307,7 @@ function debitTransToJSON(custId, name, amount) {
 	console.log('User ID is '+ custId);
 	var stringified = JSON.stringify({
 		"user_id" : custId,
-		"date" : '2020-03-03',
+		/*"date" : '2020-03-03',*/
 		"name" : name, //Need to set this Variable from HTML form, currently fixed
 		"amount" : amount, //Need to set this Variable from HTML form, currently fixed
 		"type" : 'DEBIT',
@@ -290,7 +325,7 @@ function creditTransToJSON(custId, name, amount) {
 	console.log('User ID is '+ custId);
 	var stringified = JSON.stringify({
 		"user_id" : custId,
-		"date" : '2020-03-03',
+		/*"date" : '2020-03-03',*/
 		"name" : name, //Need to set this Variable
 		"amount" : amount, //Need to set this Variable
 		"type" : 'CREDIT',
