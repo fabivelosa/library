@@ -12,10 +12,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-
-import org.codehaus.jettison.json.JSONObject;
-
-import com.ait.library.UserEntity;
+import com.ait.library.UserDAO;
 
 @Path("/library/user")
 
