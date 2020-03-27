@@ -65,7 +65,23 @@ var formToJSON = function () {
 $(document).ready( function () {
     $('#classes_table').DataTable();
     
-    
+    $('#btnAdd').click(function() {
+		newClass();
+		return false;
+	});
+
+	$('#btnSave').click(function() {
+		if ($('#classes_title').val() == '')
+			addClass();
+		else
+			updateClass();
+		return false;
+	});
+
+	$('#btnDelete').click(function() {
+		deleteClass();
+		return false;
+	});
     
 });
 
