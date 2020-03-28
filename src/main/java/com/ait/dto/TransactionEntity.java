@@ -4,6 +4,7 @@ import java.util.Date;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+
 @XmlRootElement
 public class TransactionEntity {
 
@@ -24,8 +25,9 @@ public class TransactionEntity {
 	private int user_id;
 
 	private float user_ob;
-
+	
 	private float user_cb;
+
 
 	private Date createdAt;
 	private Date updatedAt;
@@ -36,6 +38,7 @@ public class TransactionEntity {
 	public TransactionEntity(int transaction_id) {
 		this.transaction_id = transaction_id;
 	}
+
 
 	public int getTransaction_id() {
 		return transaction_id;
@@ -77,6 +80,7 @@ public class TransactionEntity {
 		this.amount = amount;
 	}
 
+
 	public int getUser_id() {
 		return user_id;
 	}
@@ -92,6 +96,7 @@ public class TransactionEntity {
 	public void setUser_ob(float user_ob) {
 		this.user_ob = user_ob;
 	}
+	
 
 	public float getUser_cb() {
 		return user_cb;
@@ -100,8 +105,10 @@ public class TransactionEntity {
 	public void setUser_cb(float user_cb) {
 		this.user_cb = user_cb;
 	}
+	
 
 	// Logging Fields only//
+	
 
 	public Date getCreatedAt() {
 		return createdAt;

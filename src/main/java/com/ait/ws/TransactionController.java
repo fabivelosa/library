@@ -13,8 +13,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import com.ait.dao.TransactionDAO;
 import com.ait.dto.TransactionEntity;
+import com.ait.dao.TransactionDAO;
 
 @Path("/library/transaction")
 
@@ -52,7 +52,11 @@ public class TransactionController {
 		return TransactionDAO.findById(id);
 	}
 
+<<<<<<< HEAD
 	// Get list of all Transactions for a particular Customer
+=======
+	//Get list of all Transactions for a particular Customer
+>>>>>>> 2573585db7b8bda9be86550d85516dfb0c3b8fdd
 	@GET
 	@Path("/search/{query}")
 	@Produces({ MediaType.APPLICATION_JSON })
@@ -67,9 +71,9 @@ public class TransactionController {
 	@Path("/{id}")
 	@Consumes({ MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_JSON })
-	public TransactionEntity update(@PathParam("id") Integer id, TransactionEntity TransactionEntity)
-			throws SQLException {
-		System.out.println("Updating Transaction: " + TransactionEntity.getName() + " and with ID of" + id);
+	public TransactionEntity update(@PathParam("id") Integer id, TransactionEntity TransactionEntity) throws SQLException {
+		System.out.println("Updating Transaction: " + TransactionEntity.getName() + " and with ID of"
+				+ id);
 		TransactionDAO.updateTransactionById(TransactionEntity, id);
 		return TransactionEntity;
 	}
