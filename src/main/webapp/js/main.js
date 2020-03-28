@@ -3,9 +3,8 @@ var rootURL = "http://localhost:8080/library/rest";
 $(function() {
 
     initLoginForm();
-
+    
 });
-
 
 function initLoginForm() {
     $("#invalid-login").removeClass('show');
@@ -67,7 +66,58 @@ function renderCustomerContent() {
     console.log('Display customer content');
     $.get('customer.html', function(response){
         $('#main-container').html(response);
+        initCustomerPage();
+        
         findCustomerClasses();
+    });
+}
+
+function initCustomerPage() {
+	$('#class-reg-modal').on('show.bs.modal', function (event) {
+		console.log('show.bs.modal');
+		var actionLink = $(event.relatedTarget);
+		var classId = actionLink.data('identity');
+		if (classId != undefined) {
+			var modal = $(this);
+			modal.find('#class-id').val(classId);
+		}
+	});
+	
+	$('#class-reg-modal').on('hide.bs.modal', function (event) {
+		console.log('hide.bs.modal');
+		$('#weekly').prop('checked', false);
+		$('#whole').prop('checked', false);
+	});
+	
+	$('#btn-register').click(function() {
+		var paymentType;
+		
+		if($('#weekly').is(":checked")) {
+			paymentType = 'weekly';
+		} else if($('#whole').is(":checked")) {
+			paymentType = 'whole';
+		}
+		
+		if($('#weekly').is(":checked") || $('#whole').is(":checked")) {
+	    	var classId = $('#class-id').val();
+	    	var userId = sessionStorage.getItem("auth-id");
+	    	console.log('classId: ' + classId);
+	    	
+	    	var formData = JSON.stringify({
+	    	        "classId": classId,
+	    	        "memberId": userId
+	    	    });
+	    	$.ajax({
+	    		type: 'POST',
+	    		contentType: 'application/json',
+	    		url: rootURL + '/registration/' + paymentType,
+	    		data: formData,
+	    		success: function(){
+	    			findCustomerClasses();
+	    			$('#class-reg-modal').modal("hide");
+	    		}
+	    	});
+		}
     });
 }
 
@@ -83,21 +133,28 @@ function findCustomerClasses(){
 	});
 }
 
-function renderCustomerClasses(data){
-	console.log('data: ' + data);
 
+function renderCustomerClasses(data){
+	if ($.fn.dataTable.isDataTable('#classes_table')) {
+		var table = $('#classes_table').DataTable();
+		table.clear();
+		table.destroy();
+	}
 	$.each(data, function(index, c){
-		$('#table_body').append('<tr><td>' + c.class_title + '</td><td>'
+		$('#classes_table_body').append('<tr><td>' + c.class_title + '</td><td>'
 			+ c.class_category + '</td><td>'
 			+ c.class_slot + '</td><td>'
 			+ c.class_fee + '</td><td>'
 			+ c.class_start + '</td><td>'
 			+ c.class_duration + '</td><td>'
-			+ (c.registrationId > 0 ? '<a href="#">Unregister</a>' : '<a href="#" data-toggle="modal" data-target="#class-reg-modal">Register</a>')
+			+ (c.registrationId > 0 
+				? '<a href="#" data-identity="' + c.registrationId + '">Unregister</a>' 
+				: '<a href="#" data-identity="' + c.class_id + '" data-toggle="modal" data-target="#class-reg-modal">Register</a>')
 			+ '</td></tr>'
 		);
 	});
-	$('#classes_table').DataTable({
-		  "ordering": false
-	});
+	
+	$('#classes_table').DataTable( {
+    	ordering: false
+    });
 }

@@ -37,7 +37,10 @@ INSERT INTO library.classes(class_Id,class_title,class_category,class_slot,class
                                                                                                                         (7, 'Photography for passionates', 'Adults', 30, 15, '2021-07-13', 60),
                                                                                                                         (8, 'Music time for adults', 'Adults', 40, 20, '2021-03-22', 60),
                                                                                                                         (9, 'Animation and Design', 'Adults', 30, 25, '2020-02-17', 60),
-                                                                                                                        (10, 'Public speaking', 'Adults', 40, 30, '2020-11-17', 60);
+                                                                                                                        (10, 'Public speaking', 'Adults', 40, 30, '2020-11-02', 60),
+                                                                                                                        (11, 'French for kids', 'Children', 30, 15,'2020-10-06', 60),
+                                                                                                                        (12, 'German for adults', 'Adults', 30,20, '2020-04-05', 60),
+                                                                                                                        (13, 'Italian for kids', 'Children', 30, 20, '2021-01-09', 60);
 
 --
 -- data for table registration

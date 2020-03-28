@@ -38,6 +38,18 @@ public class RegistrationWS {
 		return dao.findByUserIdAndClassId(Integer.parseInt(userId), Integer.parseInt(classId));
 	}
 	
+	/*
+	 * This method is for the customer registering to a class.
+	 */
+	@POST
+	@Path("{paymentType}")
+	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	public RegistrationDTO register(RegistrationDTO registrat, @PathParam("paymentType") String paymentType) {
+		System.out.println("Registering customer to a class, paymentType: " + paymentType);
+		return dao.create(registrat);
+	}
+	
 	@POST
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })

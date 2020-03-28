@@ -12,16 +12,16 @@
 			<th>Actions</th>
 		</tr>
 	</thead>
-	<tbody id="table_body">
+	<tbody id="classes_table_body">
 	</tbody>
 </table>
 
- <div class="modal" id="class-reg-modal">
+ <div class="modal fade" id="class-reg-modal">
    <div class="modal-dialog">
      <div class="modal-content">
  
        <div class="modal-header">
-         <h4 class="modal-title">Class registration</h4>
+         <h4 class="modal-title">You are only one step away &#128578;</h4>
              
          <button type="button" class="submit" data-dismiss="modal">&times;</button>
        </div>
@@ -29,19 +29,20 @@
        <div class="modal-body">
   			<div class="form-group">
     			<label>Choose payment type:</label>
-    			<div class="input-group">
+    			<div class="input-group mt-1">
 					<input type="radio" id="weekly" name="payment" value="weekly" required/>
-			  		<label for="weekly">Weekly</label>
+			  		<label class="ml-2 mr-3" for="weekly">Weekly</label>
 			  		<input type="radio" id="whole" name="payment" value="pay-at-once" required/>
-			  		<label for="whole">Pay at once</label><br>
+			  		<label class="ml-2" for="whole">Pay at once</label><br>
+			  		<div class="invalid-feedback" style="display:block">Choose a payment option to continue.</div>
 	  			</div>
-    			
   			</div>
-
+  			<input type="hidden" id="class-id"/>
        </div>
 
        <div class="modal-footer">
-         <button type="button" class="btn btn-danger" data-dismiss="modal">Register</button>
+         <button id="btn-register" type="button" class="btn btn-success">Register</button>
+          <button id="btn-cancel" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
        </div>
        
      </div>
