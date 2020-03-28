@@ -96,7 +96,7 @@ public class UserDAO {
 		try {
 			c = DataBaseConnection.getConnection();
 			ps = c.prepareStatement(
-					"INSERT INTO users (category, first_name, last_name, birth_date, age_group, address_name, address_street, address_town, address_county, eircode, land_tel, mobile_tel, email, college_name, account_balance) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+					"INSERT INTO users (category, first_name, last_name, birth_date, address_name, address_street, address_town, address_county, eircode, land_tel, mobile_tel, email, college_name, account_balance) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
 					new String[] { "ID" });
 
 			Date date = user.getBirth_date();
@@ -107,19 +107,18 @@ public class UserDAO {
 			ps.setString(2, user.getFirstname());
 			ps.setString(3, user.getLastname());
 			ps.setDate(4, sqlDate);
-			ps.setString(5, user.getAgeGroup());
-			ps.setString(6, user.getAddressName());
-			ps.setString(7, user.getAddressStreet());
-			ps.setString(8, user.getAddressTown());
-			ps.setString(9, user.getAddressCounty());
+			ps.setString(5, user.getAddressName());
+			ps.setString(6, user.getAddressStreet());
+			ps.setString(7, user.getAddressTown());
+			ps.setString(8, user.getAddressCounty());
 
-			ps.setString(10, user.getEircode());
-			ps.setInt(11, user.getLandTel());
-			ps.setInt(12, user.getMobileTel());
-			ps.setString(13, user.getEmail());
+			ps.setString(9, user.getEircode());
+			ps.setInt(10, user.getLandTel());
+			ps.setInt(11, user.getMobileTel());
+			ps.setString(12, user.getEmail());
 
-			ps.setString(14, user.getCollege_name());
-			ps.setFloat(15, user.getAccount_balance());
+			ps.setString(13, user.getCollege_name());
+			ps.setFloat(14, user.getAccount_balance());
 
 			ps.executeUpdate();
 			ResultSet rs = ps.getGeneratedKeys();
@@ -143,7 +142,7 @@ public class UserDAO {
 		try {
 			c = DataBaseConnection.getConnection();
 			PreparedStatement ps = c.prepareStatement(
-					"UPDATE users SET category=?, first_name=?, last_name=?, birth_date=?, age_group=?, address_name=?, address_street=?, address_town=?, address_county=?, eircode=?, land_tel=?, mobile_tel=?, email=?, college_name=?, account_balance=? WHERE user_id=?");
+					"UPDATE users SET category=?, first_name=?, last_name=?, birth_date=?, address_name=?, address_street=?, address_town=?, address_county=?, eircode=?, land_tel=?, mobile_tel=?, email=?, college_name=?, account_balance=? WHERE user_id=?");
 
 			Date date = user.getBirth_date();
 			java.sql.Date sqlDate = convertJavaDateToSqlDate(date);
@@ -153,21 +152,20 @@ public class UserDAO {
 			ps.setString(2, user.getFirstname());
 			ps.setString(3, user.getLastname());
 			ps.setDate(4, sqlDate);
-			ps.setString(5, user.getAgeGroup());
-			ps.setString(6, user.getAddressName());
-			ps.setString(7, user.getAddressStreet());
-			ps.setString(8, user.getAddressTown());
-			ps.setString(9, user.getAddressCounty());
+			ps.setString(5, user.getAddressName());
+			ps.setString(6, user.getAddressStreet());
+			ps.setString(7, user.getAddressTown());
+			ps.setString(8, user.getAddressCounty());
 
-			ps.setString(10, user.getEircode());
-			ps.setInt(11, user.getLandTel());
-			ps.setInt(12, user.getMobileTel());
-			ps.setString(13, user.getEmail());
+			ps.setString(9, user.getEircode());
+			ps.setInt(10, user.getLandTel());
+			ps.setInt(11, user.getMobileTel());
+			ps.setString(12, user.getEmail());
 
-			ps.setString(14, user.getCollege_name());
-			ps.setFloat(15, user.getAccount_balance());
+			ps.setString(13, user.getCollege_name());
+			ps.setFloat(14, user.getAccount_balance());
 
-			ps.setInt(16, user_id);
+			ps.setInt(15, user_id);
 
 			ps.executeUpdate();
 

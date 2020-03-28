@@ -1,11 +1,11 @@
 --
 -- data for table users
 --
-INSERT INTO library.users(user_id, first_name, last_name, category) VALUES (1, 'Will', 'Smith', 'STAFF'),
-																		   (2, 'Brad', 'Pitt', 'MANAGER'),
-																		   (3, 'Angelina', 'Jolie', 'CUSTOMER');
-INSERT INTO library.users VALUES (4,'Peter','Jameson', null, 'Ard Blathna', 'Ard', 'Athlone','Westmeath','H45B435',0086538523,087653422,NULL,NULL,'STAFF', 'AIT', 0.0, now(),null);
-						 #(5,'Mary','Walsh','The Sands','Sany view','Ballinasloe','Galway','U43563',0038859322,093847532,'marywalsh@gmail.com',NULL,'STAFF','2020-03-01 20:07:23',NULL);
+INSERT INTO library.users(user_id, first_name, last_name, category, birth_date) VALUES (1, 'Will', 'Smith', 'STAFF','1970-02-07'),
+																		   (2, 'Brad', 'Pitt', 'MANAGER','1980-07-07'),
+																		   (3, 'Angelina', 'Jolie', 'CUSTOMER','1990-04-09');
+INSERT INTO library.users VALUES (4,'Peter','Jameson', '2013-03-01', 'Ard Blathna', 'Ard', 'Athlone','Westmeath','H45B435',0086538523,087653422,NULL,					NULL,'STAFF', 'AIT', 0.0, now(),null),
+								 (5,'Mary','Walsh',		'2005-03-01','Sany view',	'Sany',	'Ballinasloe','Galway','U43563',0038859322,093847532,'marywalsh@gmail.com',	NULL,'STAFF',null, 0.0,'2020-03-01 20:07:23',NULL);
 
 --
 -- data for table authentication

@@ -25,7 +25,6 @@ public class UserController {
 	// CRUD -- CREATE operation
 
 	@POST
-	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public UserEntity addUser(UserEntity userEntity) throws SQLException {
