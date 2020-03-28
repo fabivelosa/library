@@ -9,21 +9,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ait.dto.MembershipDTO;
+import com.ait.dto.UserEntity;
 import com.ait.rsc.DataBaseConnection;
+
+
 
 public class MembershipDAO {
 
 	public List<MembershipDTO> findAll() {
 		List<MembershipDTO> list = new ArrayList<MembershipDTO>();
 		Connection c = null;
-		String sql = "SELECT * FROM library.membership where endDate > now() ORDER BY startDate desc";
+		String sql = "SELECT u.user_id,first_name,last_name, \n" + 
+				"IF((YEAR(NOW()) - YEAR(U.birth_date)) between 18 and 60, 'Standard','Discounted') AS AgeGroup, \n" + 
+				"mobile_tel,\n" + 
+				"m.userId as memberId, startDate, endDate FROM library.users u\n" + 
+				"LEFT JOIN library.membership m\n" + 
+				"on u.user_id = m.userId\n" + 
+				"and m.endDate > now();";
 		System.out.println(sql);
 		try {
 			c = DataBaseConnection.getConnection();
 			Statement s = c.createStatement();
 			ResultSet rs = s.executeQuery(sql);
 			while (rs.next()) {
-				list.add(processRow(rs));
+				list.add(processRow(rs,"MU"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -35,7 +44,7 @@ public class MembershipDAO {
 	}
 
 	public MembershipDTO findById(int id) {
-		String sql = "SELECT * FROM library.membership where userId = ?";
+		String sql = "SELECT userId as memberId, startDate, endDate FROM library.membership where userId = ?";
 		System.out.println(sql);
 		MembershipDTO membership = null;
 		Connection c = null;
@@ -45,7 +54,7 @@ public class MembershipDAO {
 			ps.setInt(1, id);
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
-				membership = processRow(rs);
+				membership = processRow(rs,"");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -56,11 +65,21 @@ public class MembershipDAO {
 		return membership;
 	}
 
-	protected MembershipDTO processRow(ResultSet rs) throws SQLException {
+	protected MembershipDTO processRow(ResultSet rs, String method) throws SQLException {
 		MembershipDTO membership = new MembershipDTO();
-		membership.setUserId((rs.getInt("userId")));
+		if (method.equals("MU")) { //MU = Membership+User tables
+		UserEntity user = new UserEntity();
+		user.setUserId(rs.getInt("user_id"));
+		user.setFirstname(rs.getString("first_name"));
+		user.setLastname(rs.getString("last_name"));
+		user.setAgeGroup(rs.getString("AgeGroup"));
+		user.setMobileTel(rs.getInt("mobile_tel"));
+		membership.setUser(user);
+		}
+		membership.setUserId((rs.getInt("memberId")));
 		membership.setStartDate(rs.getDate("startDate"));
 		membership.setEndDate(rs.getDate("endDate"));
+		 		
 		return membership;
 	}
 

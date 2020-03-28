@@ -1,0 +1,95 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Transactions Test version5</title>
+
+<script type="text/javascript"
+	src="DataTables/jQuery-3.3.1/jquery-3.3.1.min.js"></script>
+
+<script type="text/javascript" src="DataTables/js/jquery.dataTables.js"></script>
+
+<script type="text/javascript"
+	src="https://cdn.datatables.net/plug-ins/3cfcc339e89/integration/bootstrap/3/dataTables.bootstrap.js"></script>
+
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+
+<link rel="stylesheet" type="text/css"
+	href="http://cdn.datatables.net/plug-ins/3cfcc339e89/integration/bootstrap/3/dataTables.bootstrap.css">
+
+
+<link rel="stylesheet"
+	href="DataTables/css/jquery.dataTables.css" />
+
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+ 	
+</head>
+
+<body>
+
+<h1>Transactions testing page</h1>
+<div class="container">
+<button class="btn-primary" id="btnMbr">Join as Member</button><br>
+<button class="btn-primary" id="btnClass">Register for Class</button><br>
+<button class="btn-primary" id="btnWlk">Walk-In Service</button><br>
+<button class="btn-primary" id="btnPay">Make Payment</button><br>
+
+</div>
+
+<div class="container">
+		<div class="row">
+			<h2 class="text-center">List Customer Transactions</h2>
+		</div>
+
+		<div class="row">
+
+			<div class="col-md-12">
+
+
+				<table id="table_id" class="display" style="width: 100%">
+					<thead>
+						<tr>
+							<th>Transaction ID</th>
+							<th>Customer ID</th>
+							<th>Date</th>
+							<th>Name</th>
+							<th>Type</th>
+							<th>Opening Balance</th>
+							<th>Amount</th>
+							<th>Closing Balance</th>
+					
+						</tr>
+					</thead>
+					<tbody id="table_body"></tbody>
+
+					<tfoot>
+						<tr>
+							<th>Transaction ID</th>
+							<th>Customer ID</th>
+							<th>Date</th>
+							<th>Name</th>
+							<th>Type</th>
+							<th>Opening Balance</th>
+							<th>Amount</th>
+							<th>Closing Balance</th>
+						</tr>
+					</tfoot>
+
+
+				</table>
+
+
+			</div>
+		</div>
+	</div>
+
+
+<script src="js/transactions.js"></script>
+
+</body>
+</html>

@@ -16,7 +16,7 @@ import javax.ws.rs.core.MediaType;
 import com.ait.dao.TransactionDAO;
 import com.ait.dto.TransactionEntity;
 
-@Path("transaction")
+@Path("/library/transaction")
 
 public class TransactionController {
 
@@ -52,12 +52,13 @@ public class TransactionController {
 		return TransactionDAO.findById(id);
 	}
 
+	// Get list of all Transactions for a particular Customer
 	@GET
 	@Path("/search/{query}")
 	@Produces({ MediaType.APPLICATION_JSON })
-	public List<TransactionEntity> findByMake(@PathParam("query") String query) {
-		System.out.println("findByName: " + query);
-		return TransactionDAO.findByName(query);
+	public List<TransactionEntity> findByCustomerId(@PathParam("query") int query) {
+		System.out.println("findByCustomerId: " + query);
+		return TransactionDAO.findByCustomerId(query);
 	}
 
 	// CRUD -- UPDATE operation

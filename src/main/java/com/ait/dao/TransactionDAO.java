@@ -45,14 +45,16 @@ public class TransactionDAO {
 		return list;
 	}
 
-	public List<TransactionEntity> findByName(String last_name) {
+	/* Get all Transactions for a particular customer */
+	public List<TransactionEntity> findByCustomerId(int custId) {
+		System.out.println("Inside find customer transactions by ID");
 		List<TransactionEntity> list = new ArrayList<TransactionEntity>();
 		Connection c = null;
-		String sql = "SELECT * FROM transactions as e " + "WHERE UPPER(name) LIKE ? " + "ORDER BY name";
+		String sql = "SELECT * FROM transactions as e " + "WHERE user_id = ? " + "ORDER BY date";
 		try {
 			c = DataBaseConnection.getConnection();
 			PreparedStatement ps = c.prepareStatement(sql);
-			ps.setString(1, "%" + last_name.toUpperCase() + "%");
+			ps.setInt(1, custId);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				list.add(processRow(rs));
@@ -92,22 +94,24 @@ public class TransactionDAO {
 		PreparedStatement ps = null;
 		try {
 			c = DataBaseConnection.getConnection();
-			ps = c.prepareStatement("INSERT INTO transactions (`date`,\n" + "`name`,\n" + "`type`,\n" + "`amount`,\n"
-					+ "`user_id`,\n" + "`user_ob`,\n" + "`user_cb` ) VALUES (?,?,?,?,?,?,?)", new String[] { "ID" });
+			ps = c.prepareStatement("INSERT INTO transactions (`name`,\n" + "`type`,\n" + "`amount`,\n" + "`user_id`,\n"
+					+ "`user_ob`,\n" + "`user_cb` ) VALUES (?,?,?,?,?,?)", new String[] { "ID" });
 
-			Date date = transaction.getDate();
-			java.sql.Date sqlDate = convertJavaDateToSqlDate(date);
-			System.out.println("java.sql.Date : " + sqlDate);
+			/*
+			 * Date date = transaction.getDate(); java.sql.Date sqlDate =
+			 * convertJavaDateToSqlDate(date); System.out.println("java.sql.Date : " +
+			 * sqlDate);
+			 */
 
-			ps.setDate(1, sqlDate);
-			ps.setString(2, transaction.getName());
+			/* ps.setDate(1, sqlDate); */
+			ps.setString(1, transaction.getName());
 
-			ps.setString(3, transaction.getType());
+			ps.setString(2, transaction.getType());
 
-			ps.setFloat(4, transaction.getAmount());
-			ps.setInt(5, transaction.getUser_id());
-			ps.setFloat(6, transaction.getUser_ob());
-			ps.setFloat(7, transaction.getUser_cb());
+			ps.setFloat(3, transaction.getAmount());
+			ps.setInt(4, transaction.getUser_id());
+			ps.setFloat(5, transaction.getUser_ob());
+			ps.setFloat(6, transaction.getUser_cb());
 
 			ps.executeUpdate();
 			ResultSet rs = ps.getGeneratedKeys();

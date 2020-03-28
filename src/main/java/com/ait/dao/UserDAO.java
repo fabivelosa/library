@@ -1,13 +1,5 @@
 package com.ait.dao;
 
-/**
- * AbstractDAO.java This DAO class provides User CRUD database operations for the
- * table Library in the database.
- * 
- * @Model www.codejava.net
- *
- */
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -28,7 +20,9 @@ public class UserDAO {
 	public List<UserEntity> findAll() {
 		List<UserEntity> list = new ArrayList<UserEntity>();
 		Connection c = null;
-		String sql = "SELECT * FROM users ORDER BY last_name";
+		String sql = "SELECT user_id, category, first_name, last_name, birth_date, IF((YEAR(NOW()) - YEAR(U.birth_date)) between 18 and 60, 'Standard','Discounted') as age_group, "
+				+ "address_name, address_street, address_town, address_county, eircode, land_tel, mobile_tel, email, college_name, account_balance "
+				+ "FROM users u ORDER BY last_name";
 		try {
 			c = DataBaseConnection.getConnection();
 			Statement s = c.createStatement();
