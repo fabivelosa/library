@@ -17,7 +17,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.ait.ConnectionHelper;
+import com.ait.dto.TransactionEntity;
+import com.ait.rsc.DataBaseConnection;
+
 
 public class TransactionDAO {
 
@@ -30,7 +32,7 @@ public class TransactionDAO {
 		Connection c = null;
 		String sql = "SELECT * FROM transactions ORDER BY date";
 		try {
-			c = ConnectionHelper.getConnection();
+			c = DataBaseConnection.getConnection();
 			Statement s = c.createStatement();
 			ResultSet rs = s.executeQuery(sql);
 			while (rs.next()) {
@@ -40,7 +42,7 @@ public class TransactionDAO {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		} finally {
-			ConnectionHelper.close(c);
+			DataBaseConnection.close(c);
 		}
 		return list;
 	}
@@ -52,7 +54,7 @@ public class TransactionDAO {
 		Connection c = null;
 		String sql = "SELECT * FROM transactions as e " + "WHERE user_id = ? " + "ORDER BY date";
 		try {
-			c = ConnectionHelper.getConnection();
+			c = DataBaseConnection.getConnection();
 			PreparedStatement ps = c.prepareStatement(sql);
 			ps.setInt(1, custId);
 			ResultSet rs = ps.executeQuery();
@@ -63,7 +65,7 @@ public class TransactionDAO {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		} finally {
-			ConnectionHelper.close(c);
+			DataBaseConnection.close(c);
 		}
 		return list;
 	}
@@ -73,7 +75,7 @@ public class TransactionDAO {
 		TransactionEntity transaction = null;
 		Connection c = null;
 		try {
-			c = ConnectionHelper.getConnection();
+			c = DataBaseConnection.getConnection();
 			PreparedStatement ps = c.prepareStatement(sql);
 			ps.setInt(1, transaction_id);
 			ResultSet rs = ps.executeQuery();
@@ -84,7 +86,7 @@ public class TransactionDAO {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		} finally {
-			ConnectionHelper.close(c);
+			DataBaseConnection.close(c);
 		}
 		return transaction;
 	}
@@ -97,7 +99,7 @@ public class TransactionDAO {
 		Connection c = null;
 		PreparedStatement ps = null;
 		try {
-			c = ConnectionHelper.getConnection();
+			c = DataBaseConnection.getConnection();
 			ps = c.prepareStatement(
 					"INSERT INTO transactions (`name`,\n" + 
 					"`type`,\n" + 
@@ -133,7 +135,7 @@ public class TransactionDAO {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		} finally {
-			ConnectionHelper.close(c);
+			DataBaseConnection.close(c);
 		}
 		return transaction;
 	}
@@ -143,7 +145,7 @@ public class TransactionDAO {
 	public TransactionEntity updateTransactionById(TransactionEntity transaction, Integer transaction_id) {
 		Connection c = null;
 		try {
-			c = ConnectionHelper.getConnection();
+			c = DataBaseConnection.getConnection();
 			PreparedStatement ps = c.prepareStatement(
 					"UPDATE transactions SET Date=?, name=?, type=?, amount=?, user_id=?, user_ob=?, user_cb=? WHERE transaction_id=?");
 
@@ -170,7 +172,7 @@ public class TransactionDAO {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		} finally {
-			ConnectionHelper.close(c);
+			DataBaseConnection.close(c);
 		}
 		return transaction;
 	}
@@ -178,7 +180,7 @@ public class TransactionDAO {
 	public boolean delete(int transaction_id) {
 		Connection c = null;
 		try {
-			c = ConnectionHelper.getConnection();
+			c = DataBaseConnection.getConnection();
 			PreparedStatement ps = c.prepareStatement("DELETE FROM transactions WHERE transaction_id=?");
 			ps.setInt(1, transaction_id);
 			int count = ps.executeUpdate();
@@ -187,7 +189,7 @@ public class TransactionDAO {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		} finally {
-			ConnectionHelper.close(c);
+			DataBaseConnection.close(c);
 		}
 	}
 
