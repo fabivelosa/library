@@ -1,9 +1,7 @@
 /**
  * 
  */
-var classesURL = "http://localhost:8080/library/rest/classes";
-var usersURL = "http://localhost:8080/library/rest/user";
-var registrationURL = "http://localhost:8080/library/rest/registration";
+var rootURL = "http://localhost:8080/library/rest";
 
 var dataClasses;
 var dataUsers;
