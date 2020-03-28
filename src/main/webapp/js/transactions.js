@@ -1,10 +1,10 @@
 $(document).ready(function() {
 
 	// The root URLs for the RESTful services
-	var rootURL = "http://localhost:8080/Library/rest/library";
-	var transURL = "http://localhost:8080/Library/rest/library/transaction";
-	var userURL = "http://localhost:8080/Library/rest/library/user";
-	var userBalURL = "http://localhost:8080/Library/rest/library/user/balance";
+	var rootURL = "http://localhost:8080/library/rest/library";
+	var transURL = "http://localhost:8080/library/rest/library/transaction";
+	var userURL = "http://localhost:8080/library/rest/library/user";
+	var userBalURL = "http://localhost:8080/library/rest/library/user/balance";
 	
 	//Constants for Customer
 	var customer = findCustBalanceById(2); //Testing with Customer ID of 2
