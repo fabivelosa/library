@@ -4,20 +4,34 @@ import java.util.Date;
 
 public class MembershipDTO {
 
-	private int memberId;
+	private int userId;
 	private Date startDate;
 	private Date endDate;
+	
+	private UserEntity user;
 	/**
-	 * @return the memberId
+	 * @return the user
 	 */
-	public int getMemberId() {
-		return memberId;
+	public UserEntity getUser() {
+		return user;
 	}
 	/**
-	 * @param memberId the memberId to set
+	 * @param user the user to set
 	 */
-	public void setMemberId(int memberId) {
-		this.memberId = memberId;
+	public void setUser(UserEntity user) {
+		this.user = user;
+	}
+	/**
+	 * @return the userId
+	 */
+	public int getUserId() {
+		return userId;
+	}
+	/**
+	 * @param memberId the userId to set
+	 */
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 	/**
 	 * @return the startDate

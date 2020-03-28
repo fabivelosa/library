@@ -5,21 +5,30 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class AuthenticationInfo {
 
+	private int userId;
     private String username;
     private String token;
     private String category;
 
-    public AuthenticationInfo(String username, String token, String category) {
+    public AuthenticationInfo(int userId, String username, String category) {
+    	this.userId = userId;
         this.username = username;
-        this.token = token;
         this.category = category;
     }
 
-    public String getUsername() {
+    public int getUserId() {
+		return userId;
+	}
+
+	public String getUsername() {
         return username;
     }
 
-    public String getToken() {
+	public void setToken(String token) {
+		this.token = token;
+	}
+
+	public String getToken() {
         return token;
     }
 

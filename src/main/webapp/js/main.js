@@ -1,8 +1,11 @@
+var rootURL = "http://localhost:8080/library/rest";
+
 $(function() {
 
     initLoginForm();
 
 });
+
 
 function initLoginForm() {
     $("#invalid-login").removeClass('show');
@@ -27,7 +30,8 @@ function authenticateUser() {
 		data: formData,
 		success: function(authInfo, textStatus, jqXHR){
             sessionStorage.setItem("auth-token", authInfo.token);
-		    console.log("User successfully authenticated." + sessionStorage.getItem("auth-token"));
+            sessionStorage.setItem("auth-id", authInfo.userId);
+		    console.log("User successfully authenticated, " + sessionStorage.getItem("auth-token"));
             // render the subpage for the specific user category
 		    console.log("Category: " + authInfo.category);
             if(authInfo.category == 'MANAGER') {
@@ -63,5 +67,37 @@ function renderCustomerContent() {
     console.log('Display customer content');
     $.get('customer.html', function(response){
         $('#main-container').html(response);
+        findCustomerClasses();
     });
+}
+
+function findCustomerClasses(){
+	console.log('findCustomerClasses');
+	var authId = sessionStorage.getItem("auth-id");
+	console.log("auth: " + authId);
+	$.ajax({
+		type: 'GET',
+		url: rootURL + '/classes/' + authId,
+		dataType: "json",
+		success: renderCustomerClasses
+	});
+}
+
+function renderCustomerClasses(data){
+	console.log('data: ' + data);
+
+	$.each(data, function(index, c){
+		$('#table_body').append('<tr><td>' + c.class_title + '</td><td>'
+			+ c.class_category + '</td><td>'
+			+ c.class_slot + '</td><td>'
+			+ c.class_fee + '</td><td>'
+			+ c.class_start + '</td><td>'
+			+ c.class_duration + '</td><td>'
+			+ (c.registrationId > 0 ? '<a href="#">Unregister</a>' : '<a href="#" data-toggle="modal" data-target="#class-reg-modal">Register</a>')
+			+ '</td></tr>'
+		);
+	});
+	$('#classes_table').DataTable({
+		  "ordering": false
+	});
 }

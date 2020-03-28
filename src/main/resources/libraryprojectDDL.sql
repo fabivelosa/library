@@ -1,6 +1,10 @@
 DROP DATABASE IF EXISTS library;
 CREATE DATABASE IF NOT EXISTS library;
-
+Use library;
+--
+-- Table structure for table classes
+--
+DROP TABLE IF EXISTS classes;
 CREATE TABLE IF NOT EXISTS library.classes (
   class_id INT(11) NOT NULL AUTO_INCREMENT,
   class_title VARCHAR(45) NOT NULL,
@@ -11,6 +15,10 @@ CREATE TABLE IF NOT EXISTS library.classes (
   class_duration INT(11) NULL DEFAULT NULL,
   PRIMARY KEY (class_id));
 
+--
+-- Table structure for table users
+--
+DROP TABLE IF EXISTS users;
  CREATE TABLE IF NOT EXISTS library.users (
   user_id INT(11) NOT NULL AUTO_INCREMENT,
   first_name VARCHAR(45) NOT NULL,
@@ -24,28 +32,39 @@ CREATE TABLE IF NOT EXISTS library.classes (
   land_tel INT(10) UNSIGNED ZEROFILL NULL DEFAULT NULL,
   mobile_tel INT(9) UNSIGNED ZEROFILL NULL DEFAULT NULL,
   email VARCHAR(45) NULL DEFAULT NULL,
-  age_group ENUM('Standard', 'Discounted') NULL DEFAULT NULL COMMENT 'Enumerated to Standard or Discounted for Student or Senior Citizen',
+ # age_group ENUM('Standard', 'Discounted') NULL DEFAULT NULL COMMENT 'Enumerated to Standard or Discounted for Student or Senior Citizen',
   category ENUM('STAFF', 'MANAGER', 'WALK_IN_CUSTOMER', 'CUSTOMER') NOT NULL,
   college_name VARCHAR(45) DEFAULT NULL,
-  account_balance decimal(2,0) DEFAULT '0',
+  account_balance decimal(6,2) DEFAULT '0',
+  created_at datetime DEFAULT CURRENT_TIMESTAMP,
+  modified_at datetime DEFAULT NULL,
   PRIMARY KEY (user_id));
 
+--
+-- Table structure for table membership
+--
+DROP TABLE IF EXISTS membership;
+
 CREATE TABLE IF NOT EXISTS library.membership (
-  memberId INT(11) NOT NULL AUTO_INCREMENT,
-  startDate DATE NULL DEFAULT NULL,
+  userId INT(11) NOT NULL AUTO_INCREMENT,
+  startDate DATE NOT NULL,
   endDate DATE NULL DEFAULT NULL,
-  PRIMARY KEY (memberId),
-  CONSTRAINT userId
-    FOREIGN KEY (memberId)
+  PRIMARY KEY (userId,startDate),
+  CONSTRAINT fk_members_users_member_id
+    FOREIGN KEY (userId)
     REFERENCES library.users (user_id));
 
+--
+-- Table structure for table registration
+--
+DROP TABLE IF EXISTS registration;
 CREATE TABLE IF NOT EXISTS library.registration (
   registrationId INT(11) NOT NULL AUTO_INCREMENT,
   classId INT(11) NOT NULL,
   memberId INT(11) NOT NULL,
   regDate DATE NOT NULL,
-  feeDue DECIMAL(2,0) NOT NULL COMMENT 'The calculated fee due for the particular member or non member',
-  balanceDue DECIMAL(2,0) NOT NULL COMMENT 'The calculated balance due which is calculated after each payment is made.',
+  feeDue DECIMAL(6,2) NOT NULL COMMENT 'The calculated fee due for the particular member or non member',
+  balanceDue DECIMAL(6,2) NOT NULL COMMENT 'The calculated balance due which is calculated after each payment is made.',
   attendance BOOLEAN NULL DEFAULT NULL,
   PRIMARY KEY (registrationId),
   INDEX fk_members_member_id_idx (memberId ASC) VISIBLE,
@@ -60,16 +79,35 @@ CREATE TABLE IF NOT EXISTS library.registration (
     REFERENCES library.users (user_id)
     ON DELETE CASCADE
     ON UPDATE CASCADE);
-
+--
+-- Table structure for table authentication
+--
+DROP TABLE IF EXISTS authentication;
 CREATE TABLE IF NOT EXISTS library.authentication (
-	id INT(11) NOT NULL AUTO_INCREMENT,
-	username VARCHAR(25) NOT NULL,
-	password VARCHAR(25) NOT NULL,
-	user_id INT(11) NOT NULL,
-	PRIMARY KEY (id),
-	CONSTRAINT fk_authentication_users_user_id
-	 FOREIGN KEY (user_id)
-	 REFERENCES library.users (user_id)
-	 ON DELETE CASCADE
-     ON UPDATE CASCADE
-);
+  id INT(11) NOT NULL AUTO_INCREMENT,
+  username VARCHAR(25) NOT NULL,
+  password VARCHAR(25) NOT NULL,
+  user_id INT(11) NOT NULL ,
+  PRIMARY KEY (id),
+  CONSTRAINT fk_authentication_users_user_id
+    FOREIGN KEY (user_id)
+    REFERENCES library.users (user_id));
+
+--
+-- Table structure for table transactions
+--
+DROP TABLE IF EXISTS transactions;
+
+CREATE TABLE transactions (
+  transaction_id int(11) NOT NULL AUTO_INCREMENT,
+  date datetime DEFAULT CURRENT_TIMESTAMP,
+  name varchar(45) DEFAULT NULL COMMENT 'Membership fee, Class registration, payment for class etc',
+  type enum('DEBIT','CREDIT') DEFAULT NULL,
+  amount float DEFAULT NULL,
+  user_id int(11) DEFAULT NULL,
+  user_ob float DEFAULT NULL,
+  user_cb float DEFAULT NULL,
+  PRIMARY KEY (transaction_id),
+  KEY fk_transactions_users_user_id_idx (user_id),
+  CONSTRAINT fk_transactions_users_user_id FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ;
