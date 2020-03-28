@@ -1,5 +1,13 @@
 package com.ait.dao;
 
+/**
+ * AbstractDAO.java This DAO class provides User CRUD database operations for the
+ * table Library in the database.
+ * 
+ * @Model www.codejava.net
+ *
+ */
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,6 +20,8 @@ import java.util.List;
 import com.ait.dto.UserEntity;
 import com.ait.rsc.DataBaseConnection;
 
+
+
 public class UserDAO {
 
 	public UserDAO() {
@@ -20,9 +30,7 @@ public class UserDAO {
 	public List<UserEntity> findAll() {
 		List<UserEntity> list = new ArrayList<UserEntity>();
 		Connection c = null;
-		String sql = "SELECT user_id, category, first_name, last_name, birth_date, IF((YEAR(NOW()) - YEAR(U.birth_date)) between 18 and 60, 'Standard','Discounted') as age_group, "
-				+ "address_name, address_street, address_town, address_county, eircode, land_tel, mobile_tel, email, college_name, account_balance "
-				+ "FROM users u ORDER BY last_name";
+		String sql = "SELECT * FROM users ORDER BY last_name";
 		try {
 			c = DataBaseConnection.getConnection();
 			Statement s = c.createStatement();
@@ -81,6 +89,10 @@ public class UserDAO {
 		return user;
 	}
 
+	
+
+
+
 	public UserEntity create(UserEntity user) {
 		Connection c = null;
 		PreparedStatement ps = null;
@@ -89,10 +101,10 @@ public class UserDAO {
 			ps = c.prepareStatement(
 					"INSERT INTO users (category, first_name, last_name, birth_date, age_group, address_name, address_street, address_town, address_county, eircode, land_tel, mobile_tel, email, college_name, account_balance) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
 					new String[] { "ID" });
-
+			
 			Date date = user.getBirth_date();
-			java.sql.Date sqlDate = convertJavaDateToSqlDate(date);
-			System.out.println("java.sql.Date : " + sqlDate);
+        	java.sql.Date sqlDate = convertJavaDateToSqlDate(date);
+    		System.out.println("java.sql.Date : " + sqlDate);
 
 			ps.setString(1, user.getCategory());
 			ps.setString(2, user.getFirstname());
@@ -103,20 +115,22 @@ public class UserDAO {
 			ps.setString(7, user.getAddressStreet());
 			ps.setString(8, user.getAddressTown());
 			ps.setString(9, user.getAddressCounty());
-
+			
 			ps.setString(10, user.getEircode());
 			ps.setInt(11, user.getLandTel());
 			ps.setInt(12, user.getMobileTel());
 			ps.setString(13, user.getEmail());
-
+			
 			ps.setString(14, user.getCollege_name());
 			ps.setFloat(15, user.getAccount_balance());
+		
+		
+
 
 			ps.executeUpdate();
 			ResultSet rs = ps.getGeneratedKeys();
 			rs.next();
-			// Update the user_id in the returned object. This is important as this value
-			// must be
+			// Update the user_id in the returned object. This is important as this value must be
 			// returned to the client.
 			int user_id = rs.getInt(1);
 			user.setUserId(user_id);
@@ -129,6 +143,8 @@ public class UserDAO {
 		return user;
 	}
 
+
+
 	public UserEntity updateUserById(UserEntity user, Integer user_id) {
 		Connection c = null;
 		try {
@@ -137,8 +153,11 @@ public class UserDAO {
 					"UPDATE users SET category=?, first_name=?, last_name=?, birth_date=?, age_group=?, address_name=?, address_street=?, address_town=?, address_county=?, eircode=?, land_tel=?, mobile_tel=?, email=?, college_name=?, account_balance=? WHERE user_id=?");
 
 			Date date = user.getBirth_date();
-			java.sql.Date sqlDate = convertJavaDateToSqlDate(date);
-			System.out.println("java.sql.Date : " + sqlDate);
+        	java.sql.Date sqlDate = convertJavaDateToSqlDate(date);
+    		System.out.println("java.sql.Date : " + sqlDate);
+
+
+		
 
 			ps.setString(1, user.getCategory());
 			ps.setString(2, user.getFirstname());
@@ -149,19 +168,19 @@ public class UserDAO {
 			ps.setString(7, user.getAddressStreet());
 			ps.setString(8, user.getAddressTown());
 			ps.setString(9, user.getAddressCounty());
-
+			
 			ps.setString(10, user.getEircode());
 			ps.setInt(11, user.getLandTel());
 			ps.setInt(12, user.getMobileTel());
 			ps.setString(13, user.getEmail());
-
+			
 			ps.setString(14, user.getCollege_name());
 			ps.setFloat(15, user.getAccount_balance());
 
 			ps.setInt(16, user_id);
-
+				
 			ps.executeUpdate();
-
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
@@ -208,11 +227,38 @@ public class UserDAO {
 		user.setAccount_balance(rs.getFloat("account_balance"));
 		return user;
 	}
-
-	public static java.sql.Date convertJavaDateToSqlDate(java.util.Date date) {
+	
+	public static java.sql.Date convertJavaDateToSqlDate(java.util.Date date)
+	{
 		// java.util.Date contains both date and time information
 		// java.sql.Date contains only date information (without time)
 		return new java.sql.Date(date.getTime());
 	}
+
+	public void updateUserBalanceById(Integer id, float account_balance) {
+		// TODO Auto-generated method stub
+		Connection c = null;
+		try {
+			c = DataBaseConnection.getConnection();
+			PreparedStatement ps = c.prepareStatement(
+					"UPDATE users SET account_balance=? WHERE user_id=?");
+
+			ps.setFloat(1, account_balance);
+
+			ps.setInt(2, id);
+				
+			ps.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		} finally {
+			DataBaseConnection.close(c);
+		}
+		
+	
+	}
+	
+
 
 }

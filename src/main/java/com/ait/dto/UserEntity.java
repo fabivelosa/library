@@ -4,6 +4,7 @@ import java.util.Date;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+
 @XmlRootElement
 public class UserEntity {
 
@@ -12,13 +13,13 @@ public class UserEntity {
 	 */
 
 	private int user_id;
-
+	
 	private String category;
 
 	private String first_name;
 
 	private String last_name;
-
+	
 	private Date birth_date;
 
 	private String age_group;
@@ -38,11 +39,11 @@ public class UserEntity {
 	private int mobile_tel;
 
 	private String email;
-
+	
 	private String college_name;
 
 	private float account_balance;
-
+	
 	private Date createdAt;
 	private Date updatedAt;
 
@@ -53,6 +54,8 @@ public class UserEntity {
 		this.user_id = user_id;
 	}
 //Getters and Setters
+	
+
 
 	public int getUserId() {
 		return user_id;
@@ -69,7 +72,7 @@ public class UserEntity {
 	public void setCategory(String category) {
 		this.category = category;
 	}
-
+	
 	public String getFirstname() {
 		return first_name;
 	}

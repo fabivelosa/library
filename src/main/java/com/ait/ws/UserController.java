@@ -16,7 +16,7 @@ import javax.ws.rs.core.MediaType;
 import com.ait.dao.UserDAO;
 import com.ait.dto.UserEntity;
 
-@Path("user")
+@Path("/library/user")
 
 public class UserController {
 
@@ -73,6 +73,22 @@ public class UserController {
 		userDAO.updateUserById(userEntity, id);
 		return userEntity;
 	}
+	
+	// CRUD -- UPDATE Customer Balance operation
+
+		@PUT
+		@Path("/balance/{id}/{balance}")
+		@Consumes({ MediaType.APPLICATION_JSON })
+		@Produces({ MediaType.APPLICATION_JSON })
+
+		
+		public void updateBalance(@PathParam("id") Integer id, @PathParam("balance") Float balance) throws SQLException {
+			System.out.println("Updating user:  and with ID of"
+					+ id + "Update account balance of "+ balance);
+			userDAO.updateUserBalanceById(id, balance);
+			
+		}
+	
 
 	// CRUD -- DELETE operation
 
