@@ -13,10 +13,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import com.ait.dao.TransactionDAO;
-import com.ait.dto.TransactionEntity;
-
-@Path("transaction")
+@Path("/library/transaction")
 
 public class TransactionController {
 
@@ -52,12 +49,13 @@ public class TransactionController {
 		return TransactionDAO.findById(id);
 	}
 
+	//Get list of all Transactions for a particular Customer
 	@GET
 	@Path("/search/{query}")
 	@Produces({ MediaType.APPLICATION_JSON })
-	public List<TransactionEntity> findByMake(@PathParam("query") String query) {
-		System.out.println("findByName: " + query);
-		return TransactionDAO.findByName(query);
+	public List<TransactionEntity> findByCustomerId(@PathParam("query") int query) {
+		System.out.println("findByCustomerId: " + query);
+		return TransactionDAO.findByCustomerId(query);
 	}
 
 	// CRUD -- UPDATE operation
@@ -66,9 +64,9 @@ public class TransactionController {
 	@Path("/{id}")
 	@Consumes({ MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_JSON })
-	public TransactionEntity update(@PathParam("id") Integer id, TransactionEntity TransactionEntity)
-			throws SQLException {
-		System.out.println("Updating Transaction: " + TransactionEntity.getName() + " and with ID of" + id);
+	public TransactionEntity update(@PathParam("id") Integer id, TransactionEntity TransactionEntity) throws SQLException {
+		System.out.println("Updating Transaction: " + TransactionEntity.getName() + " and with ID of"
+				+ id);
 		TransactionDAO.updateTransactionById(TransactionEntity, id);
 		return TransactionEntity;
 	}
