@@ -13,10 +13,10 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import com.ait.dto.TransactionEntity;
 import com.ait.dao.TransactionDAO;
+import com.ait.dto.TransactionEntity;
 
-@Path("/library/transaction")
+@Path("transaction")
 
 public class TransactionController {
 
@@ -52,11 +52,7 @@ public class TransactionController {
 		return TransactionDAO.findById(id);
 	}
 
-<<<<<<< HEAD
-	// Get list of all Transactions for a particular Customer
-=======
 	//Get list of all Transactions for a particular Customer
->>>>>>> 2573585db7b8bda9be86550d85516dfb0c3b8fdd
 	@GET
 	@Path("/search/{query}")
 	@Produces({ MediaType.APPLICATION_JSON })

@@ -20,13 +20,11 @@ import java.util.List;
 import com.ait.dto.TransactionEntity;
 import com.ait.rsc.DataBaseConnection;
 
-
 public class TransactionDAO {
 
 	public TransactionDAO() {
 	}
 
-	
 	public List<TransactionEntity> findAll() {
 		List<TransactionEntity> list = new ArrayList<TransactionEntity>();
 		Connection c = null;
@@ -47,11 +45,7 @@ public class TransactionDAO {
 		return list;
 	}
 
-<<<<<<< HEAD
 	/* Get all Transactions for a particular customer */
-=======
-	/*Get all Transactions for a particular customer*/
->>>>>>> 2573585db7b8bda9be86550d85516dfb0c3b8fdd
 	public List<TransactionEntity> findByCustomerId(int custId) {
 		System.out.println("Inside find customer transactions by ID");
 		List<TransactionEntity> list = new ArrayList<TransactionEntity>();
@@ -95,16 +89,11 @@ public class TransactionDAO {
 		return transaction;
 	}
 
-	
-
-
-
 	public TransactionEntity create(TransactionEntity transaction) {
 		Connection c = null;
 		PreparedStatement ps = null;
 		try {
 			c = DataBaseConnection.getConnection();
-<<<<<<< HEAD
 			ps = c.prepareStatement("INSERT INTO transactions (`name`,\n" + "`type`,\n" + "`amount`,\n" + "`user_id`,\n"
 					+ "`user_ob`,\n" + "`user_cb` ) VALUES (?,?,?,?,?,?)", new String[] { "ID" });
 
@@ -123,36 +112,12 @@ public class TransactionDAO {
 			ps.setInt(4, transaction.getUser_id());
 			ps.setFloat(5, transaction.getUser_ob());
 			ps.setFloat(6, transaction.getUser_cb());
-=======
-			ps = c.prepareStatement(
-					"INSERT INTO transactions (`name`,\n" + 
-					"`type`,\n" + 
-					"`amount`,\n" + 
-					"`user_id`,\n" + 
-					"`user_ob`,\n" + 
-					"`user_cb` ) VALUES (?,?,?,?,?,?)",
-					new String[] { "ID" });
-			
-			/*Date date = transaction.getDate();
-        	java.sql.Date sqlDate = convertJavaDateToSqlDate(date);
-    		System.out.println("java.sql.Date : " + sqlDate);*/
-
-			/*ps.setDate(1, sqlDate);*/
-			ps.setString(1, transaction.getName());
-			
-			ps.setString(2, transaction.getType());
-
-			ps.setFloat(3, transaction.getAmount());
-			ps.setInt(4, transaction.getUser_id());
-			ps.setFloat(5, transaction.getUser_ob());
-			ps.setFloat(6, transaction.getUser_cb());
-
->>>>>>> 2573585db7b8bda9be86550d85516dfb0c3b8fdd
 
 			ps.executeUpdate();
 			ResultSet rs = ps.getGeneratedKeys();
 			rs.next();
-			// Update the transaction_id in the returned object. This is important as this value must be
+			// Update the transaction_id in the returned object. This is important as this
+			// value must be
 			// returned to the client.
 			int transaction_id = rs.getInt(1);
 			transaction.setTransaction_id(transaction_id);
@@ -165,8 +130,6 @@ public class TransactionDAO {
 		return transaction;
 	}
 
-
-
 	public TransactionEntity updateTransactionById(TransactionEntity transaction, Integer transaction_id) {
 		Connection c = null;
 		try {
@@ -175,13 +138,12 @@ public class TransactionDAO {
 					"UPDATE transactions SET Date=?, name=?, type=?, amount=?, user_id=?, user_ob=?, user_cb=? WHERE transaction_id=?");
 
 			Date date = transaction.getDate();
-        	java.sql.Date sqlDate = convertJavaDateToSqlDate(date);
-    		System.out.println("java.sql.Date : " + sqlDate);
+			java.sql.Date sqlDate = convertJavaDateToSqlDate(date);
+			System.out.println("java.sql.Date : " + sqlDate);
 
-
-	    	ps.setDate(1, sqlDate);
+			ps.setDate(1, sqlDate);
 			ps.setString(2, transaction.getName());
-			
+
 			ps.setString(3, transaction.getType());
 
 			ps.setFloat(4, transaction.getAmount());
@@ -190,9 +152,9 @@ public class TransactionDAO {
 			ps.setFloat(7, transaction.getUser_cb());
 
 			ps.setInt(8, transaction_id);
-				
+
 			ps.executeUpdate();
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
@@ -229,16 +191,14 @@ public class TransactionDAO {
 		transaction.setUser_id(rs.getInt("user_id"));
 		transaction.setUser_ob(rs.getFloat("user_ob"));
 		transaction.setUser_cb(rs.getFloat("user_cb"));
-	
+
 		return transaction;
 	}
-	
-	public static java.sql.Date convertJavaDateToSqlDate(java.util.Date date)
-	{
+
+	public static java.sql.Date convertJavaDateToSqlDate(java.util.Date date) {
 		// java.util.Date contains both date and time information
 		// java.sql.Date contains only date information (without time)
 		return new java.sql.Date(date.getTime());
 	}
-
 
 }
