@@ -29,34 +29,12 @@ public class RegistrationWS {
 		return dao.findAll();
 	}
 
-//	@GET
-//	@Path("{search}")
-//	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-//	public List<RegistrationDTO> findByClassId(@PathParam("search") String id) {
-//		/*
-//		 * This method list class attendance.
-//		 */
-//		System.out.println("findByClassId " + id);
-//		return registration.findByClassId(Integer.parseInt(id));
-//	}
-//
-//	@GET
-//	@Path("{query}")
-//	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-//	public List<RegistrationDTO> findByUserId(@PathParam("query") String id) {
-//
-//		// This method list customer attendance.
-//
-//		System.out.println("findByUserId " + id);
-//		return registration.findByUserId(Integer.parseInt(id));
-//	}
-
 	@GET
 	@Path("/query")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	public List<RegistrationDTO> findByUserIdAndClassId(@QueryParam("user") String userId,
 			@QueryParam("class") String classId) {
-		System.out.println("findByRegionAndCategory " + userId + " || " + classId);
+		System.out.println("findByUserIdAndClassId " + userId + " || " + classId);
 		return dao.findByUserIdAndClassId(Integer.parseInt(userId), Integer.parseInt(classId));
 	}
 	

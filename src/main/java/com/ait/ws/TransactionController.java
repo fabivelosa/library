@@ -13,10 +13,10 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import com.ait.dto.TransactionEntity;
 import com.ait.dao.TransactionDAO;
+import com.ait.dto.TransactionEntity;
 
-@Path("/library/transaction")
+@Path("transaction")
 
 public class TransactionController {
 

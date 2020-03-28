@@ -7,6 +7,20 @@ public class MembershipDTO {
 	private int userId;
 	private Date startDate;
 	private Date endDate;
+	
+	private UserEntity user;
+	/**
+	 * @return the user
+	 */
+	public UserEntity getUser() {
+		return user;
+	}
+	/**
+	 * @param user the user to set
+	 */
+	public void setUser(UserEntity user) {
+		this.user = user;
+	}
 	/**
 	 * @return the userId
 	 */
