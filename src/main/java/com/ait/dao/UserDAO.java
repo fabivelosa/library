@@ -51,7 +51,9 @@ public class UserDAO {
 	public List<UserEntity> findByName(String last_name) {
 		List<UserEntity> list = new ArrayList<UserEntity>();
 		Connection c = null;
-		String sql = "SELECT * FROM users as e " + "WHERE UPPER(last_name) LIKE ? " + "ORDER BY last_name";
+		String sql = "SELECT user_id, category, first_name, last_name, birth_date, IF((YEAR(NOW()) - YEAR(U.birth_date)) between 18 and 60, 'Standard','Discounted') as age_group, \n"
+				+ "				address_name, address_street, address_town, address_county, eircode, land_tel, mobile_tel, email, college_name, account_balance \n"
+				+ "				FROM users u " + "WHERE UPPER(last_name) LIKE ? " + "ORDER BY last_name";
 		try {
 			c = DataBaseConnection.getConnection();
 			PreparedStatement ps = c.prepareStatement(sql);
@@ -70,7 +72,9 @@ public class UserDAO {
 	}
 
 	public UserEntity findById(int user_id) {
-		String sql = "SELECT * FROM users WHERE user_id = ?";
+		String sql = "SELECT user_id, category, first_name, last_name, birth_date, IF((YEAR(NOW()) - YEAR(U.birth_date)) between 18 and 60, 'Standard','Discounted') as age_group, \n"
+				+ "				address_name, address_street, address_town, address_county, eircode, land_tel, mobile_tel, email, college_name, account_balance \n"
+				+ "				FROM users u WHERE user_id = ?";
 		UserEntity user = null;
 		Connection c = null;
 		try {
@@ -156,17 +160,13 @@ public class UserDAO {
 			ps.setString(6, user.getAddressStreet());
 			ps.setString(7, user.getAddressTown());
 			ps.setString(8, user.getAddressCounty());
-
 			ps.setString(9, user.getEircode());
 			ps.setInt(10, user.getLandTel());
 			ps.setInt(11, user.getMobileTel());
 			ps.setString(12, user.getEmail());
-
 			ps.setString(13, user.getCollege_name());
 			ps.setFloat(14, user.getAccount_balance());
-
 			ps.setInt(15, user_id);
-
 			ps.executeUpdate();
 
 		} catch (SQLException e) {
