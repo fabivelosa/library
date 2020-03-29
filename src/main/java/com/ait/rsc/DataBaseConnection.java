@@ -15,7 +15,7 @@ public class DataBaseConnection {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 		//	Docker (database for tests)
 		//	url = "jdbc:mysql://127.0.0.1:3307/library?useSSL=false&allowPublicKeyRetrieval=true&user=root&password=admin123";
-			url = "jdbc:mysql://127.0.0.1:3306/library?useSSL=false&allowPublicKeyRetrieval=true&user=root&password=admin123";
+			url = "jdbc:mysql://127.0.0.1:3306/library?useSSL=false&allowPublicKeyRetrieval=true&user=root&password=6791";
 			driver = "com.mysql.cj.jdbc.Driver";
 			Class.forName(driver);
 		} catch (Exception e) {
