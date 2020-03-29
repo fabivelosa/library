@@ -104,9 +104,9 @@ function initCustomerPage() {
 	    	console.log('classId: ' + classId);
 	    	
 	    	var formData = JSON.stringify({
-	    	        "classId": classId,
-	    	        "memberId": userId
-	    	    });
+    	        "classId": classId,
+    	        "memberId": userId
+    	    });
 	    	$.ajax({
 	    		type: 'POST',
 	    		contentType: 'application/json',
@@ -118,7 +118,30 @@ function initCustomerPage() {
 	    		}
 	    	});
 		}
-    });
+	 });
+	
+	$('#btn-unregister').click(function() {
+		console.log('btn-unregister');
+		var regId = $('#reg-id').val();
+		$.ajax({
+    		type: 'DELETE',
+    		url: rootURL + '/registration/' + regId,
+    		success: function(){
+    			findCustomerClasses();
+    			$('#class-unreg-modal').modal("hide");
+    		}
+    	});
+	});
+	
+	$('#class-unreg-modal').on('show.bs.modal', function (event) {
+		console.log('show.bs.modal');
+		var actionLink = $(event.relatedTarget);
+		var regId = actionLink.data('identity');
+		if (regId != undefined) {
+			var modal = $(this);
+			modal.find('#reg-id').val(regId);
+		}
+	});
 }
 
 function findCustomerClasses(){
@@ -148,7 +171,7 @@ function renderCustomerClasses(data){
 			+ c.class_start + '</td><td>'
 			+ c.class_duration + '</td><td>'
 			+ (c.registrationId > 0 
-				? '<a href="#" data-identity="' + c.registrationId + '">Unregister</a>' 
+				? '<a href="#" data-identity="' + c.registrationId + '" data-toggle="modal" data-target="#class-unreg-modal">Unregister</a>' 
 				: '<a href="#" data-identity="' + c.class_id + '" data-toggle="modal" data-target="#class-reg-modal">Register</a>')
 			+ '</td></tr>'
 		);
