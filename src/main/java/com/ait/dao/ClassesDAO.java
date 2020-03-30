@@ -174,15 +174,15 @@ public class ClassesDAO {
 		Connection c = null;
 		try {
 			c = DataBaseConnection.getConnection();
-			PreparedStatement ps = c.prepareStatement("UPDATE classes SET Class_id=?, Class_title=?, Class_category=?, "+"Class_slot=?, Class_fee=?, Class_start=?, Class_duration=? WHERE Class_id=?");
-
-			ps.setInt(1, classesDTO.getClass_id());
-			ps.setString(2, classesDTO.getClass_title());
-			ps.setString(3, classesDTO.getClass_category());
-			ps.setString(4, classesDTO.getClass_slot());
-			ps.setString(5, classesDTO.getClass_fee());
-			ps.setString(6, classesDTO.getClass_start());
-			ps.setInt(7, classesDTO.getClass_duration());
+			PreparedStatement ps = c.prepareStatement("UPDATE classes SET Class_title = ?, Class_category = ?, Class_slot = ?, Class_fee = ?, "
+					+ " Class_start = ?, Class_duration = ? WHERE Class_id = ?");
+			ps.setString(1, classesDTO.getClass_title());
+			ps.setString(2, classesDTO.getClass_category());
+			ps.setString(3, classesDTO.getClass_slot());
+			ps.setString(4, classesDTO.getClass_fee());
+			ps.setString(5, classesDTO.getClass_start());
+			ps.setInt(6, classesDTO.getClass_duration());
+			ps.setInt(7, classesDTO.getClass_id());
 			ps.executeUpdate();
 		}catch (SQLException e) {
 			e.printStackTrace();
