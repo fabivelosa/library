@@ -150,7 +150,7 @@ function findCustomerClasses(){
 	console.log("auth: " + authId);
 	$.ajax({
 		type: 'GET',
-		url: rootURL + '/classes/' + authId,
+		url: rootURL + '/classes/query?user=' + authId + '&class=0' ,
 		dataType: "json",
 		success: renderCustomerClasses
 	});
