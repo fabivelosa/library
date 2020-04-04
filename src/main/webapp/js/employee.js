@@ -104,15 +104,33 @@ function findUserByName(name) {
 		url : rootURL + '/user/search/' + name,
 		dataType : "json",
 		success : function(user) {
+			if ($.fn.dataTable.isDataTable('#registerclasses')) {
+				var table = $('#registerclasses').DataTable();
+				table.clear();
+				table.destroy();
+			}
 			if (user.length == 0) {
 				alert("Not found! Please search by Last Name!");
-				$('#userList').remove();
+				$('#searchKey').val("");
+				$('#userList li').remove();
 				findAllUsers();
 			} else {
-				$("#userList").remove;
 				renderUserList(user);
+				//findUserClasses(user);
 			}
 		}
+	});
+}
+
+function findUserById(userId) {
+	$.ajax({
+		type : 'GET',
+		url : rootURL + '/user/' + userId,
+		dataType : "json",
+		success : function(user) {
+			renderUserSelect(user);
+			findUserClasses(userId);
+			}
 	});
 }
 
@@ -139,14 +157,20 @@ function findAttendance() {
 }
 
 var renderUserList = function(users) {
-	console.log(users);
-	$("#userList").empty();
+	$("#userList li").remove();
 	$.each(users, function(index, user) {
 		$("#userList").append(
 				'<li><a href="#" id="' + user.userId + '">' + user.firstname
 						+ ' ' + user.lastname + '</a></li>');
 
 	})
+}
+
+var renderUserSelect = function(user) {
+	$("#userList li").remove();
+		$("#userList").append(
+				'<li><a href="#" id="' + user.userId + '">' + user.firstname
+						+ ' ' + user.lastname + '</a></li>');
 }
 
 var renderUserClasses = function(data) {
@@ -357,7 +381,8 @@ function initEmployeePage() {
 	});
 
 	$(document).on("click", "#userList a", function() {
-		findUserClasses(this.id);
+		//findUserClasses(this.id);
+		findUserById(this.id);
 	});
 	$(document).on("click", "#btnSearch", function() {
 		findUserByName($('#searchKey').val())
