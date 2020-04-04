@@ -2,6 +2,7 @@
  * 
  */
 var rootURL = "http://localhost:8080/library/rest";
+var currentUser;
 
 $(document).ready(function() {
 	initEmployeePage();
@@ -116,7 +117,7 @@ function findUserByName(name) {
 				findAllUsers();
 			} else {
 				renderUserList(user);
-				//findUserClasses(user);
+				// findUserClasses(user);
 			}
 		}
 	});
@@ -130,7 +131,7 @@ function findUserById(userId) {
 		success : function(user) {
 			renderUserSelect(user);
 			findUserClasses(userId);
-			}
+		}
 	});
 }
 
@@ -139,7 +140,9 @@ function findUserClasses(userId) {
 		type : 'GET',
 		url : rootURL + '/classes/query?user=' + userId + '&class=0',
 		dataType : "json",
-		success : renderUserClasses
+		success : function(data) {
+			renderUserClasses(data)
+		}
 	});
 }
 
@@ -168,25 +171,22 @@ var renderUserList = function(users) {
 
 var renderUserSelect = function(user) {
 	$("#userList li").remove();
-		$("#userList").append(
-				'<li><a href="#" id="' + user.userId + '">' + user.firstname
-						+ ' ' + user.lastname + '</a></li>');
+	$("#userList").append(
+			'<li><a href="#" id="' + user.userId + '">' + user.firstname + ' '
+					+ user.lastname + '</a></li>');
 }
 
-var renderUserClasses = function(data) {
-
+function renderUserClasses(data) {
+console.log(data);
+console.log("userId:"+currentUser);
 	if ($.fn.dataTable.isDataTable('#registerclasses')) {
 		var table = $('#registerclasses').DataTable();
 		table.clear();
 		table.destroy();
 	}
-	$
-			.each(
-					data,
-					function(index, c) {
+	$.each(data,function(index, c ) {
 						$('#registerclassesbody')
-								.append(
-										'<tr><td>'
+								.append('<tr><td>'
 												+ c.class_title
 												+ '</td><td>'
 												+ c.class_category
@@ -197,14 +197,10 @@ var renderUserClasses = function(data) {
 												+ '</td><td>'
 												+ c.class_start
 												+ '</td><td>'
-												+ c.class_duration
+												+ c.class_duration								
 												+ '</td><td>'
-												+ (c.registrationId > 0 ? '<a href="#" data-identity="'
-														+ c.registrationId
-														+ '" data-toggle="modal" data-target="#class-unreg-modal">Unregister</a>'
-														: '<a href="#" data-identity="'
-																+ c.class_id
-																+ '" data-toggle="modal" data-target="#class-reg-modal">Register</a>')
+												+ (c.registrationId > 0 ? '<a href="#" data-identity="'+ c.registrationId+ '" data-toggle="modal" data-target="#class-unregStaff-modal">Unregister</a>'
+																		: '<a href="#" data-identity="'+ c.class_id+ '" data-toggle="modal" data-target="#class-regStaff-modal">Register</a>')
 												+ '</td></tr>');
 					});
 
@@ -326,7 +322,6 @@ function renderDTClasses(data) {
 										return '<a href="#" data-identity="'
 												+ data
 												+ '" data-toggle="modal" data-target="#class-update-modal">Edit</a>';
-
 									}
 								} ],
 					});
@@ -350,11 +345,9 @@ function initEmployeePage() {
 		var classId = actionLink.data('identity');
 		console.log('classId :' + classId);
 		findClasseById(classId);
-
 	});
 
 	$('#btn-save').on('click', function(e) {
-		// e.preventDefault();
 		var classId = $('#classId').val();
 		console.log('click' + classId);
 		console.log(formToJSON());
@@ -367,7 +360,6 @@ function initEmployeePage() {
 			success : function(response) {
 				findAllClasses();
 				$('#class-update-modal').modal("hide");
-
 			}
 		})
 	});
@@ -381,11 +373,81 @@ function initEmployeePage() {
 	});
 
 	$(document).on("click", "#userList a", function() {
-		//findUserClasses(this.id);
 		findUserById(this.id);
+		currentUser= this.id;
 	});
 	$(document).on("click", "#btnSearch", function() {
 		findUserByName($('#searchKey').val())
+	});
+
+	// begin
+	$('#class-regStaff-modal').on('show.bs.modal', function(event) {
+		var actionLink = $(event.relatedTarget);
+		var classId = actionLink.data('identity');
+		console.log('show.bs.modal:'+$(event.relatedTarget));
+		console.log('classId: ' + classId);
+		console.log('userId: ' + currentUser);
+		if (classId != undefined) {
+			var modal = $(this);
+			modal.find('#class-id').val(classId);
+		}
+	});
+
+	$('#class-regStaff-modal').on('hide.bs.modal', function(event) {
+		console.log('hide.bs.modal');
+		$('#weekly').prop('checked', false);
+		$('#whole').prop('checked', false);
+	});
+
+	$('#btn-staff-register').click(function() {
+		var paymentType;
+
+		if ($('#weekly').is(":checked")) {
+			paymentType = 'weekly';
+		} else if ($('#whole').is(":checked")) {
+			paymentType = 'whole';
+		}
+
+		if ($('#weekly').is(":checked") || $('#whole').is(":checked")) {
+			var classId = $('#class-id').val();			
+
+			var formData = JSON.stringify({
+				"classId" : classId,
+				"memberId" : currentUser
+			});
+			console.log('ajax post: '+ formData);
+			$.ajax({
+				type : 'POST',
+				contentType : 'application/json',
+				url : rootURL + '/registration/' + paymentType,
+				data : formData,
+				success : function() {
+					findUserClasses(currentUser);
+					$('#class-regStaff-modal').modal("hide");
+				}
+			});
+		}
+	});
+
+	$('#btn-staff-unregister').click(function() {
+		var regId = $('#reg-id').val();
+		$.ajax({
+			type : 'DELETE',
+			url : rootURL + '/registration/' + regId,
+			success : function() {
+				findUserClasses(currentUser);
+				$('#class-unregStaff-modal').modal("hide");
+			}
+		});
+	});
+
+	$('#class-unregStaff-modal').on('show.bs.modal', function(event) {
+		var actionLink = $(event.relatedTarget);
+		var regId = actionLink.data('identity');
+		if (regId != undefined) {
+			var modal = $(this);
+			modal.find('#reg-id').val(regId);
+		}
 	});
 }
 
