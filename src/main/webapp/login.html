@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+
+<form class="was-validated p-3 w-50 mx-auto" id="loginForm" method="post">
+    <div class="alert alert-warning alert-dismissible fade" id="invalid-login">
+        <strong>Invalid login!</strong> Incorrect username or password.
+    </div>
+    <div class="form-group">
+        <label for="username">Username:</label>
+        <input type="text" class="form-control" id="username" placeholder="Enter username"
+               name="username" maxlength="20" required>
+        <div class="invalid-feedback">Username field is mandatory.</div>
+    </div>
+    <div class="form-group">
+        <label for="pwd">Password:</label>
+        <input type="password" class="form-control" id="pwd" placeholder="Enter password"
+               name="pswd" maxlength="15" required>
+        <div class="invalid-feedback">Password field is mandatory.</div>
+    </div>
+    <button id="loginBtn" type="submit" class="btn btn-success">Login</button>
+</form>
+    

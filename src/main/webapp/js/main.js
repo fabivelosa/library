@@ -2,17 +2,41 @@ var rootURL = "http://localhost:8080/library/rest";
 
 $(function() {
 
-    initLoginForm();
-    
+	renderLoginContent();
+
 });
+
+function renderLoginContent() {
+    console.log('Display login content');
+    $.get('login.html', function(response){
+        $('#main-container').html(response);
+        initLoginForm();
+    });
+}
 
 function initLoginForm() {
     $("#invalid-login").removeClass('show');
+    $("#btn-logout").hide();
     // submits the form data to login the user
     $('#loginForm').submit(function(event) {
         event.preventDefault();
         authenticateUser();
     });
+}
+
+function initLogout() {
+	$("#btn-logout").show();
+
+	$('#btn-logout').click(function(){
+		console.log('btn-logout');
+		var authToken = sessionStorage.getItem("auth-token");
+		$.ajax({
+			type: 'GET',
+			url: 'rest/logout/' + authToken,
+			success: renderLoginContent
+		});
+
+	});
 }
 
 function authenticateUser() {
@@ -40,6 +64,8 @@ function authenticateUser() {
             } else if(authInfo.category == 'CUSTOMER') {
                 renderCustomerContent();
             }
+
+            initLogout();
 		},
 		error: function(jqXHR, textStatus, errorThrown){
 		    console.log("Unsuccessful user authentication.");
@@ -67,7 +93,7 @@ function renderCustomerContent() {
     $.get('customer.html', function(response){
         $('#main-container').html(response);
         initCustomerPage();
-        
+
         findCustomerClasses();
     });
 }
@@ -82,27 +108,27 @@ function initCustomerPage() {
 			modal.find('#class-id').val(classId);
 		}
 	});
-	
+
 	$('#class-reg-modal').on('hide.bs.modal', function (event) {
 		console.log('hide.bs.modal');
 		$('#weekly').prop('checked', false);
 		$('#whole').prop('checked', false);
 	});
-	
+
 	$('#btn-register').click(function() {
 		var paymentType;
-		
+
 		if($('#weekly').is(":checked")) {
 			paymentType = 'weekly';
 		} else if($('#whole').is(":checked")) {
 			paymentType = 'whole';
 		}
-		
+
 		if($('#weekly').is(":checked") || $('#whole').is(":checked")) {
 	    	var classId = $('#class-id').val();
 	    	var userId = sessionStorage.getItem("auth-id");
 	    	console.log('classId: ' + classId);
-	    	
+
 	    	var formData = JSON.stringify({
     	        "classId": classId,
     	        "memberId": userId
@@ -119,7 +145,7 @@ function initCustomerPage() {
 	    	});
 		}
 	 });
-	
+
 	$('#btn-unregister').click(function() {
 		console.log('btn-unregister');
 		var regId = $('#reg-id').val();
@@ -132,7 +158,7 @@ function initCustomerPage() {
     		}
     	});
 	});
-	
+
 	$('#class-unreg-modal').on('show.bs.modal', function (event) {
 		console.log('show.bs.modal');
 		var actionLink = $(event.relatedTarget);
@@ -170,14 +196,15 @@ function renderCustomerClasses(data){
 			+ c.class_fee + '</td><td>'
 			+ c.class_start + '</td><td>'
 			+ c.class_duration + '</td><td>'
-			+ (c.registrationId > 0 
-				? '<a href="#" data-identity="' + c.registrationId + '" data-toggle="modal" data-target="#class-unreg-modal">Unregister</a>' 
+			+ (c.registrationId > 0
+				? '<a href="#" data-identity="' + c.registrationId + '" data-toggle="modal" data-target="#class-unreg-modal">Unregister</a>'
 				: '<a href="#" data-identity="' + c.class_id + '" data-toggle="modal" data-target="#class-reg-modal">Register</a>')
 			+ '</td></tr>'
 		);
 	});
-	
+
 	$('#classes_table').DataTable( {
     	ordering: false
     });
 }
+

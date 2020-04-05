@@ -1,6 +1,5 @@
 package com.ait.ws.auth;
 
-import com.ait.controller.auth.Secured;
 import com.ait.controller.auth.TokensController;
 import com.ait.dao.AuthenticationDao;
 import com.ait.dto.AuthenticationInfo;
@@ -31,13 +30,12 @@ public class AuthenticationResource {
 		}
     }
 
-    @Secured
     @GET
     @Path("/logout/{token}")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public Response logout(@PathParam("token") String token) {
         TokensController.revokeToken(token);
-        return Response.ok(token).build();
+        return Response.ok().build();
     }
 }
