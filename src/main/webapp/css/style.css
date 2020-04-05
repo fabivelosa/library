@@ -507,4 +507,10 @@ td, th
  }
  /*styles for the more info link*/
  
+ .container-header {
+ 	border-bottom: 1px #80808057 solid;
+    padding-top: 10px;
+    padding-bottom: 10px;
+ }
+ 
  
