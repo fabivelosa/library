@@ -370,14 +370,14 @@ function renderDTUsers(data) {
 									}
 								} ],
 					});
-
+	
 $('#table_id-1 tbody').on('click', 'tr td #endBtn', function () {
 	       var row = $(this).parents('tr')[0];
 	       var mydata = (memberTable.row(row).data());
 	       var memberId = mydata["userId"];
 	       var formToData = JSON.stringify({
-				"endDate" : new Date(),
-				"memberId": memberId
+	    		"endDate" : new Date(),
+				"userId": memberId
 				});
 	       console.log(formToData);
 		   var con=confirm("Are you sure you want to END membership of "+ mydata.user["lastname"]+"?");
@@ -390,10 +390,11 @@ $('#table_id-1 tbody').on('click', 'tr td #endBtn', function () {
 					url : rootURL + '/membership/' + memberId,
 					data: formToData,
 					success : function() {
-						if ($.fn.dataTable.isDataTable(memberTable))
-						{memberTable.clear();
-						 memberTable.destroy();
-						 }
+						if ($.fn.dataTable.isDataTable('#table_id-1')) {
+							var table = $('#table_id-1').DataTable();
+							table.clear();
+							table.destroy();
+						}
 						 findAllUsersMember();
 						 }
 					});
@@ -418,10 +419,11 @@ $('#table_id-1 tbody').on('click', 'tr td #createBtn', function () {
 					url : rootURL + '/membership/',
 					data: formToData,
 					success : function() {
-						if ($.fn.dataTable.isDataTable(memberTable))
-						{memberTable.clear();
-						 memberTable.destroy();
-						 }
+						if ($.fn.dataTable.isDataTable('#table_id-1')) {
+							var table = $('#table_id-1').DataTable();
+							table.clear();
+							table.destroy();
+						}
 						 findAllUsersMember();
 						 }
 					});
@@ -482,14 +484,72 @@ function initUpdateClasses() {
 
 function initRegisterUser() {
 	
-	$('#success_message').hide();
+$('#success_message').hide();
+	
+$('#cmbCategory').change(function() {
+		if ($('#cmbCategory').val()=='WALK_IN_CUSTOMER'){
+			$('#eircode').hide();
+			$('#eircodel').hide();
+			$('#email').hide();
+			$('#emaill').hide();
+			$('#contact_no').hide();
+			$('#contact_nol').hide();
+			$('#address_name').hide();
+			$('#address_namel').hide();
+			$('#address').hide();
+			$('#addressl').hide(); 
+			$('#town').hide();
+			$('#townl').hide();
+			$('#county').hide();
+			$('#countyl').hide();
+			$('#user_name').hide();
+			$('#user_namel').hide();
+			$('#user_password').hide();
+			$('#user_passwordl').hide();
+			
+		}else {
+			$('#eircode').show();
+			$('#email').show();
+			$('#contact_no').show();
+			$('#address_name').show();
+			$('#address').show(); 
+			$('#town').show();
+			$('#user_name').show();
+			$('#user_password').show();
+			
+			$('#county').show();
+			$('#eircodel').show();
+			$('#emaill').show();
+			$('#contact_nol').show();
+			$('#address_namel').show();
+			$('#addressl').show(); 
+			$('#townl').show();
+			$('#countyl').show();
+			$('#user_namel').show();
+			$('#user_passwordl').show();
+		}
+})
 
-	$('#btnSaveUser').click(function() {
-		if ($('#userId').val() == '')
-			addUser();
-		return false;
-	});
-	var addUser = function() {
+$('#btnSaveUser').click(function() {
+		console.log('click user');
+			
+	var formToJSON = function() {
+		return JSON.stringify({
+		"category" : $('#cmbCategory').val(),
+		"birth_date" : $('#dateofbirth').val(),
+		"eircode" : $('#eircode').val(),
+		"email" : $('#email').val(),
+		"college_name" : $('#college').val(),
+		"firstname" : $('#first_name').val(),
+		"lastname" : $('#last_name').val(),
+		"mobileTel" : $('#contact_no').val(),
+		"addressName" : $('#address_name').val(),
+		"addressStreet" : $('#address').val(),
+		"addressTown" : $('#town').val(),
+		"addressCounty" : $('#county').val()
+		});
+	};
+
 		console.log('addUser');
 		$.ajax({
 			type : 'POST',
@@ -499,49 +559,30 @@ function initRegisterUser() {
 			data : formToJSON(),
 			success : function(data, textStatus, jqXHR) {
 				alert('User created successfully');
-				$('#userId').val(data.id);
-				// findAll();
 				$('#success_message').show();
 				clearForm();
 			},
 			error : function(jqXHR, textStatus, errorThrown) {
 				alert('addUser error: ' + textStatus);
+				clearForm();
 			}
 		});
-	};
 
-	var formToJSON = function() {
-		return JSON.stringify({
-			"category" : $('#cmbCategory').val(),
-			"birth_date" : $('#dateofbirth').val(),
-			"eircode" : $('#eircode').val(),
-			"email" : $('#email').val(),
-			"college_name" : $('#college').val(),
-			"firstname" : $('#first_name').val(),
-			"lastname" : $('#last_name').val(),
-			"mobileTel" : $('#contact_no').val(),
-			"addressName" : $('#address_name').val(),
-			"addressStreet" : $('#address').val(),
-			"addressTown" : $('#town').val(),
-			"addressCounty" : $('#county').val()
-		});
-	};
-
-function clearForm() {
-	$('#cmbCategory').val("");
-	$('#dateofbirth').val("");
-	$('#eircode').val(""); 
-	$('#email').val(""); 
-	$('#college').val("");
-	$('#first_name').val(""); 
-	$('#last_name').val(""); 
-	$('#contact_no').val("");
-	$('#address_name').val("");
-	$('#address').val(""); 
-	$('#town').val(""); 
-	$('#county').val("");
-	}
-	
+	function clearForm() {
+		$('#cmbCategory').val("");
+		$('#dateofbirth').val("");
+		$('#eircode').val(""); 
+		$('#email').val(""); 
+		$('#college').val("");
+		$('#first_name').val(""); 
+		$('#last_name').val(""); 
+		$('#contact_no').val("");
+		$('#address_name').val("");
+		$('#address').val(""); 
+		$('#town').val(""); 
+		$('#county').val("");
+		}
+	}); 
 }
 
 function initRegisterClass() {
