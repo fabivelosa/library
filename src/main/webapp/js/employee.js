@@ -1,11 +1,13 @@
-/**
- * 
+/*
+ * A00267345 - Fabiane 
  */
 var rootURL = "http://localhost:8080/library/rest";
-var currentUser;
 
 $(document).ready(function() {
-	initEmployeePage();
+	initRegisterClass();
+	initUpdateClasses();
+	initRegisterUser();
+	initMembership();
 });
 
 $(function() {
@@ -48,29 +50,6 @@ function findClasseById(id) {
 			$('#start_class').val(data[0].class_start);
 			$('#slot').val(data[0].class_slot);
 			$('#fee').val(data[0].class_fee);
-		}
-
-	});
-}
-
-function findAllRegistration(classID) {
-	$.ajax({
-		type : 'GET',
-		url : rootURL + '/registration/query?user=0&class=' + classID,
-		dataType : "json",
-		success : function(data) {
-			// renderDTRegistration(data);
-		}
-	});
-}
-
-function findAllRegistration(userID) {
-	$.ajax({
-		type : 'GET',
-		url : rootURL + '/registration/query?user=' + userID + '&class=0',
-		dataType : "json",
-		success : function(data) {
-			// renderDTRegistration(data);
 		}
 	});
 }
@@ -117,7 +96,6 @@ function findUserByName(name) {
 				findAllUsers();
 			} else {
 				renderUserList(user);
-				// findUserClasses(user);
 			}
 		}
 	});
@@ -165,7 +143,6 @@ var renderUserList = function(users) {
 		$("#userList").append(
 				'<li><a href="#" id="' + user.userId + '">' + user.firstname
 						+ ' ' + user.lastname + '</a></li>');
-
 	})
 }
 
@@ -178,7 +155,6 @@ var renderUserSelect = function(user) {
 
 function renderUserClasses(data) {
 console.log(data);
-console.log("userId:"+currentUser);
 	if ($.fn.dataTable.isDataTable('#registerclasses')) {
 		var table = $('#registerclasses').DataTable();
 		table.clear();
@@ -217,7 +193,6 @@ function renderGrid(data) {
 }
 
 function append(classes) {
-
 	var pt = $('#classes-item').clone();
 	pt.find('.classes-title').text(classes.class_title);
 	pt.find('.classes-category').text(classes.class_category);
@@ -228,7 +203,6 @@ function append(classes) {
 	pt.attr('id', 'classes-id-' + classes.class_id)
 	pt.find('.classes-image').attr('src', classes.class_image);
 	pt.show();
-
 	$('#classes-row').append(pt);
 }
 
@@ -327,7 +301,73 @@ function renderDTClasses(data) {
 					});
 }
 
-function initEmployeePage() {
+function renderDTUsers(data) {
+	$('#table_id-1').DataTable(
+					{	"paging" : true,
+						"searching" : true,
+						"retrieve" : true,
+						"data" : data,
+						"columns" : [ {"data" : "user.firstname"}, 
+							{"data" : "user.lastname"}, 
+							{"data" : "user.ageGroup"}, 
+							{"data" : "user.account_balance"}, 
+							{"data" : "user.mobileTel"}, 
+							{"data" : "userId"}, ],
+						"columnDefs" : [
+								{	visible : true,
+									targets : 0,
+									className : 'dt-center',
+									render : function(data, type, full, meta) {
+										return data;
+									}
+								},
+								{	visible : true,
+									targets : 1,
+									className : 'dt-center',
+									render : function(data, type, full, meta) {
+										return data;
+									}
+								},
+								{	visible : true,
+									targets : 2,
+									className : 'dt-center',
+									render : function(data, type, full, meta) {
+										return data;
+									}
+								},
+								{  visible : true,
+									targets : 3,
+									className : 'dt-center',
+									render : function(data, type, full, meta) {
+										return data;
+									}
+								},
+								{   visible : true,
+									targets : 4,
+									className : 'dt-center',
+									render : function(data, type, full, meta) {
+										return data;
+									}
+								},
+								{ 	visible : true,
+									targets : 5,
+									className : "dt-center",
+									render : function(data, type, full, meta) {
+										var button;
+										if (data > 0) {
+											button = '<button id="endBtn" data-identity="' + data + '" class="btn btn-info btn-flat delete"  name="endBtn" type="button">UnRegister</button>';
+										} else {
+											button = '<button id="createBtn"  class="btn btn-info btn-flat edit"  name="createBtn" type="button">Register</button>';
+
+										}
+										return button;
+									}
+								} ],
+					});
+}
+
+function initUpdateClasses() {
+	
 	$('#class-update-modal').on('hidden.bs.modal', function() {
 		console.log('hide.bs.modal');
 		$('#classId').val("");
@@ -347,6 +387,18 @@ function initEmployeePage() {
 		findClasseById(classId);
 	});
 
+	var formToJSON = function() {
+		return JSON.stringify({
+			"class_id" : $('#classId').val(),
+			"class_duration" : $('#duration').val(),
+			"class_title" : $('#title').val(),
+			"class_category" : $('#category').val(),
+			"class_start" : $('#start_class').val(),
+			"class_slot" : $('#slot').val(),
+			"class_fee" : $('#fee').val()
+		});
+	};
+	
 	$('#btn-save').on('click', function(e) {
 		var classId = $('#classId').val();
 		console.log('click' + classId);
@@ -363,7 +415,10 @@ function initEmployeePage() {
 			}
 		})
 	});
+}
 
+function initRegisterUser() {
+	
 	$('#success_message').hide();
 
 	$('#btnSaveUser').click(function() {
@@ -371,7 +426,63 @@ function initEmployeePage() {
 			addUser();
 		return false;
 	});
+	var addUser = function() {
+		console.log('addUser');
+		$.ajax({
+			type : 'POST',
+			contentType : 'application/json',
+			url : rootURL + '/user',
+			dataType : "json",
+			data : formToJSON(),
+			success : function(data, textStatus, jqXHR) {
+				alert('User created successfully');
+				$('#userId').val(data.id);
+				// findAll();
+				$('#success_message').show();
+				clearForm();
+			},
+			error : function(jqXHR, textStatus, errorThrown) {
+				alert('addUser error: ' + textStatus);
+			}
+		});
+	};
 
+	var formToJSON = function() {
+		return JSON.stringify({
+			"category" : $('#cmbCategory').val(),
+			"birth_date" : $('#dateofbirth').val(),
+			"eircode" : $('#eircode').val(),
+			"email" : $('#email').val(),
+			"college_name" : $('#college').val(),
+			"firstname" : $('#first_name').val(),
+			"lastname" : $('#last_name').val(),
+			"mobileTel" : $('#contact_no').val(),
+			"addressName" : $('#address_name').val(),
+			"addressStreet" : $('#address').val(),
+			"addressTown" : $('#town').val(),
+			"addressCounty" : $('#county').val()
+		});
+	};
+
+function clearForm() {
+	$('#cmbCategory').val("");
+	$('#dateofbirth').val("");
+	$('#eircode').val(""); 
+	$('#email').val(""); 
+	$('#college').val("");
+	$('#first_name').val(""); 
+	$('#last_name').val(""); 
+	$('#contact_no').val("");
+	$('#address_name').val("");
+	$('#address').val(""); 
+	$('#town').val(""); 
+	$('#county').val("");
+	}
+	
+}
+
+function initRegisterClass() {
+	var currentUser;
 	$(document).on("click", "#userList a", function() {
 		findUserById(this.id);
 		currentUser= this.id;
@@ -380,7 +491,6 @@ function initEmployeePage() {
 		findUserByName($('#searchKey').val())
 	});
 
-	// begin
 	$('#class-regStaff-modal').on('show.bs.modal', function(event) {
 		var actionLink = $(event.relatedTarget);
 		var classId = actionLink.data('identity');
@@ -415,7 +525,7 @@ function initEmployeePage() {
 				"classId" : classId,
 				"memberId" : currentUser
 			});
-			console.log('ajax post: '+ formData);
+			
 			$.ajax({
 				type : 'POST',
 				contentType : 'application/json',
@@ -451,226 +561,57 @@ function initEmployeePage() {
 	});
 }
 
-var formToJSON = function() {
-	return JSON.stringify({
-		"class_id" : $('#classId').val(),
-		"class_duration" : $('#duration').val(),
-		"class_title" : $('#title').val(),
-		"class_category" : $('#category').val(),
-		"class_start" : $('#start_class').val(),
-		"class_slot" : $('#slot').val(),
-		"class_fee" : $('#fee').val()
-	});
-};
-
-var addUser = function() {
-	console.log('addUser');
-	$.ajax({
-		type : 'POST',
-		contentType : 'application/json',
-		url : rootURL + '/user',
-		dataType : "json",
-		data : UserformToJSON(),
-		success : function(data, textStatus, jqXHR) {
-			alert('User created successfully');
-			$('#userId').val(data.id);
-			// findAll();
-			$('#success_message').show();
-			clearForm();
-		},
-		error : function(jqXHR, textStatus, errorThrown) {
-			alert('addUser error: ' + textStatus);
+function initMembership() {
+	console.log('oi!');
+	$(document).on("click", "#endBtn", function() {
+		var actionLink = $(event.relatedTarget);
+		var memberId = actionLink.data('identity');
+		console.log('actionLink'+actionLink);
+		var formToData = JSON.stringify({
+			"endDate" : new Date(),
+			"memberId" : memberId
+			});
+	console.log(formToData);
+			var r = confirm("Are you sure you want to unregister?!");			
+			if (r == true) {                    
+				$.ajax({
+					type : 'PUT',
+					contentType : 'application/json',
+					url : rootURL + '/registration/' + memberid,
+					data: formToData,
+					success : function() {
+						 findAllUsersMember();
+						 }
+					});
+		  } 
 		}
-	});
-};
-
-var UserformToJSON = function() {
-	return JSON.stringify({
-		"category" : $('#cmbCategory').val(),
-		"birth_date" : $('#dateofbirth').val(),
-		"eircode" : $('#eircode').val(),
-		"email" : $('#email').val(),
-		"college_name" : $('#college').val(),
-		"firstname" : $('#first_name').val(),
-		"lastname" : $('#last_name').val(),
-		"mobileTel" : $('#contact_no').val(),
-		"addressName" : $('#address_name').val(),
-		"addressStreet" : $('#address').val(),
-		"addressTown" : $('#town').val(),
-		"addressCounty" : $('#county').val()
-	});
-};
-
-var clearForm = function() {
-
-	$('#cmbCategory').val(""), $('#dateofbirth').val(""),
-			$('#eircode').val(""), $('#email').val(""), $('#college').val(""),
-			$('#first_name').val(""), $('#last_name').val(""), $('#contact_no')
-					.val(""), $('#address_name').val(""),
-			$('#address').val(""), $('#town').val(""), $('#county').val("")
-
-}
-
-function renderDTUsers(data) {
-	$('#table_id-1')
-			.DataTable(
-					{
-						"paging" : true,
-						"searching" : true,
-						"retrieve" : true,
-						// "processing" : true,
-						"data" : data,
-						"columns" : [ {
-							"data" : "user.firstname"
-						}, {
-							"data" : "user.lastname"
-						}, {
-							"data" : "user.ageGroup"
-						}, {
-							"data" : "user.account_balance"
-						}, {
-							"data" : "user.mobileTel"
-						}, {
-							"data" : "userId"
-						}, ],
-						"columnDefs" : [
-								{// first_name
-									visible : true,
-									targets : 0,
-									className : 'dt-center',
-									render : function(data, type, full, meta) {
-										return data;
-									}
-								},
-								{
-									visible : true,
-									targets : 1,
-									className : 'dt-center',
-									render : function(data, type, full, meta) {
-										return data;
-									}
-								},
-								{// age_group
-									visible : true,
-									targets : 2,
-									className : 'dt-center',
-									render : function(data, type, full, meta) {
-										return data;
-									}
-								},
-								{// account_balance
-									visible : true,
-									targets : 3,
-									className : 'dt-center',
-									render : function(data, type, full, meta) {
-										return data;
-									}
-								},
-								{// mobile_tel
-									visible : true,
-									targets : 4,
-									className : 'dt-center',
-									render : function(data, type, full, meta) {
-										return data;
-									}
-								},
-								{// action
-									visible : true,
-									targets : 5,
-									className : "dt-center",
-									render : function(data, type, full, meta) {
-
-										var button;
-										if (data > 0) {
-											button = '<button id="deleteBtn"  class="btn btn-info btn-flat delete"  name="deleteBtn" type="button">UnRegister</button>';
-										} else {
-											button = '<button id="saveBtn"  class="btn btn-info btn-flat edit"  name="saveBtn" type="button">Register</button>';
-
-										}
-										return button;
-									}
-								} ],
+	);
+	
+	$(document).on("click", "#createBtn", function() {
+		var actionLink = $(event.relatedTarget);
+		var memberId = actionLink.data('identity');
+		console.log('actionLink'+actionLink);
+		console.log('memberId:'+memberId);
+		var formToData = JSON.stringify({
+			"startDate" : new Date(),
+			"endDate" : new Date(),
+			"memberId" : memberId
+			});
+	console.log(formToData);
+			var r = confirm("Are you sure you want to Register?!");			
+			if (r == true) {                    
+				$.ajax({
+					type : 'POST',
+					contentType : 'application/json',
+					url : rootURL + '/registration/' + memberid,
+					data: formToData,
+					success : function() {
+						 findAllUsersMember();
+						 }
 					});
+		  } 
+		}
+	)
 }
 
-function renderDTRegistration(data) {
-	$('#table_id-2')
-			.DataTable(
-					{
-						"paging" : true,
-						"searching" : true,
-						"retrieve" : true,
-						// "processing" : true,
-						"data" : data,
-						"columns" : [ {
-							"data" : "user.firstname"
-						}, {
-							"data" : "user.lastname"
-						}, {
-							"data" : "user.ageGroup"
-						}, {
-							"data" : "user.account_balance"
-						}, {
-							"data" : "user.mobileTel"
-						}, {
-							"data" : "userId"
-						}, ],
-						"columnDefs" : [
-								{// first_name
-									visible : true,
-									targets : 0,
-									className : 'dt-center',
-									render : function(data, type, full, meta) {
-										return data;
-									}
-								},
-								{
-									visible : true,
-									targets : 1,
-									className : 'dt-center',
-									render : function(data, type, full, meta) {
-										return data;
-									}
-								},
-								{// age_group
-									visible : true,
-									targets : 2,
-									className : 'dt-center',
-									render : function(data, type, full, meta) {
-										return data;
-									}
-								},
-								{// account_balance
-									visible : true,
-									targets : 3,
-									className : 'dt-center',
-									render : function(data, type, full, meta) {
-										return data;
-									}
-								},
-								{// mobile_tel
-									visible : true,
-									targets : 4,
-									className : 'dt-center',
-									render : function(data, type, full, meta) {
-										return data;
-									}
-								},
-								{// action
-									visible : true,
-									targets : 5,
-									className : "dt-center",
-									render : function(data, type, full, meta) {
 
-										var button;
-										if (data > 0) {
-											button = '<button id="deleteBtn"  class="btn btn-info btn-flat delete"  name="deleteBtn" type="button">UnRegister</button>';
-										} else {
-											button = '<button id="saveBtn"  class="btn btn-info btn-flat edit"  name="saveBtn" type="button">Register</button>';
-
-										}
-										return button;
-									}
-								} ],
-					});
-}
