@@ -95,14 +95,16 @@ public class MembershipDAO {
 			ps.setInt(1, membership.getUserId());
 			ps.setDate(2, new java.sql.Date(membership.getStartDate().getTime()));
 			ps.setDate(3, new java.sql.Date(membership.getEndDate().getTime()));
+			
 			ps.executeUpdate();
+			System.out.println(ps.toString() + "id= " + membership.getUserId());
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		} finally {
 			DataBaseConnection.close(c);
 		}
-		System.out.println(sql + "id= " + membership.getUserId());
+		System.out.println(sql.toString() + "id= " + membership.getUserId());
 		return membership;
 	}
 

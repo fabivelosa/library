@@ -7,7 +7,6 @@ $(document).ready(function() {
 	initRegisterClass();
 	initUpdateClasses();
 	initRegisterUser();
-	initMembership();
 });
 
 $(function() {
@@ -61,7 +60,6 @@ function findAllUsersMember() {
 		dataType : "json",
 		success : function(data) {
 			renderDTUsers(data);
-
 		}
 	});
 }
@@ -302,19 +300,20 @@ function renderDTClasses(data) {
 }
 
 function renderDTUsers(data) {
-	$('#table_id-1').DataTable(
+	var memberTable = $('#table_id-1').DataTable(
 					{	"paging" : true,
 						"searching" : true,
 						"retrieve" : true,
 						"data" : data,
-						"columns" : [ {"data" : "user.firstname"}, 
-							{"data" : "user.lastname"}, 
-							{"data" : "user.ageGroup"}, 
-							{"data" : "user.account_balance"}, 
-							{"data" : "user.mobileTel"}, 
-							{"data" : "userId"}, ],
+						"columns" : [   {"data" : "user.userId"}, 
+										{"data" : "user.firstname"}, 
+										{"data" : "user.lastname"}, 
+										{"data" : "user.ageGroup"}, 
+										{"data" : "user.account_balance"}, 
+										{"data" : "user.mobileTel"}, 
+										{"data" : "userId"}, ],
 						"columnDefs" : [
-								{	visible : true,
+								{	visible : false,
 									targets : 0,
 									className : 'dt-center',
 									render : function(data, type, full, meta) {
@@ -335,35 +334,99 @@ function renderDTUsers(data) {
 										return data;
 									}
 								},
-								{  visible : true,
+								{	visible : true,
 									targets : 3,
 									className : 'dt-center',
 									render : function(data, type, full, meta) {
 										return data;
 									}
 								},
-								{   visible : true,
+								{  visible : true,
 									targets : 4,
 									className : 'dt-center',
 									render : function(data, type, full, meta) {
 										return data;
 									}
 								},
-								{ 	visible : true,
+								{   visible : true,
 									targets : 5,
+									className : 'dt-center',
+									render : function(data, type, full, meta) {
+										return data;
+									}
+								},
+								{ 	visible : true,
+									targets : 6,
 									className : "dt-center",
 									render : function(data, type, full, meta) {
 										var button;
 										if (data > 0) {
-											button = '<button id="endBtn" data-identity="' + data + '" class="btn btn-info btn-flat delete"  name="endBtn" type="button">UnRegister</button>';
+											button = '<button id="endBtn" class="btn btn-info btn-flat delete"  name="endBtn" type="button">UnRegister</button>';
 										} else {
-											button = '<button id="createBtn"  class="btn btn-info btn-flat edit"  name="createBtn" type="button">Register</button>';
+											button = '<button id="createBtn" class="btn btn-info btn-flat edit"  name="createBtn" type="button">Register</button>';
 
 										}
 										return button;
 									}
 								} ],
 					});
+
+$('#table_id-1 tbody').on('click', 'tr td #endBtn', function () {
+	       var row = $(this).parents('tr')[0];
+	       var mydata = (memberTable.row(row).data());
+	       var memberId = mydata["userId"];
+	       var formToData = JSON.stringify({
+				"endDate" : new Date(),
+				"memberId": memberId
+				});
+	       console.log(formToData);
+		   var con=confirm("Are you sure you want to END membership of "+ mydata.user["lastname"]+"?");
+
+	       if(con){
+	          console.log('sim');
+	          $.ajax({
+					type : 'PUT',
+					contentType : 'application/json',
+					url : rootURL + '/membership/' + memberId,
+					data: formToData,
+					success : function() {
+						if ($.fn.dataTable.isDataTable(memberTable))
+						{memberTable.clear();
+						 memberTable.destroy();
+						 }
+						 findAllUsersMember();
+						 }
+					});
+	     }
+	});
+
+$('#table_id-1 tbody').on('click', 'tr td #createBtn', function () {
+	       var row = $(this).parents('tr')[0];
+	       var mydata = (memberTable.row(row).data());
+	       var memberId = mydata.user["userId"];
+	       var formToData = JSON.stringify({
+				"startDate" : new Date(), //start date is TODAY DATE
+				"endDate"   : new Date(new Date().setFullYear(new Date().getFullYear() + 1)), //END DATE is TODAY PLUS 1 YEAR
+				"userId"  : memberId
+				});
+	       var con=confirm("Are you sure you want to ADD membership for "+ mydata.user["lastname"]+"?");
+	     console.log('formToData:'+formToData);
+	       if(con){
+	          $.ajax({
+					type : 'POST',
+					contentType : 'application/json',
+					url : rootURL + '/membership/',
+					data: formToData,
+					success : function() {
+						if ($.fn.dataTable.isDataTable(memberTable))
+						{memberTable.clear();
+						 memberTable.destroy();
+						 }
+						 findAllUsersMember();
+						 }
+					});
+	     }
+	});
 }
 
 function initUpdateClasses() {
@@ -561,57 +624,5 @@ function initRegisterClass() {
 	});
 }
 
-function initMembership() {
-	console.log('oi!');
-	$(document).on("click", "#endBtn", function() {
-		var actionLink = $(event.relatedTarget);
-		var memberId = actionLink.data('identity');
-		console.log('actionLink'+actionLink);
-		var formToData = JSON.stringify({
-			"endDate" : new Date(),
-			"memberId" : memberId
-			});
-	console.log(formToData);
-			var r = confirm("Are you sure you want to unregister?!");			
-			if (r == true) {                    
-				$.ajax({
-					type : 'PUT',
-					contentType : 'application/json',
-					url : rootURL + '/registration/' + memberid,
-					data: formToData,
-					success : function() {
-						 findAllUsersMember();
-						 }
-					});
-		  } 
-		}
-	);
-	
-	$(document).on("click", "#createBtn", function() {
-		var actionLink = $(event.relatedTarget);
-		var memberId = actionLink.data('identity');
-		console.log('actionLink'+actionLink);
-		console.log('memberId:'+memberId);
-		var formToData = JSON.stringify({
-			"startDate" : new Date(),
-			"endDate" : new Date(),
-			"memberId" : memberId
-			});
-	console.log(formToData);
-			var r = confirm("Are you sure you want to Register?!");			
-			if (r == true) {                    
-				$.ajax({
-					type : 'POST',
-					contentType : 'application/json',
-					url : rootURL + '/registration/' + memberid,
-					data: formToData,
-					success : function() {
-						 findAllUsersMember();
-						 }
-					});
-		  } 
-		}
-	)
-}
 
 
