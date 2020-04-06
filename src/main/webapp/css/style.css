@@ -448,3 +448,68 @@ table.dataTable td {
     margin-top: 0.5em;
   }
 }
+
+
+aside {
+	width: 300px;
+	float: left;
+	padding-left: 20px;
+	padding-bottom: 20px;
+}
+aside h1 {
+	font-size: 150%;
+	padding: .5em 0 .25em;
+}
+aside h2 {
+	font-size: 120%;
+	padding-bottom: .25em;
+}
+aside img {
+	padding-bottom: 1em;
+}
+/* the styles for the navigation list */
+#nav_list ul { 
+	list-style: none;
+	margin-left: 0;
+	margin-bottom: 1.5em; }
+#nav_list li { 
+	width: 300px;
+	margin-bottom: .5em;
+	border: 2px double black;
+	border-radius: 10px;
+	box-shadow: 3px 3px 0 0 #cbf2ff;
+	background-repeat: no-repeat;
+	background-position: 95% center;
+		
+}
+#nav_list li a {
+	display: block;
+	font-weight: bold;
+	color: black;
+	text-decoration: none;
+	padding: .5em 0 .5em 1em;
+}
+nav a:focus, nav a:hover{
+	font-style: italic;
+}
+/*the styles for the table */
+td, th
+ {
+ border:1px solid #f3fcff ;
+ padding:3px;
+ }
+ 
+ th
+ {
+ background-color:#cbf2ff;
+ color:black;
+ }
+ /*styles for the more info link*/
+ 
+ .container-header {
+ 	border-bottom: 1px #80808057 solid;
+    padding-top: 10px;
+    padding-bottom: 10px;
+ }
+ 
+ 

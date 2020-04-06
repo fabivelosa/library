@@ -25,7 +25,7 @@ public class MembershipDAO {
 				"m.userId as memberId, startDate, endDate FROM library.users u\n" + 
 				"LEFT JOIN library.membership m\n" + 
 				"on u.user_id = m.userId\n" + 
-				"and m.endDate > now();";
+				"and m.endDate > now() order by 2;";
 		System.out.println(sql);
 		try {
 			c = DataBaseConnection.getConnection();
@@ -93,14 +93,16 @@ public class MembershipDAO {
 			ps.setInt(1, membership.getUserId());
 			ps.setDate(2, new java.sql.Date(membership.getStartDate().getTime()));
 			ps.setDate(3, new java.sql.Date(membership.getEndDate().getTime()));
+			
 			ps.executeUpdate();
+			System.out.println(ps.toString() + "id= " + membership.getUserId());
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		} finally {
 			DataBaseConnection.close(c);
 		}
-		System.out.println(sql + "id= " + membership.getUserId());
+		System.out.println(sql.toString() + "id= " + membership.getUserId());
 		return membership;
 	}
 

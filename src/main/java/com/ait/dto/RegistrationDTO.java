@@ -7,7 +7,7 @@ public class RegistrationDTO {
 	private int registrationId;
 	private int classId;
 	private int memberId;
-	private Date regDate;
+	private Date regDate = new Date();
 	private double feeDue;
 	private double balanceDue;
 	private boolean attendance;

@@ -2,10 +2,10 @@ $(document).ready(function() {
 
 	// The root URLs for the RESTful services
 
-	var rootURL = "http://localhost:8080/library/rest";
+	
 	var transURL = "http://localhost:8080/library/rest/transaction";
 	var userURL = "http://localhost:8080/library/rest/user";
-	var userBalURL = "http://localhost:8080/library/rest/balance";
+	var userBalURL = "http://localhost:8080/library/rest/user/balance";
 
 	
 	//Constants for Customer
@@ -359,11 +359,11 @@ function findTransactionsByCustomerId(custId) {
 			    // 'collection of one' as an
 			    // object (not an 'array of one')
 
-			    var transactions = data.transactionEntity;
 			    
 			   
 			    /*Build the DataTable*/
-			    $.each(transactions,function (index, transaction) {
+			    $.each(data,function (index, transaction) {
+			    	console.log('Building DataTable')
 			    	console.log('renderlist values' + transaction.user_id);
 			                $('#table_body')
 			                    .append(
