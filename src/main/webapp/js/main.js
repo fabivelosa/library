@@ -85,6 +85,8 @@ function renderEmployeeContent() {
     console.log('Display employee content');
     $.get('employee.html', function(response){
         $('#main-container').html(response);
+
+    	initEmployee();
     });
 }
 

@@ -3,15 +3,13 @@
  */
 var rootURL = "http://localhost:8080/library/rest";
 
-$(document).ready(function() {
+window.initEmployee = function initEmployee() {
 	initRegisterClass();
 	initUpdateClasses();
 	initRegisterUser();
 	initMembership();
 	initUserTransactions();
-});
 
-$(function() {
 	$("#tabs").tabs({
 		activate : function(event, ui) {
 			if (ui.newTab.index() == 1) {
@@ -27,7 +25,7 @@ $(function() {
 			}
 		}
 	});
-});
+};
 
 function findAllClasses() {
 	$.ajax({
