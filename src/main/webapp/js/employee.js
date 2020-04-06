@@ -7,6 +7,7 @@ $(document).ready(function() {
 	initRegisterClass();
 	initUpdateClasses();
 	initRegisterUser();
+	initMembership();
 	initUserTransactions();
 });
 
@@ -315,7 +316,7 @@ function renderDTClasses(data) {
 }
 
 function renderDTUsers(data) {
-	var memberTable = $('#table_id-1').DataTable(
+	 $('#table_id-1').DataTable(
 					{	"paging" : true,
 						"searching" : true,
 						"retrieve" : true,
@@ -386,64 +387,6 @@ function renderDTUsers(data) {
 								} ],
 					});
 	
-$('#table_id-1 tbody').on('click', 'tr td #endBtn', function () {
-	       var row = $(this).parents('tr')[0];
-	       var mydata = (memberTable.row(row).data());
-	       var memberId = mydata["userId"];
-	       var formToData = JSON.stringify({
-	    		"endDate" : new Date(),
-				"userId": memberId
-				});
-	       console.log(formToData);
-		   var con=confirm("Are you sure you want to END membership of "+ mydata.user["lastname"]+"?");
-
-	       if(con){
-	          console.log('sim');
-	          $.ajax({
-					type : 'PUT',
-					contentType : 'application/json',
-					url : rootURL + '/membership/' + memberId,
-					data: formToData,
-					success : function() {
-						if ($.fn.dataTable.isDataTable('#table_id-1')) {
-							var table = $('#table_id-1').DataTable();
-							table.clear();
-							table.destroy();
-						}
-						 findAllUsersMember();
-						 }
-					});
-	     }
-	});
-
-$('#table_id-1 tbody').on('click', 'tr td #createBtn', function () {
-	       var row = $(this).parents('tr')[0];
-	       var mydata = (memberTable.row(row).data());
-	       var memberId = mydata.user["userId"];
-	       var formToData = JSON.stringify({
-				"startDate" : new Date(), //start date is TODAY DATE
-				"endDate"   : new Date(new Date().setFullYear(new Date().getFullYear() + 1)), //END DATE is TODAY PLUS 1 YEAR
-				"userId"  : memberId
-				});
-	       var con=confirm("Are you sure you want to ADD membership for "+ mydata.user["lastname"]+"?");
-	     console.log('formToData:'+formToData);
-	       if(con){
-	          $.ajax({
-					type : 'POST',
-					contentType : 'application/json',
-					url : rootURL + '/membership/',
-					data: formToData,
-					success : function() {
-						if ($.fn.dataTable.isDataTable('#table_id-1')) {
-							var table = $('#table_id-1').DataTable();
-							table.clear();
-							table.destroy();
-						}
-						 findAllUsersMember();
-						 }
-					});
-	     }
-	});
 }
 
 function initUpdateClasses() {
@@ -677,6 +620,70 @@ function initRegisterClass() {
 			var modal = $(this);
 			modal.find('#reg-id').val(regId);
 		}
+	});
+}
+
+function initMembership(){
+	$('#table_id-1 tbody').on('click', '#endBtn', function () {
+	       var row = $(this).parents('tr')[0];
+	       var table = $('#table_id-1').DataTable();
+	       var mydata = (table.row(row).data());
+	       var memberId = mydata["userId"];
+	       var formToData = JSON.stringify({
+	    		"endDate" : new Date(),
+				"userId": memberId
+				});
+	       console.log(formToData);
+		   var con=confirm("Are you sure you want to END membership of "+ mydata.user["lastname"]+"?");
+
+	       if(con){
+	          console.log('yes');
+	          $.ajax({
+					type : 'PUT',
+					contentType : 'application/json',
+					url : rootURL + '/membership/' + memberId,
+					data: formToData,
+					success : function() {
+						if ($.fn.dataTable.isDataTable('#table_id-1')) {
+							var table = $('#table_id-1').DataTable();
+							table.destroy();
+							table.clear();
+						}
+						 findAllUsersMember();
+						 }
+					});
+	     }
+	});
+
+$('#table_id-1 tbody').on('click', '#createBtn', function () {
+	       var row = $(this).parents('tr')[0];
+	       var table = $('#table_id-1').DataTable();
+	       var mydata = (table.row(row).data());
+	       console.log('userid:'+mydata.user["userId"]);
+	       var memberId = mydata.user["userId"];
+	       var formToData = JSON.stringify({
+				"startDate" : new Date(), //start date is TODAY DATE
+				"endDate"   : new Date(new Date().setFullYear(new Date().getFullYear() + 1)), //END DATE is TODAY PLUS 1 YEAR
+				"userId"  : memberId
+				});
+	       console.log('formToData:'+formToData);
+	    var con=confirm("Are you sure you want to ADD membership for "+ mydata.user["lastname"]+"?");
+	       if(con){
+	          $.ajax({
+					type : 'POST',
+					contentType : 'application/json',
+					url : rootURL + '/membership/',
+					data: formToData,
+					success : function() {
+						if ($.fn.dataTable.isDataTable('#table_id-1')) {
+							var table = $('#table_id-1').DataTable();
+							table.destroy();
+							table.clear();
+						}
+						 findAllUsersMember();
+						 }
+					});
+	     }
 	});
 }
 

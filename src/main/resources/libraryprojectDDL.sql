@@ -49,7 +49,6 @@ CREATE TABLE IF NOT EXISTS library.membership (
   userId INT(11) NOT NULL AUTO_INCREMENT,
   startDate DATE NOT NULL,
   endDate DATE NULL DEFAULT NULL,
-  PRIMARY KEY (userId,startDate),
   CONSTRAINT fk_members_users_member_id
     FOREIGN KEY (userId)
     REFERENCES library.users (user_id));

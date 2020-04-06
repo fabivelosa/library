@@ -477,7 +477,7 @@ aside img {
 	margin-bottom: .5em;
 	border: 2px double black;
 	border-radius: 10px;
-	box-shadow: 3px 3px 0 0 #cbfdff;
+	box-shadow: 3px 3px 0 0 #cbf2ff;
 	background-repeat: no-repeat;
 	background-position: 95% center;
 		
@@ -489,20 +489,19 @@ aside img {
 	text-decoration: none;
 	padding: .5em 0 .5em 1em;
 }
-
 nav a:focus, nav a:hover{
 	font-style: italic;
 }
 /*the styles for the table */
 td, th
  {
- border:1px solid #d1fffa;
+ border:1px solid #f3fcff ;
  padding:3px;
  }
  
  th
  {
- background-color:#cbfdff;
+ background-color:#cbf2ff;
  color:black;
  }
  /*styles for the more info link*/
