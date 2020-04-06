@@ -30,7 +30,7 @@ public class UserDAO {
 		Connection c = null;
 		String sql = "SELECT user_id, category, first_name, last_name, birth_date, IF((YEAR(NOW()) - YEAR(U.birth_date)) between 18 and 60, 'Standard','Discounted') as age_group, "
 				+ "address_name, address_street, address_town, address_county, eircode, land_tel, mobile_tel, email, college_name, account_balance "
-				+ "FROM users u ORDER BY last_name";
+				+ "FROM users u ORDER BY first_name";
 
 		try {
 			c = DataBaseConnection.getConnection();

@@ -411,8 +411,47 @@
 			 </div>	
 		</div>  
 	<div id="menu4" class="container tab-pane fade"><br>
-      <h3>Verify Customer Account</h3>
-      <p> Welcome  </p>	   
+		
+		<h3 class="text-center">List Customer Transactions</h3>
+	
+		<select id="userCombo" name="userCombo" class="form-control selectpicker">
+		
+     	</select>
+	
+	   <div class="container">
+		<div class="row">
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<table id="table_id" class="display" style="width: 100%">
+					<thead>
+						<tr>
+							<th>ID</th>
+							<th>Date</th>
+							<th>Name</th>
+							<th>Type</th>
+							<th>Opening Balance</th>
+							<th>Amount</th>
+							<th>Closing Balance</th>
+					
+						</tr>
+					</thead>
+					<tbody id="table_body"></tbody>
+					<tfoot>
+						<tr>
+							<th>Transaction ID</th>
+							<th>Date</th>
+							<th>Name</th>
+							<th>Type</th>
+							<th>Opening Balance</th>
+							<th>Amount</th>
+							<th>Closing Balance</th>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+		</div>
+	</div> 
     </div>	    
     <div id="menu5" class="container tab-pane fade"><br>
       <h3>Reports</h3>

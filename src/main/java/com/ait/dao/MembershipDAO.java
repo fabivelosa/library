@@ -5,9 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import com.ait.dto.MembershipDTO;
@@ -27,7 +25,7 @@ public class MembershipDAO {
 				"m.userId as memberId, startDate, endDate FROM library.users u\n" + 
 				"LEFT JOIN library.membership m\n" + 
 				"on u.user_id = m.userId\n" + 
-				"and m.endDate > now();";
+				"and m.endDate > now() order by 2;";
 		System.out.println(sql);
 		try {
 			c = DataBaseConnection.getConnection();
