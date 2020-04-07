@@ -1,4 +1,7 @@
-$(document).ready(function() {
+
+
+
+
 
 	// The root URLs for the RESTful services
 
@@ -9,16 +12,17 @@ $(document).ready(function() {
 
 	
 	//Constants for Customer
-	var customer = findCustBalanceById(2); //Testing with Customer ID of 2
+	var customer; //= findCustBalanceById(2); //Testing with Customer ID of 2
 	
 	
 	
-	console.log('Customer ID is: '+customer.userId);
-	console.log('Customer Acount Balance is: '+customer.account_balance);
+	//console.log('Customer ID is: '+customer.userId);
+	//console.log('Customer Account Balance is: '+customer.account_balance);
 	
 	//Variables/Constants for Customers
-	var custBalance =customer.account_balance;
-	var custId = customer.userId;
+	var custBalance;
+	var customerId;
+	
 	var membership = true; //Maryanna???
 	var ageGroup = "standard";  //Maryanna???
 	
@@ -31,8 +35,9 @@ $(document).ready(function() {
 	var walkinFeeApplied;
 	
 	//Variables/Constants for Classes
-	var classFee =40;   //Example Class fee which will be obtained in advance (Connor)??????
+	var classFee;   //Example Class fee which will be obtained in advance (Connor)??????
 	var payfull = true;  //Maryanna???
+	
 	var calculatedClassFee; 
 	
 	//Variables/Constants for Credits
@@ -41,9 +46,46 @@ $(document).ready(function() {
 	
 	
 	
+	/*INTEGRATION AREA*****************************************************/
+	
+	//Registration
+	
+	
+	
+
+	
+	function classRegistration(custId, fee, paymentType){
+	console.log('Inside classRegistration Function')
+		//Locate Customer
+	customer = findCustBalanceById(custId);
+	custBalance =customer.account_balance;
+	customerId = customer.userId;
+	
+	if(paymentType =="whole"){payfull = true	
+	}else payfull = false;
+	
+	console.log('Customer' +customer);
+	
+	classFee = fee;
+	console.log('classFee is '+classFee);
+	name = "Class Registration";
+	calculateClassFee(); 
+	amount = calculatedClassFee;
+	updatedCustBalance = Number(custBalance) + Number(calculatedClassFee);
+	updateCustomerBalance(customerId, updatedCustBalance); //Update Customer Balance first
+	debitTransaction(customerId, name, amount, custBalance, updatedCustBalance); //Add Transaction to log
+	}
+	
+	
+
+	/*END INTEGRATION AREA*****************************************************/
+	
 	/*TESTING AREA*****************************************************/
+	$(document).ready(function() {
+	
+	
 	//Build the DataTables Listing
-	findTransactionsByCustomerId(custId)
+	//findTransactionsByCustomerId(custId)
 	
 	/*Run process without Button for test purposes*/
 	
@@ -67,7 +109,7 @@ $(document).ready(function() {
 	
 	/*END TESTING AREA*****************************************************/
 	
-	
+	});
 	
 
 	
@@ -173,11 +215,11 @@ $(document).ready(function() {
 		console.log('fullClassFee' +fullClassFee);
 		if (membership){
 			fullClassFee =fullClassFee - 50; //€50 Discount on Membership
-			console.log('fullClassFee Membership Discount €50' +fullClassFee);
+			console.log('fullClassFee Membership Discount €50 ' +fullClassFee);
 		}
 		if (custBalance ==0){
 			fullClassFee =fullClassFee - (fullClassFee * 0.1); //10% Discount on Clear Balance
-			console.log('fullClassFee Clear Balance Discount 10%' +fullClassFee);
+			console.log('fullClassFee Clear Balance Discount 10% ' +fullClassFee);
 		}
 		if (payfull){
 			fullClassFee =fullClassFee - (fullClassFee * 0.1); //10% Discount on Payment in Advance
@@ -231,7 +273,7 @@ $(document).ready(function() {
 	
 	
 /*Post Debit Transaction to Transaction logs*/
-function debitTransaction(customer, custBalance){
+function debitTransaction(customerId, custBalance){
 		console.log('POST debitTransaction');
 		console.log('Updated balance is '+ updatedCustBalance);
 		/*Post to Transaction Ledger*/
@@ -240,7 +282,7 @@ function debitTransaction(customer, custBalance){
 			contentType : 'application/json',
 			url : transURL,
 			dataType : "json",
-			data : debitTransToJSON(custId, name, amount, custBalance, updatedCustBalance),
+			data : debitTransToJSON(customerId, name, amount, custBalance, updatedCustBalance),
 			success : function(data, textStatus, jqXHR) {
 				alert('Debit transaction added successfully');
 				$('#btnMbr').hide();
@@ -254,7 +296,7 @@ function debitTransaction(customer, custBalance){
 }
 
 /*Post Credit Transaction to Transaction logs*/
-function creditTransaction(customer, custBalance){
+function creditTransaction(custBalance){
 		console.log('POST creditTransaction');
 		console.log('Updated balance is '+ updatedCustBalance);
 		/*Post to Transaction Ledger*/
@@ -304,11 +346,11 @@ return false;
 /*Generate JSON Data*/
 
 //JSON for Debit Transaction//
-function debitTransToJSON(custId, name, amount) {
+function debitTransToJSON(customerId, name, amount) {
 	console.log('debitTransTOJSON');
-	console.log('User ID is '+ custId);
+	console.log('User ID is '+ customerId);
 	var stringified = JSON.stringify({
-		"user_id" : custId,
+		"user_id" : customerId,
 		/*"date" : '2020-03-03',*/
 		"name" : name, //Need to set this Variable from HTML form, currently fixed
 		"amount" : amount, //Need to set this Variable from HTML form, currently fixed
@@ -489,4 +531,3 @@ function renderList(data) {
 }
 	
 		
-});

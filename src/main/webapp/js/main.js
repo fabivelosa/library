@@ -1,5 +1,7 @@
 var rootURL = "http://localhost:8080/library/rest";
 
+
+
 $(function() {
 
 	renderLoginContent();
@@ -99,10 +101,16 @@ function renderCustomerContent() {
 }
 
 function initCustomerPage() {
+	var fee; //Paul Barry
+	
 	$('#class-reg-modal').on('show.bs.modal', function (event) {
 		console.log('show.bs.modal');
 		var actionLink = $(event.relatedTarget);
 		var classId = actionLink.data('identity');
+		
+		fee = actionLink.data('fee'); //Paul Barry
+		console.log('fee is: '+ fee); //Paul Barry
+		
 		if (classId != undefined) {
 			var modal = $(this);
 			modal.find('#class-id').val(classId);
@@ -117,6 +125,9 @@ function initCustomerPage() {
 
 	$('#btn-register').click(function() {
 		var paymentType;
+		
+		var custId; //Paul Barry - Customer ID required
+	
 
 		if($('#weekly').is(":checked")) {
 			paymentType = 'weekly';
@@ -126,13 +137,21 @@ function initCustomerPage() {
 
 		if($('#weekly').is(":checked") || $('#whole').is(":checked")) {
 	    	var classId = $('#class-id').val();
+	    	
+	    	
 	    	var userId = sessionStorage.getItem("auth-id");
+	    	custId = userId; //Paul Barry - added for convenience to get Cust ID
 	    	console.log('classId: ' + classId);
-
+	    	
+	    	console.log('Fee is: '+fee); //Paul Barry
+	    	
 	    	var formData = JSON.stringify({
     	        "classId": classId,
     	        "memberId": userId
     	    });
+	    	
+			
+	    	
 	    	$.ajax({
 	    		type: 'POST',
 	    		contentType: 'application/json',
@@ -143,7 +162,15 @@ function initCustomerPage() {
 	    			$('#class-reg-modal').modal("hide");
 	    		}
 	    	});
+	    	
+	    	//Paul Barry Transaction call
+	    	console.log('Inside Paul Barrys Class registration code');
+	    	classRegistration(custId, fee, paymentType);  
+	    	  
+	    	
 		}
+		
+	
 	 });
 
 	$('#btn-unregister').click(function() {
@@ -192,13 +219,13 @@ function renderCustomerClasses(data){
 	$.each(data, function(index, c){
 		$('#classes_table_body').append('<tr><td>' + c.class_title + '</td><td>'
 			+ c.class_category + '</td><td>'
-			+ c.class_slot + '</td><td>'
+			+ c.class_slot + '</td><td id="fee">' //Paul Barry - Need ID to get fee value
 			+ c.class_fee + '</td><td>'
 			+ c.class_start + '</td><td>'
 			+ c.class_duration + '</td><td>'
 			+ (c.registrationId > 0
 				? '<a href="#" data-identity="' + c.registrationId + '" data-toggle="modal" data-target="#class-unreg-modal">Unregister</a>'
-				: '<a href="#" data-identity="' + c.class_id + '" data-toggle="modal" data-target="#class-reg-modal">Register</a>')
+				: '<a href="#" data-identity="' + c.class_id +'" data-fee="'+ c.class_fee +'" data-toggle="modal" data-target="#class-reg-modal">Register</a>')
 			+ '</td></tr>'
 		);
 	});
