@@ -1,76 +1,113 @@
 <!DOCTYPE html>
 
-<table id="classes_table" class="table table-striped table-hover display">
-	<thead>
-		<tr>
-			<th>Title</th>
-			<th>Category</th>
-			<th>Slot</th>
-			<th>Fee</th>
-			<th>Start</th>
-			<th>Duration</th>
-			<th>Actions</th>
-		</tr>
-	</thead>
-	<tbody id="classes_table_body">
-	</tbody>
-</table>
 
- <div class="modal fade" id="class-reg-modal">
-   <div class="modal-dialog">
-     <div class="modal-content">
- 
-       <div class="modal-header">
-         <h4 class="modal-title">You are only one step away &#128578;</h4>
-             
-         <button type="button" class="submit" data-dismiss="modal">&times;</button>
-       </div>
+<ul class="nav nav-tabs mb-4" role="tablist">
+	<li class="nav-item"><a class="nav-link active" data-toggle="tab"
+		href="#classes"> Classes</a></li>
+	<li class="nav-item"><a class="nav-link" data-toggle="tab"
+		href="#timetable"> Timetable</a></li>
+	<li class="nav-item"><a class="nav-link" data-toggle="tab"
+		href="#question"> Ask a question</a></li>
+</ul>
 
-       <div class="modal-body">
-  			<div class="form-group">
-    			<label>Choose payment type:</label>
-    			<div class="input-group mt-1">
-					<input type="radio" id="weekly" name="payment" value="weekly" required/>
-			  		<label class="ml-2 mr-3" for="weekly">Weekly</label>
-			  		<input type="radio" id="whole" name="payment" value="pay-at-once" required/>
-			  		<label class="ml-2" for="whole">Pay at once</label><br>
-			  		<div class="invalid-feedback" style="display:block">Choose a payment option to continue.</div>
-	  			</div>
-  			</div>
-  			<input type="hidden" id="class-id"/>
-       </div>
 
-       <div class="modal-footer">
-         <button id="btn-register" type="button" class="btn btn-success">Register</button>
-          <button id="btn-cancel" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-       </div>
-       
-     </div>
-   </div>
- </div>
- 
- <div class="modal fade" id="class-unreg-modal">
-   <div class="modal-dialog">
-     <div class="modal-content">
- 
-       <div class="modal-header">
-         <h4 class="modal-title">You are only one step away &#128533;</h4>
-             
-         <button type="button" class="submit" data-dismiss="modal">&times;</button>
-       </div>
+<div class="tab-content">
+	<div id="classes" class="tab-pane active">
+		<table id="classes_table"
+			class="table table-striped table-hover display">
+			<thead>
+				<tr>
+					<th>Title</th>
+					<th>Category</th>
+					<th>Slot</th>
+					<th>Fee</th>
+					<th>Start</th>
+					<th>Duration</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
 
-       <div class="modal-body">
-  			<p> Are you sure you want to unregister?</p>
-    		
-  			<input type="hidden" id="reg-id"/>
-       </div>
+			<tbody id="classes_table_body">
+			</tbody>
+		</table>
+	</div>
 
-       <div class="modal-footer">
-         <button id="btn-unregister" type="button" class="btn btn-danger">Unregister</button>
-          <button id="btn-cancel" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-       </div>
-       
-     </div>
-   </div>
- </div>
-  
+	<!-- The timetable  -->
+	<div id="timetable" class="tab-pane fade">
+		<table id="timetable_table" class="table table-bordered table-striped">
+			<thead>
+				<tr>
+					<th>CLASS</th>
+					<th>MON</th>
+					<th>TUE</th>
+					<th>WED</th>
+					<th>THU</th>
+					<th>FRI</th>
+				</tr>
+			</thead>
+
+			<tbody id="timetable_table_body">
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<div class="modal fade" id="class-reg-modal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+
+			<div class="modal-header">
+				<h4 class="modal-title">You are only one step away &#128578;</h4>
+
+				<button type="button" class="submit" data-dismiss="modal">&times;</button>
+			</div>
+
+			<div class="modal-body">
+				<div class="form-group">
+					<label>Choose payment type:</label>
+					<div class="input-group mt-1">
+						<input type="radio" id="weekly" name="payment" value="weekly"
+							required /> <label class="ml-2 mr-3" for="weekly">Weekly</label>
+						<input type="radio" id="whole" name="payment" value="pay-at-once"
+							required /> <label class="ml-2" for="whole">Pay at once</label><br>
+						<div class="invalid-feedback" style="display: block">Choose
+							a payment option to continue.</div>
+					</div>
+				</div>
+				<input type="hidden" id="class-id" />
+			</div>
+
+			<div class="modal-footer">
+				<button id="btn-register" type="button" class="btn btn-success">Register</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="class-unreg-modal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+
+			<div class="modal-header">
+				<h4 class="modal-title">You are only one step away &#128533;</h4>
+
+				<button type="button" class="submit" data-dismiss="modal">&times;</button>
+			</div>
+
+			<div class="modal-body">
+				<p>Are you sure you want to unregister?</p>
+
+				<input type="hidden" id="reg-id" />
+			</div>
+
+			<div class="modal-footer">
+				<button id="btn-unregister" type="button" class="btn btn-danger">Unregister</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+			</div>
+
+		</div>
+	</div>
+</div>
+

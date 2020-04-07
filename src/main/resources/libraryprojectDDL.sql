@@ -110,3 +110,19 @@ CREATE TABLE transactions (
   KEY fk_transactions_users_user_id_idx (user_id),
   CONSTRAINT fk_transactions_users_user_id FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ;
+
+--
+-- Table structure for table timetable
+--
+DROP TABLE if exists timetable;
+
+CREATE TABLE timetable (
+id int(11) NOT NULL AUTO_INCREMENT,
+class_day ENUM('MON', 'TUE', 'WED', 'THU', 'FRI') NOT NULL,
+class_time VARCHAR(45) NOT NULL,
+class_id INT(11) NOT NULL,
+PRIMARY KEY (id),
+CONSTRAINT fk_timetable_classes_class_id
+    FOREIGN KEY (class_id)
+    REFERENCES library.classes (class_id)
+);

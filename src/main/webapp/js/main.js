@@ -97,6 +97,7 @@ function renderCustomerContent() {
         initCustomerPage();
 
         findCustomerClasses();
+        findTimetable();
     });
 }
 
@@ -210,3 +211,30 @@ function renderCustomerClasses(data){
     });
 }
 
+function findTimetable(){
+	console.log('findTimetable');
+	$.ajax({
+		type: 'GET',
+		url: rootURL + '/timetable' ,
+		dataType: "json",
+		success: renderTimetable
+	});
+}
+
+function renderTimetable(data){
+	if ($.fn.dataTable.isDataTable('#timetable_table')) {
+		var table = $('#timetable_table').DataTable();
+		table.clear();
+		table.destroy();
+	}
+	var output='';
+	for (var classTitle in data) {
+		output += '<tr><td>' + classTitle + '</td>';
+		$.each(data[classTitle], function(index, classTime){
+			output += '<td>' + (classTime != null ? classTime : '') + '</td>'
+		});
+		output += '</tr>'
+	}
+	$('#timetable_table_body').append(output);
+	$('#timetable_table').DataTable();
+}

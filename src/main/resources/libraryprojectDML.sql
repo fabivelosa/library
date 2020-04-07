@@ -47,3 +47,40 @@ INSERT INTO library.classes(class_Id,class_title,class_category,class_slot,class
 --
 INSERT INTO library.registration(classId,memberId,regDate,feeDue,balanceDue,attendance ) VALUES (1, 3, '2021-03-10',5,45,1),
 																								(2, 3, '2021-03-10',10,35,1);
+
+--
+-- data for table timetable
+--
+INSERT INTO timetable VALUES(1, 'MON', '10am-12pm', 1);
+INSERT INTO timetable VALUES(2, 'WED', '10am-12pm', 1);
+INSERT INTO timetable VALUES(3, 'FRI', '10am-12pm', 1);
+INSERT INTO timetable VALUES(4, 'TUE', '10am-12pm', 2);
+INSERT INTO timetable VALUES(5, 'THU', '10am-12pm', 2);
+INSERT INTO timetable VALUES(6, 'MON', '12pm-2pm', 3);
+INSERT INTO timetable VALUES(7, 'WED', '12pm-2pm', 3);
+INSERT INTO timetable VALUES(8, 'FRI', '12pm-2pm', 3);
+INSERT INTO timetable VALUES(9, 'TUE', '12pm-2pm', 4);
+INSERT INTO timetable VALUES(10,'THU', '12pm-2pm', 4);
+INSERT INTO timetable VALUES(11,'MON', '11am-1pm', 5);
+INSERT INTO timetable VALUES(12,'WED', '11am-1pm', 5);
+INSERT INTO timetable VALUES(13,'FRI', '11am-1pm', 5);
+INSERT INTO timetable VALUES(14,'TUE', '11am-1pm', 6);
+INSERT INTO timetable VALUES(15,'THU', '11am-1pm', 6);
+INSERT INTO timetable VALUES(16,'TUE', '11am-1pm', 7);
+INSERT INTO timetable VALUES(17,'THU', '11am-1pm', 7);
+INSERT INTO timetable VALUES(18,'MON', '1pm-3pm', 8);
+INSERT INTO timetable VALUES(19,'WED', '1pm-3pm', 8);
+INSERT INTO timetable VALUES(20,'FRI', '1pm-3pm', 8);
+INSERT INTO timetable VALUES(21,'MON', '11am-1pm', 9);
+INSERT INTO timetable VALUES(22,'WED', '11am-1pm', 9);
+INSERT INTO timetable VALUES(23,'FRI', '11am-1pm', 9);
+INSERT INTO timetable VALUES(24,'MON', '9am-11am', 10);
+INSERT INTO timetable VALUES(25,'WED', '9am-11am', 10);
+INSERT INTO timetable VALUES(26,'FRI', '9am-11am', 10);
+INSERT INTO timetable VALUES(27,'TUE', '12pm-2pm', 11);
+INSERT INTO timetable VALUES(28,'THU', '12pm-2pm', 11);
+INSERT INTO timetable VALUES(29,'MON', '10am-12pm', 12);
+INSERT INTO timetable VALUES(30,'WED', '10am-12pm', 12);
+INSERT INTO timetable VALUES(31,'FRI', '10am-12pm', 12);
+INSERT INTO timetable VALUES(32,'TUE', '12pm-2pm', 13);
+INSERT INTO timetable VALUES(33,'THU', '12pm-2pm', 13);
