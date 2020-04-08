@@ -32,7 +32,7 @@ DROP TABLE IF EXISTS users;
   land_tel INT(10) UNSIGNED ZEROFILL NULL DEFAULT NULL,
   mobile_tel INT(9) UNSIGNED ZEROFILL NULL DEFAULT NULL,
   email VARCHAR(45) NULL DEFAULT NULL,
- # age_group ENUM('Standard', 'Discounted') NULL DEFAULT NULL COMMENT 'Enumerated to Standard or Discounted for Student or Senior Citizen',
+  age_group ENUM('Standard', 'Discounted') NULL DEFAULT NULL COMMENT 'Enumerated to Standard or Discounted for Student or Senior Citizen',
   category ENUM('STAFF', 'MANAGER', 'WALK_IN_CUSTOMER', 'CUSTOMER') NOT NULL,
   college_name VARCHAR(45) DEFAULT NULL,
   account_balance decimal(6,2) DEFAULT '0',
