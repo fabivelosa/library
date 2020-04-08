@@ -23,7 +23,8 @@
 	var custBalance;
 	var customerId;
 	
-	var membership = true; //Maryanna???
+	var membership = true; //Fabi???
+	
 	var ageGroup = "standard";  //Maryanna???
 	
 	var updatedCustBalance = 0;
@@ -50,12 +51,8 @@
 	
 	//Registration
 	
-	
-	
-
-	
 	function classRegistration(custId, fee, paymentType){
-	console.log('Inside classRegistration Function')
+	console.log('Inside classRegistration Function');
 		//Locate Customer
 	customer = findCustBalanceById(custId);
 	custBalance =customer.account_balance;
@@ -76,8 +73,41 @@
 	debitTransaction(customerId, name, amount, custBalance, updatedCustBalance); //Add Transaction to log
 	}
 	
+	//Membership
 	
-
+	function membershipRegistration(memberId){
+		console.log('Inside membershipRegistration Function');
+		//Locate Customer
+	customer = findCustBalanceById(memberId);
+	custBalance =customer.account_balance;
+	customerId = customer.userId;
+	
+	name= "Membership Fee"; 
+	amount = membershipFee;
+	memberUpdateCustomerBalance(custBalance, membershipFee) //Business Logic Function for Membership Fee 
+	console.log(updatedCustBalance);
+	updateCustomerBalance(customerId, updatedCustBalance); //Update Customer Balance first
+	debitTransaction(customerId, name, amount, custBalance, updatedCustBalance); //Add Transaction to log
+	}
+	
+	//Payments
+	
+	function payment(custId, payName, amount){
+		console.log('Inside payment Function');
+		//Locate Customer
+	customer = findCustBalanceById(custId);
+	custBalance =customer.account_balance;
+	customerId = customer.userId;
+	
+	paymentName = payName;
+	paymentAmount = amount;
+	paymentUpdateCustomerBalance();
+	updateCustomerBalance(customerId, updatedCustBalance); //Update Customer Balance first
+	creditTransaction(customerId, paymentName, paymentAmount, custBalance, updatedCustBalance); //Add Transaction to log
+	
+	
+		
+	}
 	/*END INTEGRATION AREA*****************************************************/
 	
 	/*TESTING AREA*****************************************************/

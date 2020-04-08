@@ -684,6 +684,8 @@ $('#table_id-1 tbody').on('click', '#createBtn', function () {
 						 }
 					});
 	     }
+	       //Paul Barry Add Membership Fee Transaction
+	       membershipRegistration(memberId);
 	});
 }
 
@@ -702,7 +704,7 @@ function initUserTransactions(){
 
 //PAUL BEGIN
 /*Get all Transactions by Customer*/
-function findTransactionsByCustomerId(custId) {
+/*function findTransactionsByCustomerId(custId) {
 	console.log('findTransactionsByCustomerId: ' + custId);
 	$.ajax({
 		type : 'GET',
@@ -710,7 +712,7 @@ function findTransactionsByCustomerId(custId) {
 		dataType : "json",
 		 success: function (data) {
 			    console.log(data);
-			    /*Build the DataTable*/
+			    Build the DataTable
 			    $.each(data,function (index, transaction) {
 			    	console.log('Building DataTable')
 			    	console.log('renderlist values' + transaction.user_id);
@@ -757,6 +759,6 @@ function findTransactionsByCustomerId(custId) {
 			        });				
 			}
 	});
-}
+}*/
 /*END DATATABLES *************************************************************/
 //PAUL END
