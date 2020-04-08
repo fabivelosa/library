@@ -13,6 +13,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import com.ait.dao.AuthenticationDao;
 import com.ait.dao.UserDAO;
 import com.ait.dto.UserEntity;
 
@@ -21,6 +22,7 @@ import com.ait.dto.UserEntity;
 public class UserController {
 
 	UserDAO userDAO = new UserDAO();
+	AuthenticationDao authenticationDao = new AuthenticationDao();
 
 	// CRUD -- CREATE operation
 
@@ -28,7 +30,9 @@ public class UserController {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public UserEntity addUser(UserEntity userEntity) throws SQLException {
-		return userDAO.create(userEntity);
+		UserEntity user = userDAO.create(userEntity);
+		authenticationDao.create(user.getUserId(), user.getUsername(), user.getPassword()); 
+		return user;
 
 	}
 

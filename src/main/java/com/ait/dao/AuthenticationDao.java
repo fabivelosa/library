@@ -33,4 +33,23 @@ public class AuthenticationDao {
 		}
 		return null;
 	}
+	
+	public void create(int userId, String username, String password) {
+		Connection c = null;
+		String sql = "INSERT INTO library.authentication(user_id, username, password) VALUES (?, ?, ?)";
+		System.out.println("sql: " + sql);
+		try {
+			c = DataBaseConnection.getConnection();		
+			PreparedStatement ps = c.prepareStatement(sql);
+			ps.setInt(1, userId);
+			ps.setString(2, username);
+			ps.setString(3, password);
+			ps.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		} finally {
+			DataBaseConnection.close(c);
+		}
+	}
 }

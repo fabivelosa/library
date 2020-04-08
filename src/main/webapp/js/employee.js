@@ -1,5 +1,5 @@
 /*
- * A00267345 - Fabiane 
+ * A00267345 - Fabiane
  */
 var rootURL = "http://localhost:8080/library/rest";
 
@@ -18,12 +18,16 @@ window.initEmployee = function initEmployee() {
 				findAllUsers(2);
 			} else if (ui.newTab.index() == 3) {
 				findAllClasses();
-			} else if (ui.newTab.index() == 4) { 
+			} else if (ui.newTab.index() == 4) {
 				findAllUsers(4);
 			} else if (ui.newTab.index() == 5) {
 				findAttendance();
 			}
 		}
+	});
+
+	$('#contact_form').submit(function(){
+		event.preventDefault();
 	});
 };
 
@@ -76,7 +80,7 @@ function findAllUsers(tab) {
 			renderUserList(data);
 			else if (tab==4)
 			renderUserCombo(data);
-			
+
 		}
 	});
 }
@@ -145,7 +149,7 @@ var renderUserCombo = function(users) {
 	$.each(users, function(index, user) {
 		$("#userCombo").append(
 				'<option value="'+ user.userId + '">'+ user.firstname
-				+ ' ' + user.lastname +'</option>;'	
+				+ ' ' + user.lastname +'</option>;'
 	)})
 }
 
@@ -185,7 +189,7 @@ console.log(data);
 												+ '</td><td>'
 												+ c.class_start
 												+ '</td><td>'
-												+ c.class_duration								
+												+ c.class_duration
 												+ '</td><td>'
 												+ (c.registrationId > 0 ? '<a href="#" data-identity="'+ c.registrationId+ '" data-toggle="modal" data-target="#class-unregStaff-modal">Unregister</a>'
 																		: '<a href="#" data-identity="'+ c.class_id+ '" data-toggle="modal" data-target="#class-regStaff-modal">Register</a>')
@@ -319,12 +323,12 @@ function renderDTUsers(data) {
 						"searching" : true,
 						"retrieve" : true,
 						"data" : data,
-						"columns" : [   {"data" : "user.userId"}, 
-										{"data" : "user.firstname"}, 
-										{"data" : "user.lastname"}, 
-										{"data" : "user.ageGroup"}, 
-										{"data" : "user.account_balance"}, 
-										{"data" : "user.mobileTel"}, 
+						"columns" : [   {"data" : "user.userId"},
+										{"data" : "user.firstname"},
+										{"data" : "user.lastname"},
+										{"data" : "user.ageGroup"},
+										{"data" : "user.account_balance"},
+										{"data" : "user.mobileTel"},
 										{"data" : "userId"}, ],
 						"columnDefs" : [
 								{	visible : false,
@@ -384,11 +388,11 @@ function renderDTUsers(data) {
 									}
 								} ],
 					});
-	
+
 }
 
 function initUpdateClasses() {
-	
+
 	$('#class-update-modal').on('hidden.bs.modal', function() {
 		console.log('hide.bs.modal');
 		$('#classId').val("");
@@ -419,7 +423,7 @@ function initUpdateClasses() {
 			"class_fee" : $('#fee').val()
 		});
 	};
-	
+
 	$('#btn-save').on('click', function(e) {
 		var classId = $('#classId').val();
 		console.log('click' + classId);
@@ -439,9 +443,9 @@ function initUpdateClasses() {
 }
 
 function initRegisterUser() {
-	
+
 $('#success_message').hide();
-	
+
 $('#cmbCategory').change(function() {
 		if ($('#cmbCategory').val()=='WALK_IN_CUSTOMER'){
 			$('#eircode').hide();
@@ -453,7 +457,7 @@ $('#cmbCategory').change(function() {
 			$('#address_name').hide();
 			$('#address_namel').hide();
 			$('#address').hide();
-			$('#addressl').hide(); 
+			$('#addressl').hide();
 			$('#town').hide();
 			$('#townl').hide();
 			$('#county').hide();
@@ -462,23 +466,23 @@ $('#cmbCategory').change(function() {
 			$('#user_namel').hide();
 			$('#user_password').hide();
 			$('#user_passwordl').hide();
-			
+
 		}else {
 			$('#eircode').show();
 			$('#email').show();
 			$('#contact_no').show();
 			$('#address_name').show();
-			$('#address').show(); 
+			$('#address').show();
 			$('#town').show();
 			$('#user_name').show();
 			$('#user_password').show();
-			
+
 			$('#county').show();
 			$('#eircodel').show();
 			$('#emaill').show();
 			$('#contact_nol').show();
 			$('#address_namel').show();
-			$('#addressl').show(); 
+			$('#addressl').show();
 			$('#townl').show();
 			$('#countyl').show();
 			$('#user_namel').show();
@@ -488,7 +492,7 @@ $('#cmbCategory').change(function() {
 
 $('#btnSaveUser').click(function() {
 		console.log('click user');
-			
+
 	var formToJSON = function() {
 		return JSON.stringify({
 		"category" : $('#cmbCategory').val(),
@@ -502,7 +506,9 @@ $('#btnSaveUser').click(function() {
 		"addressName" : $('#address_name').val(),
 		"addressStreet" : $('#address').val(),
 		"addressTown" : $('#town').val(),
-		"addressCounty" : $('#county').val()
+		"addressCounty" : $('#county').val(),
+		"username" : $('#user_name').val(),
+		"password" : $('#user_password').val()
 		});
 	};
 
@@ -527,18 +533,18 @@ $('#btnSaveUser').click(function() {
 	function clearForm() {
 		$('#cmbCategory').val("");
 		$('#dateofbirth').val("");
-		$('#eircode').val(""); 
-		$('#email').val(""); 
+		$('#eircode').val("");
+		$('#email').val("");
 		$('#college').val("");
-		$('#first_name').val(""); 
-		$('#last_name').val(""); 
+		$('#first_name').val("");
+		$('#last_name').val("");
 		$('#contact_no').val("");
 		$('#address_name').val("");
-		$('#address').val(""); 
-		$('#town').val(""); 
+		$('#address').val("");
+		$('#town').val("");
 		$('#county').val("");
 		}
-	}); 
+	});
 }
 
 function initRegisterClass() {
@@ -579,13 +585,13 @@ function initRegisterClass() {
 		}
 
 		if ($('#weekly').is(":checked") || $('#whole').is(":checked")) {
-			var classId = $('#class-id').val();			
+			var classId = $('#class-id').val();
 
 			var formData = JSON.stringify({
 				"classId" : classId,
 				"memberId" : currentUser
 			});
-			
+
 			$.ajax({
 				type : 'POST',
 				contentType : 'application/json',
@@ -686,7 +692,7 @@ $('#table_id-1 tbody').on('click', '#createBtn', function () {
 }
 
 function initUserTransactions(){
-	
+
 		$("#userCombo").on("change", function(event) {
 			if ($.fn.dataTable.isDataTable('#table_id')) {
 				var table = $('#table_id').DataTable();
@@ -695,7 +701,7 @@ function initUserTransactions(){
 			}
 			findTransactionsByCustomerId(this.value);
 		});
-		
+
 }
 
 //PAUL BEGIN
@@ -734,7 +740,7 @@ function findTransactionsByCustomerId(custId) {
 			                     );
 			            });
 			    var table = $('#table_id').DataTable();
-			    //List Selection Formula			    
+			    //List Selection Formula
 			    $('#table_id tbody').on(
 			        'click',
 			        'tr',
@@ -752,7 +758,7 @@ function findTransactionsByCustomerId(custId) {
 			                    '.selected #identify').data();
 			                alert(data_id);
 			            }
-			        });				
+			        });
 			}
 	});
 }
