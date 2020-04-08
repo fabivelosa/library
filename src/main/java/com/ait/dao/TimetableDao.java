@@ -1,6 +1,7 @@
 package com.ait.dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -45,5 +46,21 @@ public class TimetableDao {
 			DataBaseConnection.close(c);
 		}
 		return map;
+	}
+	
+	public boolean removeByClassId(int classId) {
+		Connection c = null;
+		try {
+			c = DataBaseConnection.getConnection();
+			PreparedStatement ps = c.prepareStatement("DELETE FROM timetable WHERE class_id=?");
+			ps.setInt(1, classId);
+			int count = ps.executeUpdate();
+			return count == 1;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		} finally {
+			DataBaseConnection.close(c);
+		}
 	}
 }

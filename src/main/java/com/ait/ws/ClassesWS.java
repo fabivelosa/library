@@ -15,12 +15,15 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import com.ait.dao.ClassesDAO;
+import com.ait.dao.TimetableDao;
 import com.ait.dto.ClassesDTO;
 
 
 @Path("/classes")
 public class ClassesWS {
+	
 	ClassesDAO dao = new ClassesDAO();
+	TimetableDao timetableDao = new TimetableDao();
 	/*
 	 * READ all classes
 	 */
@@ -100,6 +103,7 @@ public class ClassesWS {
 	@Path("{id}")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	public void remove(@PathParam("id") int id) {
+		timetableDao.removeByClassId(id);
 		dao.remove(id);
 	}
 }

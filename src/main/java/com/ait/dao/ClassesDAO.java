@@ -192,7 +192,7 @@ public class ClassesDAO {
 		Connection c = null;
 		try {
 			c = DataBaseConnection.getConnection();
-			PreparedStatement ps = c.prepareStatement("DELETE FROM classes WHERE id=?");
+			PreparedStatement ps = c.prepareStatement("DELETE FROM classes WHERE class_id=?");
 			ps.setInt(1, id);
 			int count = ps.executeUpdate();
 			return count == 1;
