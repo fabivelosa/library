@@ -19,7 +19,7 @@
 	var customerId;
 	
 	var membership = true; //Fabi???
-	var ageGroup = "standard";  //Maryanna???
+	var ageGroup = "standard";
 	
 	var updatedCustBalance = 0;
 	 
@@ -51,6 +51,7 @@
 	customer = findCustBalanceById(custId);
 	custBalance =customer.account_balance;
 	customerId = customer.userId;
+	ageGroup = customer.age_group;
 	
 	if(paymentType =="whole"){payfull = true	
 	}else payfull = false;
