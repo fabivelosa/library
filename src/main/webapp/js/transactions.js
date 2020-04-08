@@ -19,7 +19,7 @@
 	var customerId;
 	
 	var membership = true; //Fabi???
-	var ageGroup = "Standard";
+	var ageGroup;
 	
 	var updatedCustBalance = 0;
 	 
@@ -52,6 +52,7 @@
 	custBalance =customer.account_balance;
 	customerId = customer.userId;
 	ageGroup = customer.ageGroup;
+	console.log('Customer ageGroup is: '+ customer.ageGroup);
 	console.log('ageGroup is: '+ageGroup);
 	
 	if(paymentType =="whole"){payfull = true	
