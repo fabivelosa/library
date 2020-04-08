@@ -7,102 +7,108 @@ $(function() {
 });
 
 function renderLoginContent() {
-    console.log('Display login content');
-    $.get('login.html', function(response){
-        $('#main-container').html(response);
-        initLoginForm();
-    });
+	console.log('Display login content');
+	$.get('login.html', function(response) {
+		$('#main-container').html(response);
+		initLoginForm();
+	});
 }
 
 function initLoginForm() {
-    $("#invalid-login").removeClass('show');
-    $("#btn-logout").hide();
-    // submits the form data to login the user
-    $('#loginForm').submit(function(event) {
-        event.preventDefault();
-        authenticateUser();
-    });
+	$("#invalid-login").removeClass('show');
+	$("#btn-logout").hide();
+	// submits the form data to login the user
+	$('#loginForm').submit(function(event) {
+		event.preventDefault();
+		authenticateUser();
+	});
 }
 
 function initLogout() {
 	$("#btn-logout").show();
 
-	$('#btn-logout').click(function(){
+	$('#btn-logout').click(function() {
 		console.log('btn-logout');
 		var authToken = sessionStorage.getItem("auth-token");
 		$.ajax({
-			type: 'GET',
-			url: 'rest/logout/' + authToken,
-			success: renderLoginContent
+			type : 'GET',
+			url : 'rest/logout/' + authToken,
+			success : renderLoginContent
 		});
 
 	});
 }
 
 function authenticateUser() {
-    console.log("Authenticating the user.");
-    var formData = JSON.stringify({
-        "username": $('#username').val(),
-        "password": $('#pwd').val()
-    });
-    $.ajax({
-		type: 'POST',
-		contentType: 'application/json',
-		url: "rest/login",
-		dataType: "json",
-		data: formData,
-		success: function(authInfo, textStatus, jqXHR){
-            sessionStorage.setItem("auth-token", authInfo.token);
-            sessionStorage.setItem("auth-id", authInfo.userId);
-		    console.log("User successfully authenticated, " + sessionStorage.getItem("auth-token"));
-            // render the subpage for the specific user category
-		    console.log("Category: " + authInfo.category);
-            if(authInfo.category == 'MANAGER') {
-                renderManagementContent();
-            } else if(authInfo.category == 'STAFF') {
-                renderEmployeeContent();
-            } else if(authInfo.category == 'CUSTOMER') {
-                renderCustomerContent();
-            }
+	console.log("Authenticating the user.");
+	var formData = JSON.stringify({
+		"username" : $('#username').val(),
+		"password" : $('#pwd').val()
+	});
+	$.ajax({
+		type : 'POST',
+		contentType : 'application/json',
+		url : "rest/login",
+		dataType : "json",
+		data : formData,
+		success : function(authInfo, textStatus, jqXHR) {
+			sessionStorage.setItem("auth-token", authInfo.token);
+			sessionStorage.setItem("auth-id", authInfo.userId);
+			console.log("User successfully authenticated, "
+					+ sessionStorage.getItem("auth-token"));
+			// render the subpage for the specific user category
+			console.log("Category: " + authInfo.category);
+			if (authInfo.category == 'MANAGER') {
+				renderManagementContent();
+			} else if (authInfo.category == 'STAFF') {
+				renderEmployeeContent();
+			} else if (authInfo.category == 'CUSTOMER') {
+				renderCustomerContent();
+			}
 
-            initLogout();
+			initLogout();
 		},
-		error: function(jqXHR, textStatus, errorThrown){
-		    console.log("Unsuccessful user authentication.");
-		    $("#invalid-login").addClass('show');
+		error : function(jqXHR, textStatus, errorThrown) {
+			console.log("Unsuccessful user authentication.");
+			$("#invalid-login").addClass('show');
 		}
 	});
 }
 
 function renderManagementContent() {
-    console.log('Display management content');
-    $.get('management.html', function(response){
-        $('#main-container').html(response);
-    });
+	console.log('Display management content');
+	$.get('management.html', function(response) {
+		$('#main-container').html(response);
+	});
 }
 
 function renderEmployeeContent() {
-    console.log('Display employee content');
-    $.get('employee.html', function(response){
-        $('#main-container').html(response);
+	console.log('Display employee content');
+	$.get('employee.html', function(response) {
+		$('#main-container').html(response);
 
-    	initEmployee();
-    });
+		initEmployee();
+	});
 }
 
 function renderCustomerContent() {
-    console.log('Display customer content');
-    $.get('customer.html', function(response){
-        $('#main-container').html(response);
-        initCustomerPage();
+	console.log('Display customer content');
+	$.get('customer.html', function(response) {
+		$('#main-container').html(response);
+		initCustomerPage();
 
-        findCustomerClasses();
-        findTimetable();
-    });
+		findCustomerClasses();
+		findTimetable();
+	});
 }
 
 function initCustomerPage() {
-	$('#class-reg-modal').on('show.bs.modal', function (event) {
+	$('#question-form').submit(function() {
+		event.preventDefault();
+		console.log('question sent');
+	});
+
+	$('#class-reg-modal').on('show.bs.modal', function(event) {
 		console.log('show.bs.modal');
 		var actionLink = $(event.relatedTarget);
 		var classId = actionLink.data('identity');
@@ -112,7 +118,7 @@ function initCustomerPage() {
 		}
 	});
 
-	$('#class-reg-modal').on('hide.bs.modal', function (event) {
+	$('#class-reg-modal').on('hide.bs.modal', function(event) {
 		console.log('hide.bs.modal');
 		$('#weekly').prop('checked', false);
 		$('#whole').prop('checked', false);
@@ -121,48 +127,48 @@ function initCustomerPage() {
 	$('#btn-register').click(function() {
 		var paymentType;
 
-		if($('#weekly').is(":checked")) {
+		if ($('#weekly').is(":checked")) {
 			paymentType = 'weekly';
-		} else if($('#whole').is(":checked")) {
+		} else if ($('#whole').is(":checked")) {
 			paymentType = 'whole';
 		}
 
-		if($('#weekly').is(":checked") || $('#whole').is(":checked")) {
-	    	var classId = $('#class-id').val();
-	    	var userId = sessionStorage.getItem("auth-id");
-	    	console.log('classId: ' + classId);
+		if ($('#weekly').is(":checked") || $('#whole').is(":checked")) {
+			var classId = $('#class-id').val();
+			var userId = sessionStorage.getItem("auth-id");
+			console.log('classId: ' + classId);
 
-	    	var formData = JSON.stringify({
-    	        "classId": classId,
-    	        "memberId": userId
-    	    });
-	    	$.ajax({
-	    		type: 'POST',
-	    		contentType: 'application/json',
-	    		url: rootURL + '/registration/' + paymentType,
-	    		data: formData,
-	    		success: function(){
-	    			findCustomerClasses();
-	    			$('#class-reg-modal').modal("hide");
-	    		}
-	    	});
+			var formData = JSON.stringify({
+				"classId" : classId,
+				"memberId" : userId
+			});
+			$.ajax({
+				type : 'POST',
+				contentType : 'application/json',
+				url : rootURL + '/registration/' + paymentType,
+				data : formData,
+				success : function() {
+					findCustomerClasses();
+					$('#class-reg-modal').modal("hide");
+				}
+			});
 		}
-	 });
+	});
 
 	$('#btn-unregister').click(function() {
 		console.log('btn-unregister');
 		var regId = $('#reg-id').val();
 		$.ajax({
-    		type: 'DELETE',
-    		url: rootURL + '/registration/' + regId,
-    		success: function(){
-    			findCustomerClasses();
-    			$('#class-unreg-modal').modal("hide");
-    		}
-    	});
+			type : 'DELETE',
+			url : rootURL + '/registration/' + regId,
+			success : function() {
+				findCustomerClasses();
+				$('#class-unreg-modal').modal("hide");
+			}
+		});
 	});
 
-	$('#class-unreg-modal').on('show.bs.modal', function (event) {
+	$('#class-unreg-modal').on('show.bs.modal', function(event) {
 		console.log('show.bs.modal');
 		var actionLink = $(event.relatedTarget);
 		var regId = actionLink.data('identity');
@@ -171,66 +177,92 @@ function initCustomerPage() {
 			modal.find('#reg-id').val(regId);
 		}
 	});
+
+	$('#sendBtn').click(function() {
+		var formData = JSON.stringify({
+			"name" : $('#name').val(),
+			"emailAddress" : $('#email').val(),
+			"message" : $('#comment').val()
+		});
+		$.ajax({
+			type : 'POST',
+			contentType : 'application/json',
+			url : rootURL + '/sendEmail',
+			data : formData,
+			success : function() {
+				$('#send-alert').modal('show');
+				clearContactForm();
+			}
+		});
+	});
 }
 
-function findCustomerClasses(){
+function clearContactForm() {
+	$('#name').val('');
+	$('#email').val('');
+	$('#comment').val('');
+}
+
+function findCustomerClasses() {
 	console.log('findCustomerClasses');
 	var authId = sessionStorage.getItem("auth-id");
 	console.log("auth: " + authId);
 	$.ajax({
-		type: 'GET',
-		url: rootURL + '/classes/query?user=' + authId + '&class=0' ,
-		dataType: "json",
-		success: renderCustomerClasses
+		type : 'GET',
+		url : rootURL + '/classes/query?user=' + authId + '&class=0',
+		dataType : "json",
+		success : renderCustomerClasses
 	});
 }
 
-
-function renderCustomerClasses(data){
+function renderCustomerClasses(data) {
 	if ($.fn.dataTable.isDataTable('#classes_table')) {
 		var table = $('#classes_table').DataTable();
 		table.clear();
 		table.destroy();
 	}
-	$.each(data, function(index, c){
-		$('#classes_table_body').append('<tr><td>' + c.class_title + '</td><td>'
-			+ c.class_category + '</td><td>'
-			+ c.class_slot + '</td><td>'
-			+ c.class_fee + '</td><td>'
-			+ c.class_start + '</td><td>'
-			+ c.class_duration + '</td><td>'
-			+ (c.registrationId > 0
-				? '<a href="#" data-identity="' + c.registrationId + '" data-toggle="modal" data-target="#class-unreg-modal">Unregister</a>'
-				: '<a href="#" data-identity="' + c.class_id + '" data-toggle="modal" data-target="#class-reg-modal">Register</a>')
-			+ '</td></tr>'
-		);
+	$.each(data, function(index, c) {
+		$('#classes_table_body')
+			.append(
+				'<tr><td>'
+				+ c.class_title + '</td><td>'
+				+ c.class_category + '</td><td>'
+				+ c.class_slot + '</td><td>'
+				+ c.class_fee + '</td><td>'
+				+ c.class_start + '</td><td>'
+				+ c.class_duration + '</td><td>'
+				+ (c.registrationId > 0 ? '<a href="#" data-identity="' + c.registrationId
+						+ '" data-toggle="modal" data-target="#class-unreg-modal">Unregister</a>'
+						: '<a href="#" data-identity="' + c.class_id
+						+ '" data-toggle="modal" data-target="#class-reg-modal">Register</a>')
+				+ '</td></tr>');
 	});
 
-	$('#classes_table').DataTable( {
-    	ordering: false
-    });
+	$('#classes_table').DataTable({
+		ordering : false
+	});
 }
 
-function findTimetable(){
+function findTimetable() {
 	console.log('findTimetable');
 	$.ajax({
-		type: 'GET',
-		url: rootURL + '/timetable' ,
-		dataType: "json",
-		success: renderTimetable
+		type : 'GET',
+		url : rootURL + '/timetable',
+		dataType : "json",
+		success : renderTimetable
 	});
 }
 
-function renderTimetable(data){
+function renderTimetable(data) {
 	if ($.fn.dataTable.isDataTable('#timetable_table')) {
 		var table = $('#timetable_table').DataTable();
 		table.clear();
 		table.destroy();
 	}
-	var output='';
-	for (var classTitle in data) {
+	var output = '';
+	for ( var classTitle in data) {
 		output += '<tr><td>' + classTitle + '</td>';
-		$.each(data[classTitle], function(index, classTime){
+		$.each(data[classTitle], function(index, classTime) {
 			output += '<td>' + (classTime != null ? classTime : '') + '</td>'
 		});
 		output += '</tr>'

@@ -80,6 +80,13 @@
 			<version>5.5.2</version>
 			<scope>test</scope>
 		</dependency>
+		
+		<!-- Java mail dependencies -->
+		<dependency>
+			<groupId>com.sun.mail</groupId>
+			<artifactId>javax.mail</artifactId>
+			<version>1.6.2</version>
+		</dependency>
 	</dependencies>
 	
 	<build>
