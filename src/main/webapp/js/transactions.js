@@ -12,19 +12,13 @@
 
 	
 	//Constants for Customer
-	var customer; //= findCustBalanceById(2); //Testing with Customer ID of 2
-	
-	
-	
-	//console.log('Customer ID is: '+customer.userId);
-	//console.log('Customer Account Balance is: '+customer.account_balance);
+	var customer;
 	
 	//Variables/Constants for Customers
 	var custBalance;
 	var customerId;
 	
 	var membership = true; //Fabi???
-	
 	var ageGroup = "standard";  //Maryanna???
 	
 	var updatedCustBalance = 0;
@@ -36,8 +30,8 @@
 	var walkinFeeApplied;
 	
 	//Variables/Constants for Classes
-	var classFee;   //Example Class fee which will be obtained in advance (Connor)??????
-	var payfull = true;  //Maryanna???
+	var classFee;   
+	var payfull = true;  
 	
 	var calculatedClassFee; 
 	
@@ -195,7 +189,7 @@
 				return false;
 			});
 	
-	// Wlakin button listener
+	// Walk-in button listener
 	$('#btnWlk').on(
 			'click',
 			function(e) {
