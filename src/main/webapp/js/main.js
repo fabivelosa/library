@@ -114,16 +114,16 @@ function initCustomerPage() {
 
 
 	var fee; //Paul Barry
-	
+
 	$('#class-reg-modal').on('show.bs.modal', function (event) {
 
 		console.log('show.bs.modal');
 		var actionLink = $(event.relatedTarget);
 		var classId = actionLink.data('identity');
-		
+
 		fee = actionLink.data('fee'); //Paul Barry
 		console.log('fee is: '+ fee); //Paul Barry
-		
+
 		if (classId != undefined) {
 			var modal = $(this);
 			modal.find('#class-id').val(classId);
@@ -138,9 +138,9 @@ function initCustomerPage() {
 
 	$('#btn-register').click(function() {
 		var paymentType;
-		
+
 		var custId; //Paul Barry - Customer ID required
-	
+
 
 		if ($('#weekly').is(":checked")) {
 			paymentType = 'weekly';
@@ -151,21 +151,21 @@ function initCustomerPage() {
 
 		if($('#weekly').is(":checked") || $('#whole').is(":checked")) {
 	    	var classId = $('#class-id').val();
-	    	
-	    	
+
+
 	    	var userId = sessionStorage.getItem("auth-id");
 	    	custId = userId; //Paul Barry - added for convenience to get Cust ID
 	    	console.log('classId: ' + classId);
-	    	
+
 	    	console.log('Fee is: '+fee); //Paul Barry
-	    	
+
 	    	var formData = JSON.stringify({
     	        "classId": classId,
     	        "memberId": userId
     	    });
-	    	
-			
-	    	
+
+
+
 	    	$.ajax({
 	    		type: 'POST',
 	    		contentType: 'application/json',
@@ -176,19 +176,19 @@ function initCustomerPage() {
 	    			$('#class-reg-modal').modal("hide");
 	    		}
 	    	});
-	    	
+
 	    	//Paul Barry Transaction call
 	    	console.log('Inside Paul Barrys Class registration code');
-	    	classRegistration(custId, fee, paymentType);  
-	    	  
-	    	
+	    	classRegistration(custId, fee, paymentType);
+
+
 
 		}
 
 	});
 
-		
-	
+
+
 
 
 	$('#btn-unregister').click(function() {
@@ -270,7 +270,7 @@ function findClassDetails(data){
 			'<div class="col-sm-6 col-md-3 col-lg3">'
 					+ '<div class="card card-content">'
 					+ '<div class="card-img"><img class="card-img-top" src="images/'
-					+ c.picture
+					+ (c.picture != null ? c.picture : 'image-coming-soon.jpg')
 					+ '" style="width:100%"></div>'
 					+ '<div class="card-body">'
 					+ '<span class="card-title">' + c.class_title + '</span>'
