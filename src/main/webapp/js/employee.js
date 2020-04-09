@@ -623,7 +623,7 @@ function initRegisterClass() {
 			var classId = $('#class-id').val();
 			
 			var userId = sessionStorage.getItem("auth-id"); //Paul Barry
-	    	custId = userId; //Paul Barry - added for convenience to get Cust ID
+	    	custId = currentUser; //Paul Barry - added for convenience to get Cust ID
 	    	console.log('classId: ' + classId); //Paul Barry
 	    	
 	    	console.log('Fee is: '+fee); //Paul Barry
