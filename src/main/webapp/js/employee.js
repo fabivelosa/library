@@ -1,18 +1,15 @@
 /*
- * A00267345 - Fabiane 
+ * A00267345 - Fabiane
  */
 var rootURL = "http://localhost:8080/library/rest";
 
-$(document).ready(function() {
+window.initEmployee = function initEmployee() {
 	initRegisterClass();
 	initUpdateClasses();
 	initRegisterUser();
 	initMembership();
 	initUserTransactions();
-	initUserPayment();
-});
 
-$(function() {
 	$("#tabs").tabs({
 		activate : function(event, ui) {
 			if (ui.newTab.index() == 1) {
@@ -25,12 +22,14 @@ $(function() {
 				findAllUsers(4);
 			} else if (ui.newTab.index() == 5) {
 				findAttendance();
-			} else if (ui.newTab.index() == 6) {
-				findAllUsers(6);
 			}
 		}
 	});
-});
+
+	$('#contact_form').submit(function(){
+		event.preventDefault();
+	});
+};
 
 function findAllClasses() {
 	$.ajax({
@@ -70,6 +69,7 @@ function findAllUsersMember() {
 		}
 	});
 }
+
 function findAllUsers(tab) {
 	$.ajax({
 		type : 'GET',
@@ -80,12 +80,10 @@ function findAllUsers(tab) {
 			renderUserList(data);
 			else if (tab==4)
 			renderUserCombo(data);
-			else if (tab==6)
-				renderUserCmb(data);
+
 		}
 	});
 }
-
 
 function findUserByName(name) {
 	$.ajax({
@@ -150,18 +148,9 @@ var renderUserCombo = function(users) {
 	$("#userCombo option").remove();
 	$.each(users, function(index, user) {
 		$("#userCombo").append(
-				'<option value="' + user.userId + '">' + user.firstname + ' '
-						+ user.lastname + '</option>;')
-	})
-}
-
-var renderUserCmb = function(users) {
-	$("#userCmb option").remove();
-	$.each(users, function(index, user) {
-		$("#userCmb").append(
-				'<option value="' + user.userId + '">' + user.firstname + ' '
-						+ user.lastname + '</option>;')
-	})
+				'<option value="'+ user.userId + '">'+ user.firstname
+				+ ' ' + user.lastname +'</option>;'
+	)})
 }
 
 var renderUserList = function(users) {
@@ -181,19 +170,15 @@ var renderUserSelect = function(user) {
 }
 
 function renderUserClasses(data) {
-	console.log(data);
+console.log(data);
 	if ($.fn.dataTable.isDataTable('#registerclasses')) {
 		var table = $('#registerclasses').DataTable();
 		table.clear();
 		table.destroy();
 	}
-	$
-			.each(
-					data,
-					function(index, c) {
+	$.each(data,function(index, c ) {
 						$('#registerclassesbody')
-								.append(
-										'<tr><td>'
+								.append('<tr><td>'
 												+ c.class_title
 												+ '</td><td>'
 												+ c.class_category
@@ -207,7 +192,7 @@ function renderUserClasses(data) {
 												+ c.class_duration
 												+ '</td><td>'
 												+ (c.registrationId > 0 ? '<a href="#" data-identity="'+ c.registrationId+ '" data-toggle="modal" data-target="#class-unregStaff-modal">Unregister</a>'
-														: '<a href="#" data-identity="' + c.class_id +'" data-fee="'+ c.class_fee +'" data-toggle="modal" data-target="#class-regStaff-modal">Register</a>')
+																		: '<a href="#" data-identity="'+ c.class_id+ '" data-toggle="modal" data-target="#class-regStaff-modal">Register</a>')
 												+ '</td></tr>');
 					});
 
@@ -333,79 +318,62 @@ function renderDTClasses(data) {
 }
 
 function renderDTUsers(data) {
-	$('#table_id-1')
-			.DataTable(
-					{
-						"paging" : true,
+	 $('#table_id-1').DataTable(
+					{	"paging" : true,
 						"searching" : true,
 						"retrieve" : true,
 						"data" : data,
-						"columns" : [ {
-							"data" : "user.userId"
-						}, {
-							"data" : "user.firstname"
-						}, {
-							"data" : "user.lastname"
-						}, {
-							"data" : "user.ageGroup"
-						}, {
-							"data" : "user.account_balance"
-						}, {
-							"data" : "user.mobileTel"
-						}, {
-							"data" : "userId"
-						}, ],
+						"columns" : [   {"data" : "user.userId"},
+										{"data" : "user.firstname"},
+										{"data" : "user.lastname"},
+										{"data" : "user.ageGroup"},
+										{"data" : "user.account_balance"},
+										{"data" : "user.mobileTel"},
+										{"data" : "userId"}, ],
 						"columnDefs" : [
-								{
-									visible : false,
+								{	visible : false,
 									targets : 0,
 									className : 'dt-center',
 									render : function(data, type, full, meta) {
 										return data;
 									}
 								},
-								{
-									visible : true,
+								{	visible : true,
 									targets : 1,
 									className : 'dt-center',
 									render : function(data, type, full, meta) {
 										return data;
 									}
 								},
-								{
-									visible : true,
+								{	visible : true,
 									targets : 2,
 									className : 'dt-center',
 									render : function(data, type, full, meta) {
 										return data;
 									}
 								},
-								{
-									visible : true,
+								{	visible : true,
 									targets : 3,
 									className : 'dt-center',
 									render : function(data, type, full, meta) {
 										return data;
 									}
 								},
-								{
-									visible : true,
+								{  visible : true,
 									targets : 4,
 									className : 'dt-center',
 									render : function(data, type, full, meta) {
 										return data;
 									}
 								},
-								{
-									visible : true,
+								{   visible : true,
 									targets : 5,
 									className : 'dt-center',
 									render : function(data, type, full, meta) {
 										return data;
 									}
 								},
-								{
-									visible : true,
+								{ 	visible : true,
 									targets : 6,
 									className : "dt-center",
 									render : function(data, type, full, meta) {
@@ -476,10 +444,10 @@ function initUpdateClasses() {
 
 function initRegisterUser() {
 
-	$('#success_message').hide();
+$('#success_message').hide();
 
-	$('#cmbCategory').change(function() {
-		if ($('#cmbCategory').val() == 'WALK_IN_CUSTOMER') {
+$('#cmbCategory').change(function() {
+		if ($('#cmbCategory').val()=='WALK_IN_CUSTOMER'){
 			$('#eircode').hide();
 			$('#eircodel').hide();
 			$('#email').hide();
@@ -499,7 +467,7 @@ function initRegisterUser() {
 			$('#user_password').hide();
 			$('#user_passwordl').hide();
 
-		} else {
+		}else {
 			$('#eircode').show();
 			$('#email').show();
 			$('#contact_no').show();
@@ -520,27 +488,29 @@ function initRegisterUser() {
 			$('#user_namel').show();
 			$('#user_passwordl').show();
 		}
-	})
+})
 
-	$('#btnSaveUser').click(function() {
+$('#btnSaveUser').click(function() {
 		console.log('click user');
 
-		var formToJSON = function() {
-			return JSON.stringify({
-				"category" : $('#cmbCategory').val(),
-				"birth_date" : $('#dateofbirth').val(),
-				"eircode" : $('#eircode').val(),
-				"email" : $('#email').val(),
-				"college_name" : $('#college').val(),
-				"firstname" : $('#first_name').val(),
-				"lastname" : $('#last_name').val(),
-				"mobileTel" : $('#contact_no').val(),
-				"addressName" : $('#address_name').val(),
-				"addressStreet" : $('#address').val(),
-				"addressTown" : $('#town').val(),
-				"addressCounty" : $('#county').val()
-			});
-		};
+	var formToJSON = function() {
+		return JSON.stringify({
+		"category" : $('#cmbCategory').val(),
+		"birth_date" : $('#dateofbirth').val(),
+		"eircode" : $('#eircode').val(),
+		"email" : $('#email').val(),
+		"college_name" : $('#college').val(),
+		"firstname" : $('#first_name').val(),
+		"lastname" : $('#last_name').val(),
+		"mobileTel" : $('#contact_no').val(),
+		"addressName" : $('#address_name').val(),
+		"addressStreet" : $('#address').val(),
+		"addressTown" : $('#town').val(),
+		"addressCounty" : $('#county').val(),
+		"username" : $('#user_name').val(),
+		"password" : $('#user_password').val()
+		});
+	};
 
 		console.log('addUser');
 		$.ajax({
@@ -560,29 +530,39 @@ function initRegisterUser() {
 			}
 		});
 
-		function clearForm() {
-			$('#cmbCategory').val("");
-			$('#dateofbirth').val("");
-			$('#eircode').val("");
-			$('#email').val("");
-			$('#college').val("");
-			$('#first_name').val("");
-			$('#last_name').val("");
-			$('#contact_no').val("");
-			$('#address_name').val("");
-			$('#address').val("");
-			$('#town').val("");
-			$('#county').val("");
+	function clearForm() {
+		$('#cmbCategory').val("");
+		$('#dateofbirth').val("");
+		$('#eircode').val("");
+		$('#email').val("");
+		$('#college').val("");
+		$('#first_name').val("");
+		$('#last_name').val("");
+		$('#contact_no').val("");
+		$('#address_name').val("");
+		$('#address').val("");
+		$('#town').val("");
+		$('#county').val("");
 		}
 	});
 }
+
+$('#btn-pay').click(function() {
+	var cust = $('#userCmb').val();
+	var category = $('#cbCategory').val();
+	var amount = $('#amount').val();
+	
+	payment(cust, category, amount);
+});
+
+
 
 function initRegisterClass() {
 	var fee; //Paul Barry
 	var currentUser;
 	$(document).on("click", "#userList a", function() {
 		findUserById(this.id);
-		currentUser = this.id;
+		currentUser= this.id;
 	});
 	$(document).on("click", "#btnSearch", function() {
 		findUserByName($('#searchKey').val())
@@ -624,7 +604,7 @@ function initRegisterClass() {
 			var classId = $('#class-id').val();
 			
 			var userId = sessionStorage.getItem("auth-id"); //Paul Barry
-	    	custId = currentUser; //Paul Barry - added for convenience to get Cust ID
+	    	custId = userId; //Paul Barry - added for convenience to get Cust ID
 	    	console.log('classId: ' + classId); //Paul Barry
 	    	
 	    	console.log('Fee is: '+fee); //Paul Barry
@@ -645,9 +625,6 @@ function initRegisterClass() {
 					$('#class-regStaff-modal').modal("hide");
 				}
 			});
-			//Paul Barry Transaction call
-	    	console.log('Inside Paul Barrys Class registration code');
-	    	classRegistration(custId, fee, paymentType);  
 		}
 	});
 
@@ -673,120 +650,140 @@ function initRegisterClass() {
 	});
 }
 
-function initMembership() {
-	$('#table_id-1 tbody').on(
-			'click',
-			'#endBtn',
-			function() {
-				var row = $(this).parents('tr')[0];
-				var table = $('#table_id-1').DataTable();
-				var mydata = (table.row(row).data());
-				var memberId = mydata["userId"];
-				var formToData = JSON.stringify({
-					"endDate" : new Date(),
-					"userId" : memberId
+function initMembership(){
+	$('#table_id-1 tbody').on('click', '#endBtn', function () {
+	       var row = $(this).parents('tr')[0];
+	       var table = $('#table_id-1').DataTable();
+	       var mydata = (table.row(row).data());
+	       var memberId = mydata["userId"];
+	       var formToData = JSON.stringify({
+	    		"endDate" : new Date(),
+				"userId": memberId
 				});
-				console.log(formToData);
-				var con = confirm("Are you sure you want to END membership of "
-						+ mydata.user["lastname"] + "?");
+	       console.log(formToData);
+		   var con=confirm("Are you sure you want to END membership of "+ mydata.user["lastname"]+"?");
 
-				if (con) {
-					console.log('yes');
-					$.ajax({
-						type : 'PUT',
-						contentType : 'application/json',
-						url : rootURL + '/membership/' + memberId,
-						data : formToData,
-						success : function() {
-							if ($.fn.dataTable.isDataTable('#table_id-1')) {
-								var table = $('#table_id-1').DataTable();
-								table.destroy();
-								table.clear();
-							}
-							findAllUsersMember();
+	       if(con){
+	          console.log('yes');
+	          $.ajax({
+					type : 'PUT',
+					contentType : 'application/json',
+					url : rootURL + '/membership/' + memberId,
+					data: formToData,
+					success : function() {
+						if ($.fn.dataTable.isDataTable('#table_id-1')) {
+							var table = $('#table_id-1').DataTable();
+							table.destroy();
+							table.clear();
 						}
-						
+						 findAllUsersMember();
+						 }
 					});
-				}
-			});
-
-	$('#table_id-1 tbody')
-			.on(
-					'click',
-					'#createBtn',
-					function() {
-						var row = $(this).parents('tr')[0];
-						var table = $('#table_id-1').DataTable();
-						var mydata = (table.row(row).data());
-						console.log('userid:' + mydata.user["userId"]);
-						var memberId = mydata.user["userId"];
-						var formToData = JSON
-								.stringify({
-									"startDate" : new Date(), // start date is
-									// TODAY DATE
-									"endDate" : new Date(new Date()
-											.setFullYear(new Date()
-													.getFullYear() + 1)), // END
-									// DATE
-									// is
-									// TODAY
-									// PLUS
-									// 1
-									// YEAR
-									"userId" : memberId
-								});
-						console.log('formToData:' + formToData);
-						var con = confirm("Are you sure you want to ADD membership for "
-								+ mydata.user["lastname"] + "?");
-						if (con) {
-							$.ajax({
-								type : 'POST',
-								contentType : 'application/json',
-								url : rootURL + '/membership/',
-								data : formToData,
-								success : function() {
-									if ($.fn.dataTable
-											.isDataTable('#table_id-1')) {
-										var table = $('#table_id-1')
-												.DataTable();
-										table.destroy();
-										table.clear();
-									}
-									findAllUsersMember();
-								}
-							});
-						}
-						// Paul Barry Add Membership Fee Transaction
-						membershipRegistration(memberId);
-					});
-}
-
-function initUserTransactions() {
-
-	$("#userCombo").on("change", function(event) {
-		if ($.fn.dataTable.isDataTable('#table_id')) {
-			var table = $('#table_id').DataTable();
-			table.clear();
-			table.destroy();
-		}
-		findTransactionsByCustomerId(this.value);
+	     }
 	});
 
+$('#table_id-1 tbody').on('click', '#createBtn', function () {
+	       var row = $(this).parents('tr')[0];
+	       var table = $('#table_id-1').DataTable();
+	       var mydata = (table.row(row).data());
+	       console.log('userid:'+mydata.user["userId"]);
+	       var memberId = mydata.user["userId"];
+	       var formToData = JSON.stringify({
+				"startDate" : new Date(), //start date is TODAY DATE
+				"endDate"   : new Date(new Date().setFullYear(new Date().getFullYear() + 1)), //END DATE is TODAY PLUS 1 YEAR
+				"userId"  : memberId
+				});
+	       console.log('formToData:'+formToData);
+	    var con=confirm("Are you sure you want to ADD membership for "+ mydata.user["lastname"]+"?");
+	       if(con){
+	          $.ajax({
+					type : 'POST',
+					contentType : 'application/json',
+					url : rootURL + '/membership/',
+					data: formToData,
+					success : function() {
+						if ($.fn.dataTable.isDataTable('#table_id-1')) {
+							var table = $('#table_id-1').DataTable();
+							table.destroy();
+							table.clear();
+						}
+						 findAllUsersMember();
+						 }
+					});
+	     }
+	});
 }
 
-function initUserPayment() {
-	
+function initUserTransactions(){
 
-	$('#btn-pay').on('click', function(e) {
-		
-		var amount = $('#amount').val();
-		var payName = $('#cbCategory').val();
-		var custId	= $('#userCmb').val();
-		
-		console.log('Payment amount: '  +amount);
-		console.log('Payment payName: ' +payName);
-		console.log('Payment custId: '  +custId);
-		
-	})
+		$("#userCombo").on("change", function(event) {
+			if ($.fn.dataTable.isDataTable('#table_id')) {
+				var table = $('#table_id').DataTable();
+				table.clear();
+				table.destroy();
+			}
+			findTransactionsByCustomerId(this.value);
+		});
+
 }
 
+//PAUL BEGIN
+/*Get all Transactions by Customer*/
+function findTransactionsByCustomerId(custId) {
+	console.log('findTransactionsByCustomerId: ' + custId);
+	$.ajax({
+		type : 'GET',
+		url : rootURL + '/transaction/search/' + custId,
+		dataType : "json",
+		 success: function (data) {
+			    console.log(data);
+			    /*Build the DataTable*/
+			    $.each(data,function (index, transaction) {
+			    	console.log('Building DataTable')
+			    	console.log('renderlist values' + transaction.user_id);
+			                $('#table_body')
+			                    .append(
+			                        '<tr><td id="identify">' +
+			                        transaction.transaction_id +
+//			                        '</td><td>' +
+//			                        transaction.user_id +
+			                        '</td><td>' +
+			                        transaction.date +
+			                        '</td><td>' +
+			                        transaction.name +
+			                        '<td>' +
+			                        transaction.type +
+			                        '</td><td>' +
+			                        transaction.user_ob +
+			                        '</td><td>' +
+			                        transaction.amount +
+			                        '</td><td>' +
+			                        transaction.user_cb +
+			                        '</td></tr>'
+			                     );
+			            });
+			    var table = $('#table_id').DataTable();
+			    //List Selection Formula
+			    $('#table_id tbody').on(
+			        'click',
+			        'tr',
+			        function () {
+			            if ($(this).hasClass('selected')) {
+			                $(this).removeClass('selected');
+			                data_id = null;
+			            } else {
+			                table.$('tr.selected').removeClass(
+			                    'selected');
+			                data_id = null;
+			                $(this).addClass('selected');
+
+			                data_id = table.cell(
+			                    '.selected #identify').data();
+			                alert(data_id);
+			            }
+			        });
+			}
+	});
+}
+/*END DATATABLES *************************************************************/
+//PAUL END
