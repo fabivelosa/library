@@ -1,35 +1,49 @@
 var rootURL = "http://localhost:8080/library/rest/classes";
 
 var deleteClassId;
+var editClassId;
 
 $(document).ready(function() {
 	findClasses();
-	
+
 	$('#btn-save').click(function(){
 		console.log('Button save clicked');
-		
+
 		var formData = formToJSON();
-		
-		$.ajax({
-    		type: 'POST',
-    		contentType: 'application/json',
-    		url: rootURL,
-    		data: formData,
-    		success: function(){
-    			console.log('successfully saved');
-    			findClasses();
-    			$('#class-modal').modal("hide");
-    		}
-    	});
+		if (editClassId > 0) {
+			$.ajax({
+				type: 'PUT',
+				contentType: 'application/json',
+				url: rootURL + '/' + editClassId,
+				data: formData,
+				success: function() {
+					console.log('successfully update');
+					findClasses();
+					$('#class-modal').modal("hide");
+				}
+			});
+		} else {
+			$.ajax({
+				type: 'POST',
+				contentType: 'application/json',
+				url: rootURL,
+				data: formData,
+				success: function(){
+					console.log('successfully created');
+					findClasses();
+					$('#class-modal').modal("hide");
+				}
+			});
+    	}
 	})
-	
+
 	$('#class-delete-modal').on('show.bs.modal', function(event) {
 		console.log('show.bs.modal');
 		var actionLink = $(event.relatedTarget);
 		deleteClassId = actionLink.data('identity');
-		
+
 	});
-	
+
 	$('#btn-delete').click(function(){
 		console.log('Delete button clicked :' + deleteClassId);
 		$.ajax({
@@ -38,17 +52,53 @@ $(document).ready(function() {
 			success : function() {
 				findClasses();
 				$('#class-delete-modal').modal("hide");
-				
+
 			}
 		});
 	});
-	
+
+	$('#class-modal').on('show.bs.modal', function(event){
+		console.log('show.bs.modal');
+		var actionLink = $(event.relatedTarget);
+		var classId = actionLink.data('identity');
+		if (classId != undefined) {
+			$.ajax({
+        		type : 'GET',
+        		url : rootURL + '/' + classId,
+        		dataType : "json",
+        		success : renderDetails
+			});
+		} else {
+			clearForm();
+		}
+	});
 });
+
+
+var renderDetails = function(c) {
+	editClassId = c.class_id;
+	$('#class_title').val(c.class_title);
+	$('#class_category').val(c.class_category);
+	$('#class_slot').val(c.class_slot);
+	$('#class_fee').val(c.class_fee);
+	$('#class_start').val(c.class_start);
+	$('#class_duration').val(c.class_duration);
+};
+
+function clearForm() {
+	editClassId = 0;
+	$('#class_title').val("");
+	$('#class_category').val("");
+	$('#class_slot').val("");
+	$('#class_fee').val("");
+	$('#class_start').val("");
+	$('#class_duration').val("");
+};
 
 var formToJSON = function () {
 	return JSON.stringify({
-		"class_title": $('#class_title').val(), 
-		"class_category": $('#class_category').val(), 
+		"class_title": $('#class_title').val(),
+		"class_category": $('#class_category').val(),
 		"class_slot": $('#class_slot').val(),
 		"class_fee": $('#class_fee').val(),
 		"class_start": $('#class_start').val(),
@@ -79,7 +129,7 @@ function renderClasses(data){
 			+ c.class_fee + '</td><td>'
 			+ c.class_start + '</td><td>'
 			+ c.class_duration + '</td><td>'
-			+ '<a href="#" data-identity="' + c.class_id + '" data-toggle="modal" data-target="#class-modal">Edit</a>'
+			+ '<a href="#" class="edit" data-identity="' + c.class_id + '" data-toggle="modal" data-target="#class-modal">Edit</a>'
 			+ ' | <a href="#" data-identity="' + c.class_id + '" data-toggle="modal" data-target="#class-delete-modal">Delete</a>'
 			+ '</td></tr>'
 		);
