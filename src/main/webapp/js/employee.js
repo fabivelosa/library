@@ -190,7 +190,7 @@ console.log(data);
 												+ c.class_duration								
 												+ '</td><td>'
 												+ (c.registrationId > 0 ? '<a href="#" data-identity="'+ c.registrationId+ '" data-toggle="modal" data-target="#class-unregStaff-modal">Unregister</a>'
-																		: '<a href="#" data-identity="'+ c.class_id+ '" data-toggle="modal" data-target="#class-regStaff-modal">Register</a>')
+																		: '<a href="#" data-identity="' + c.class_id +'" data-fee="'+ c.class_fee +'" data-toggle="modal" data-target="#class-regStaff-modal">Register</a>')
 												+ '</td></tr>');
 					});
 
@@ -544,6 +544,7 @@ $('#btnSaveUser').click(function() {
 }
 
 function initRegisterClass() {
+	var fee; //Paul Barry
 	var currentUser;
 	$(document).on("click", "#userList a", function() {
 		findUserById(this.id);
@@ -556,6 +557,10 @@ function initRegisterClass() {
 	$('#class-regStaff-modal').on('show.bs.modal', function(event) {
 		var actionLink = $(event.relatedTarget);
 		var classId = actionLink.data('identity');
+		
+		fee = actionLink.data('fee'); //Paul Barry
+		console.log('fee is: '+ fee); //Paul Barry
+		
 		console.log('show.bs.modal:'+$(event.relatedTarget));
 		console.log('classId: ' + classId);
 		console.log('userId: ' + currentUser);
@@ -573,6 +578,7 @@ function initRegisterClass() {
 
 	$('#btn-staff-register').click(function() {
 		var paymentType;
+		var custId; //Paul Barry - Customer ID required
 
 		if ($('#weekly').is(":checked")) {
 			paymentType = 'weekly';
@@ -581,7 +587,14 @@ function initRegisterClass() {
 		}
 
 		if ($('#weekly').is(":checked") || $('#whole').is(":checked")) {
-			var classId = $('#class-id').val();			
+			var classId = $('#class-id').val();
+			
+			var userId = sessionStorage.getItem("auth-id"); //Paul Barry
+	    	custId = userId; //Paul Barry - added for convenience to get Cust ID
+	    	console.log('classId: ' + classId); //Paul Barry
+	    	
+	    	console.log('Fee is: '+fee); //Paul Barry
+	    	
 
 			var formData = JSON.stringify({
 				"classId" : classId,
@@ -598,6 +611,9 @@ function initRegisterClass() {
 					$('#class-regStaff-modal').modal("hide");
 				}
 			});
+			//Paul Barry Transaction call
+	    	console.log('Inside Paul Barrys Class registration code');
+	    	classRegistration(custId, fee, paymentType);  
 		}
 	});
 
