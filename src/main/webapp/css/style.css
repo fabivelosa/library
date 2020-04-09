@@ -512,4 +512,20 @@ td, th
     padding-bottom: 10px;
  }
  
+ .card-content {
+	border: 1px solid rgba(128,128,128,0.1);
+    padding: 5px;
+    height: 240px;
+    width: 250px;
+    text-align: center;
+}
+
+.card-title {
+	font-weight: bold;
+}
+
+.card-text {
+	font-size: small;
+}
+
  

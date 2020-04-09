@@ -67,6 +67,7 @@ public class ClassesDAO {
 		classesDTO.setClass_fee(rs.getString("class_fee"));
 		classesDTO.setClass_start(rs.getString("class_start"));
 		classesDTO.setClass_duration(rs.getInt("class_duration"));
+		classesDTO.setPicture(rs.getString("picture"));
 		return classesDTO;
 	}
 

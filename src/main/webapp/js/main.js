@@ -211,8 +211,36 @@ function findCustomerClasses() {
 		type : 'GET',
 		url : rootURL + '/classes/query?user=' + authId + '&class=0',
 		dataType : "json",
-		success : renderCustomerClasses
+		success : function(data) {
+			findClassDetails(data); //added now
+			renderCustomerClasses(data);
+		}
 	});
+}
+
+function findClassDetails(data){
+	console.log('findClassDetails');
+	$('#details div').remove();
+	var lastRow;
+	$.each(data, function(index, c) {
+		console.log('index = ' + index + ', modulus = '
+				+ (index % 4));
+		if (index % 4 == 0) {
+			lastRow = 'row' + index;
+			$('#details').append(
+					'<div id=' + lastRow + ' class="row mb-4">');
+		}
+		$('#' + lastRow).append(
+			'<div class="col-sm-6 col-md-3 col-lg3">'
+					+ '<div class="card card-content">'
+					+ '<div class="card-img"><img class="card-img-top" src="images/'
+					+ c.picture
+					+ '" style="width:100%"></div>'
+					+ '<div class="card-body">'
+					+ '<span class="card-title">' + c.class_title + '</span>'
+					+ '</div>'
+			);
+		});
 }
 
 function renderCustomerClasses(data) {

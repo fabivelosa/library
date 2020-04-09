@@ -28,19 +28,19 @@ INSERT INTO library.membership(userId, startDate, endDate ) VALUES (3, '2021-03-
 --
 -- data for table classes
 --
-INSERT INTO library.classes(class_Id,class_title,class_category,class_slot,class_fee,class_start,class_duration ) VALUES (1, 'Story time for kids','Children',40,5,'2021-02-10',60),
-																														(2, 'English literature for beginners ','Adults',30,10,'2021-02-10',60),
-																														(3, 'Creative writing for beginners', 'Adults', 30, 15, '2020-05-18', 60),
-																														(4, 'Computers for beginners', 'Children', 30, 20, '2020-07-11', 60),
-																														(5, 'Technology for the over 60s', 'Adults', 20, 5, '2020-09-08', 60),
-                                                                                                                        (6, 'The Art of Drawing for kids', 'Children', 40, 10, '2020-06-12', 60),
-                                                                                                                        (7, 'Photography for passionates', 'Adults', 30, 15, '2021-07-13', 60),
-                                                                                                                        (8, 'Music time for adults', 'Adults', 40, 20, '2021-03-22', 60),
-                                                                                                                        (9, 'Animation and Design', 'Adults', 30, 25, '2020-02-17', 60),
-                                                                                                                        (10, 'Public speaking', 'Adults', 40, 30, '2020-11-02', 60),
-                                                                                                                        (11, 'French for kids', 'Children', 30, 15,'2020-10-06', 60),
-                                                                                                                        (12, 'German for adults', 'Adults', 30,20, '2020-04-05', 60),
-                                                                                                                        (13, 'Italian for kids', 'Children', 30, 20, '2021-01-09', 60);
+INSERT INTO library.classes(class_Id,class_title,class_category,class_slot,class_fee,class_start,class_duration, picture ) VALUES (1, 'Story time for kids','Children',40,5,'2021-02-10',60, "story1.jpeg"),
+																														(2, 'English literature for beginners ','Adults',30,10,'2021-02-10',60, "englishBeginners.jpeg"),
+																														(3, 'Creative writing for beginners', 'Adults', 30, 15, '2020-05-18', 60, "creativeWrit.jpeg"),
+																														(4, 'Computers for beginners', 'Children', 30, 20, '2020-07-11', 60, "computers.jpeg"),
+																														(5, 'Technology for the over 60s', 'Adults', 20, 5, '2020-09-08', 60, "tech.jpeg"),
+                                                                                                                        (6, 'The Art of Drawing for kids', 'Children', 40, 10, '2020-06-12', 60, "drawing.jpeg"),
+                                                                                                                        (7, 'Photography for passionates', 'Adults', 30, 15, '2021-07-13', 60, "photography1.jpeg"),
+                                                                                                                        (8, 'Music time for adults', 'Adults', 40, 20, '2021-03-22', 60, "musicAdults2.jpeg"),
+                                                                                                                        (9, 'Animation and Design', 'Adults', 30, 25, '2020-02-17', 60, "animation.jpeg"),
+                                                                                                                        (10, 'Public speaking', 'Adults', 40, 30, '2020-11-02', 60, "speaking1.jpeg"),
+                                                                                                                        (11, 'French for kids', 'Children', 30, 15,'2020-10-06', 60, "frenchKids.jpeg"),
+                                                                                                                        (12, 'German for adults', 'Adults', 30,20, '2020-04-05', 60, "germanAdults.jpeg"),
+                                                                                                                        (13, 'Italian for kids', 'Children', 30, 20, '2021-01-09', 60, "italianKids.jpeg");
 
 --
 -- data for table registration
@@ -84,3 +84,5 @@ INSERT INTO timetable VALUES(30,'WED', '10am-12pm', 12);
 INSERT INTO timetable VALUES(31,'FRI', '10am-12pm', 12);
 INSERT INTO timetable VALUES(32,'TUE', '12pm-2pm', 13);
 INSERT INTO timetable VALUES(33,'THU', '12pm-2pm', 13);
+
+select * from classes;

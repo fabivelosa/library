@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS library.classes (
   class_fee VARCHAR(45) NULL DEFAULT NULL,
   class_start DATE NULL DEFAULT NULL,
   class_duration INT(11) NULL DEFAULT NULL,
+  picture VARCHAR(45) NULL DEFAULT NULL,
   PRIMARY KEY (class_id));
 
 --
