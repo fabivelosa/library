@@ -1,5 +1,7 @@
 var rootURL = "http://localhost:8080/library/rest/classes";
 
+var deleteClassId;
+
 $(document).ready(function() {
 	findClasses();
 	
@@ -20,9 +22,25 @@ $(document).ready(function() {
     		}
     	});
 	})
-	$('#classes_table_body a').click(function(){
-		deleteClass();
-		return false;
+	
+	$('#class-delete-modal').on('show.bs.modal', function(event) {
+		console.log('show.bs.modal');
+		var actionLink = $(event.relatedTarget);
+		deleteClassId = actionLink.data('identity');
+		
+	});
+	
+	$('#btn-delete').click(function(){
+		console.log('Delete button clicked :' + deleteClassId);
+		$.ajax({
+			type: 'DELETE',
+			url: rootURL + '/' + deleteClassId,
+			success : function() {
+				findClasses();
+				$('#class-delete-modal').modal("hide");
+				
+			}
+		});
 	});
 	
 });
@@ -47,18 +65,6 @@ function findClasses(){
 		success: renderClasses
 	});
 }
-
-var deleteClass = function(){
-	$.ajax({
-		type: 'DELETE',
-		contentType: 'application/json',
-		url: rootURL + '/' + id,
-		success: function(){
-			alert('Class deleted successfully');
-			findClasses();
-		}
-	});
-};
 
 function renderClasses(data){
 	if ($.fn.dataTable.isDataTable('#classes_table')) {
