@@ -1,12 +1,15 @@
 package com.ait.dto;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class ClassesDTO {
 	private int class_id, class_duration;
 	private String class_title, class_category, class_slot, class_fee, class_start;
 	private int registrationId;
 	private String picture;
-	
-	
+
+
 	public int getClass_id() {
 		return class_id;
 	}
@@ -49,22 +52,22 @@ public class ClassesDTO {
 	public void setClass_start(String class_start) {
 		this.class_start = class_start;
 	}
-	
+
 	public int getRegistrationId() {
 		return registrationId;
 	}
-	
+
 	public void setRegistrationId(int registrationId) {
 		this.registrationId = registrationId;
 	}
-	
+
 	public String getPicture() {
 		return picture;
 	}
 	public void setPicture(String picture) {
 		this.picture = picture;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "ClassesDTO [class_id=" + class_id + "]";

@@ -21,7 +21,7 @@ import com.ait.dto.ClassesDTO;
 
 @Path("/classes")
 public class ClassesWS {
-	
+
 	ClassesDAO dao = new ClassesDAO();
 	TimetableDao timetableDao = new TimetableDao();
 	/*
@@ -33,7 +33,7 @@ public class ClassesWS {
 		System.out.println("findAll.classes");
 		return dao.findAll();
 	}
-//	
+//
 //	@GET
 //	@Path("{userId}")
 //	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
@@ -41,16 +41,16 @@ public class ClassesWS {
 //		System.out.println("findAllByRegisterStatus.classes: " + userId);
 //		return dao.findAllByRegisterStatus(userId);
 //	}
-//	
-//	@GET
-//	@Path("{classId}")
-//	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-//	public ClassesDTO findById(@PathParam("classId") int classId) {
-//			System.out.println("findById.classes");
-//			return dao.findById(classId);
-//			
-//	}
-	
+//
+	@GET
+	@Path("{classId}")
+	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	public ClassesDTO findById(@PathParam("classId") int classId) {
+			System.out.println("findById.classes");
+			return dao.findById(classId);
+
+	}
+
 	@GET
 	@Path("/query")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
@@ -60,7 +60,7 @@ public class ClassesWS {
 		if (classId > 0) {
 			System.out.println("findById.classes");
 			 list.add(dao.findById(classId));
-		} 	
+		}
 		if (userId > 0) {
 			System.out.println("findAllByRegisterStatus.classes: " + userId);
 			list = dao.findAllByRegisterStatus(userId);
@@ -89,8 +89,9 @@ public class ClassesWS {
 	@Path("{id}")
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-	public ClassesDTO update(ClassesDTO classes) {
+	public ClassesDTO update(ClassesDTO classes, @PathParam("id") int classId) {
 		System.out.println("Updating class: " + classes.getClass_title());
+		classes.setClass_id(classId);
 		dao.update(classes);
 		return classes;
 	}
