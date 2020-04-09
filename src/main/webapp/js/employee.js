@@ -547,109 +547,8 @@ $('#btnSaveUser').click(function() {
 	});
 }
 
-$('#btn-pay').click(function() {
-	var cust = $('#userCmb').val();
-	var category = $('#cbCategory').val();
-	var amount = $('#amount').val();
+
 	
-	payment(cust, category, amount);
-});
-
-
-
-function initRegisterClass() {
-	var fee; //Paul Barry
-	var currentUser;
-	$(document).on("click", "#userList a", function() {
-		findUserById(this.id);
-		currentUser= this.id;
-	});
-	$(document).on("click", "#btnSearch", function() {
-		findUserByName($('#searchKey').val())
-	});
-
-	$('#class-regStaff-modal').on('show.bs.modal', function(event) {
-		var actionLink = $(event.relatedTarget);
-		var classId = actionLink.data('identity');
-		
-		fee = actionLink.data('fee'); //Paul Barry
-		console.log('fee is: '+ fee); //Paul Barry
-		
-		console.log('show.bs.modal:'+$(event.relatedTarget));
-		console.log('classId: ' + classId);
-		console.log('userId: ' + currentUser);
-		if (classId != undefined) {
-			var modal = $(this);
-			modal.find('#class-id').val(classId);
-		}
-	});
-
-	$('#class-regStaff-modal').on('hide.bs.modal', function(event) {
-		console.log('hide.bs.modal');
-		$('#weekly').prop('checked', false);
-		$('#whole').prop('checked', false);
-	});
-
-	$('#btn-staff-register').click(function() {
-		var paymentType;
-		var custId; //Paul Barry - Customer ID required
-
-		if ($('#weekly').is(":checked")) {
-			paymentType = 'weekly';
-		} else if ($('#whole').is(":checked")) {
-			paymentType = 'whole';
-		}
-
-		if ($('#weekly').is(":checked") || $('#whole').is(":checked")) {
-			var classId = $('#class-id').val();
-
-			
-			var userId = sessionStorage.getItem("auth-id"); //Paul Barry
-	    	custId = userId; //Paul Barry - added for convenience to get Cust ID
-	    	console.log('classId: ' + classId); //Paul Barry
-	    	
-	    	console.log('Fee is: '+fee); //Paul Barry
-	    	
-
-
-			var formData = JSON.stringify({
-				"classId" : classId,
-				"memberId" : currentUser
-			});
-
-			$.ajax({
-				type : 'POST',
-				contentType : 'application/json',
-				url : rootURL + '/registration/' + paymentType,
-				data : formData,
-				success : function() {
-					findUserClasses(currentUser);
-					$('#class-regStaff-modal').modal("hide");
-				}
-			});
-	
-
-	$('#btn-staff-unregister').click(function() {
-		var regId = $('#reg-id').val();
-		$.ajax({
-			type : 'DELETE',
-			url : rootURL + '/registration/' + regId,
-			success : function() {
-				findUserClasses(currentUser);
-				$('#class-unregStaff-modal').modal("hide");
-			}
-		});
-	});
-
-	$('#class-unregStaff-modal').on('show.bs.modal', function(event) {
-		var actionLink = $(event.relatedTarget);
-		var regId = actionLink.data('identity');
-		if (regId != undefined) {
-			var modal = $(this);
-			modal.find('#reg-id').val(regId);
-		}
-	});
-}
 
 function initMembership(){
 	$('#table_id-1 tbody').on('click', '#endBtn', function () {
@@ -715,16 +614,169 @@ $('#table_id-1 tbody').on('click', '#createBtn', function () {
 	});
 }
 
+function initRegisterClass() {
+	var fee; //Paul Barry
+	var currentUser;
+	$(document).on("click", "#userList a", function() {
+		findUserById(this.id);
+		currentUser= this.id;
+	});
+	$(document).on("click", "#btnSearch", function() {
+		findUserByName($('#searchKey').val())
+	});
+
+	$('#class-regStaff-modal').on('show.bs.modal', function(event) {
+		var actionLink = $(event.relatedTarget);
+		var classId = actionLink.data('identity');
+		
+		fee = actionLink.data('fee'); //Paul Barry
+		console.log('fee is: '+ fee); //Paul Barry
+		
+		console.log('show.bs.modal:'+$(event.relatedTarget));
+		console.log('classId: ' + classId);
+		console.log('userId: ' + currentUser);
+		if (classId != undefined) {
+			var modal = $(this);
+			modal.find('#class-id').val(classId);
+		}
+	});
+
+	$('#class-regStaff-modal').on('hide.bs.modal', function(event) {
+		console.log('hide.bs.modal');
+		$('#weekly').prop('checked', false);
+		$('#whole').prop('checked', false);
+	});
+
+	$('#btn-staff-register').click(function() {
+		var paymentType;
+		var custId; //Paul Barry - Customer ID required
+
+		if ($('#weekly').is(":checked")) {
+			paymentType = 'weekly';
+		} else if ($('#whole').is(":checked")) {
+			paymentType = 'whole';
+		}
+
+		if ($('#weekly').is(":checked") || $('#whole').is(":checked")) {
+			var classId = $('#class-id').val();
+			
+			var userId = sessionStorage.getItem("auth-id"); //Paul Barry
+	    	custId = userId; //Paul Barry - added for convenience to get Cust ID
+	    	console.log('classId: ' + classId); //Paul Barry
+	    	
+	    	console.log('Fee is: '+fee); //Paul Barry
+	    	
+
+			var formData = JSON.stringify({
+				"classId" : classId,
+				"memberId" : currentUser
+			});
+
+			$.ajax({
+				type : 'POST',
+				contentType : 'application/json',
+				url : rootURL + '/registration/' + paymentType,
+				data : formData,
+				success : function() {
+					findUserClasses(currentUser);
+					$('#class-regStaff-modal').modal("hide");
+				}
+			});
+		}
+	});
+
+	$('#btn-staff-unregister').click(function() {
+		var regId = $('#reg-id').val();
+		$.ajax({
+			type : 'DELETE',
+			url : rootURL + '/registration/' + regId,
+			success : function() {
+				findUserClasses(currentUser);
+				$('#class-unregStaff-modal').modal("hide");
+			}
+		});
+	});
+
+	$('#class-unregStaff-modal').on('show.bs.modal', function(event) {
+		var actionLink = $(event.relatedTarget);
+		var regId = actionLink.data('identity');
+		if (regId != undefined) {
+			var modal = $(this);
+			modal.find('#reg-id').val(regId);
+		}
+	});
+}
+
 function initUserTransactions(){
 
-		$("#userCombo").on("change", function(event) {
-			if ($.fn.dataTable.isDataTable('#table_id')) {
-				var table = $('#table_id').DataTable();
-				table.clear();
-				table.destroy();
-			}
-			findTransactionsByCustomerId(this.value);
-		});
+	$("#userCombo").on("change", function(event) {
+		if ($.fn.dataTable.isDataTable('#table_id')) {
+			var table = $('#table_id').DataTable();
+			table.clear();
+			table.destroy();
+		}
+		findTransactionsByCustomerId(this.value);
+	});
 
 }
-	
+
+//PAUL BEGIN
+/*Get all Transactions by Customer*/
+function findTransactionsByCustomerId(custId) {
+	console.log('findTransactionsByCustomerId: ' + custId);
+	$.ajax({
+		type : 'GET',
+		url : rootURL + '/transaction/search/' + custId,
+		dataType : "json",
+		 success: function (data) {
+			    console.log(data);
+			    /*Build the DataTable*/
+			    $.each(data,function (index, transaction) {
+			    	console.log('Building DataTable')
+			    	console.log('renderlist values' + transaction.user_id);
+			                $('#table_body')
+			                    .append(
+			                        '<tr><td id="identify">' +
+			                        transaction.transaction_id +
+//			                        '</td><td>' +
+//			                        transaction.user_id +
+			                        '</td><td>' +
+			                        transaction.date +
+			                        '</td><td>' +
+			                        transaction.name +
+			                        '<td>' +
+			                        transaction.type +
+			                        '</td><td>' +
+			                        transaction.user_ob +
+			                        '</td><td>' +
+			                        transaction.amount +
+			                        '</td><td>' +
+			                        transaction.user_cb +
+			                        '</td></tr>'
+			                     );
+			            });
+			    var table = $('#table_id').DataTable();
+			    //List Selection Formula
+			    $('#table_id tbody').on(
+			        'click',
+			        'tr',
+			        function () {
+			            if ($(this).hasClass('selected')) {
+			                $(this).removeClass('selected');
+			                data_id = null;
+			            } else {
+			                table.$('tr.selected').removeClass(
+			                    'selected');
+			                data_id = null;
+			                $(this).addClass('selected');
+
+			                data_id = table.cell(
+			                    '.selected #identify').data();
+			                alert(data_id);
+			            }
+			        });
+			}
+	});
+}
+/*END DATATABLES *************************************************************/
+//PAUL END
