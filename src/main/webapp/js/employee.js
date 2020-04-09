@@ -4,24 +4,28 @@
 var rootURL = "http://localhost:8080/library/rest";
 
 window.initEmployee = function initEmployee() {
-	initRegisterClass();
-	initUpdateClasses();
-	initRegisterUser();
-	initMembership();
-	initUserTransactions();
-
+	
 	$("#tabs").tabs({
 		activate : function(event, ui) {
-			if (ui.newTab.index() == 1) {
+			if (ui.newTab.index() == 0) {//Sign-in people
+				initRegisterUser();
+			} else if (ui.newTab.index() == 1) {//Membership
 				findAllUsersMember();
-			} else if (ui.newTab.index() == 2) {
+				initMembership();
+			} else if (ui.newTab.index() == 2) {//Register on Class
 				findAllUsers(2);
-			} else if (ui.newTab.index() == 3) {
+				initRegisterClass();
+			} else if (ui.newTab.index() == 3) {//Update Class
 				findAllClasses();
-			} else if (ui.newTab.index() == 4) {
+				initUpdateClasses();
+			} else if (ui.newTab.index() == 4) {//Check Account
 				findAllUsers(4);
-			} else if (ui.newTab.index() == 5) {
+				initUserTransactions();
+			} else if (ui.newTab.index() == 5) {//Reports
 				findAttendance();
+			}else if (ui.newTab.index() == 6) {//Payments
+				findAllUsers(6)
+				initUserPayment();
 			}
 		}
 	});
@@ -80,10 +84,12 @@ function findAllUsers(tab) {
 			renderUserList(data);
 			else if (tab==4)
 			renderUserCombo(data);
-
+			else if (tab==6)
+				renderUserCmb(data);
 		}
 	});
 }
+
 
 function findUserByName(name) {
 	$.ajax({
@@ -151,6 +157,15 @@ var renderUserCombo = function(users) {
 				'<option value="'+ user.userId + '">'+ user.firstname
 				+ ' ' + user.lastname +'</option>;'
 	)})
+}
+
+var renderUserCmb = function(users) {
+	$("#userCmb option").remove();
+	$.each(users, function(index, user) {
+		$("#userCmb").append(
+				'<option value="' + user.userId + '">' + user.firstname + ' '
+						+ user.lastname + '</option>;')
+	})
 }
 
 var renderUserList = function(users) {
@@ -780,3 +795,33 @@ function findTransactionsByCustomerId(custId) {
 }
 /*END DATATABLES *************************************************************/
 //PAUL END
+
+function initUserPayment() {
+	
+	
+
+	$('#btn-pay').on('click', function(e) {
+		
+		var amount = $('#amount').val();
+		var payName = $('#cbCategory').val();
+		var custId	= $('#userCmb').val();
+		
+		console.log('Payment amount: '  +amount);
+		console.log('Payment payName: ' +payName);
+		console.log('Payment custId: '  +custId);
+		
+	})
+}
+
+function initUserTransactions() {
+
+	$("#userCombo").on("change", function(event) {
+		if ($.fn.dataTable.isDataTable('#table_id')) {
+			var table = $('#table_id').DataTable();
+			table.clear();
+			table.destroy();
+		}
+		findTransactionsByCustomerId(this.value);
+	});
+
+}
