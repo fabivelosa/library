@@ -54,26 +54,26 @@
   <!-- Nav tabs -->
   <ul class="nav nav-tabs" role="tablist">
     <li class="nav-item">
-      <a class="nav-link active" data-toggle="tab" href="#home"> Sign People in</a>
+      <a class="nav-link active" data-toggle="tab" href="#home"> Sign-in People</a>
     </li>
     <li class="nav-item">
       <a class="nav-link" data-toggle="tab" href="#menu1"> Membership </a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" data-toggle="tab" href="#menu2"> Register for Class </a>
+      <a class="nav-link" data-toggle="tab" href="#menu2"> Register on Class </a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" data-toggle="tab" href="#menu3"> Update Classes </a>
+      <a class="nav-link" data-toggle="tab" href="#menu3"> Update Class </a>
     </li>
 	<li class="nav-item">
-      <a class="nav-link" data-toggle="tab" href="#menu4"> Verify Account</a>
+      <a class="nav-link" data-toggle="tab" href="#menu4"> Check Account</a>
     </li>    
     <li class="nav-item">
       <a class="nav-link" data-toggle="tab" href="#menu5"> Reports </a>
     </li>
-     <li class="nav-item">
-      <a class="nav-link" data-toggle="tab" href="#menu6"> E-mail </a>
-    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#menu6"> Payments </a>
+    </li>    
   </ul>
 
   <!-- Tab panes -->
@@ -491,8 +491,20 @@
        <p> Attendance by Customer </p>
     </div>
     <div id="menu6" class="container tab-pane fade"><br>
-      <h3>E-mail</h3>
+      <h3>Payment</h3>
       <p>Message a customer today.</p>
+	        <select id="cmbCategory" name="cmbCategory" class="form-control selectpicker">
+				<option value="">Select user Category</option>
+				<option>MEMBERSHIP</option>
+				<option>WALK_IN_CUSTOMER</option>
+				<option>CLASS</option>
+	      </select>
+	      <label class="col-md-4 control-label">Amount</label>
+		  <span class="input-group-addon"></span> 
+		  <input id="amount" name="amount" class="form-control" type="text">
+	      <label class="col-md-4 control-label">Customer</label>
+		  <span class="input-group-addon"></span> 
+		  <input id="custpay" name="custpay" class="form-control" type="text">
     </div>
   </div>
       </div>
