@@ -9,6 +9,7 @@ $(document).ready(function() {
 	initRegisterUser();
 	initMembership();
 	initUserTransactions();
+	initUserPayment();
 });
 
 $(function() {
@@ -773,4 +774,19 @@ function initUserTransactions() {
 
 }
 
+function initUserPayment() {
+	
+
+	$('#btn-pay').on('click', function(e) {
+		
+		var amount = $('#amount').val();
+		var payName = $('#cbCategory').val();
+		var custId	= $('#userCmb').val();
+		
+		console.log('Payment amount: '  +amount);
+		console.log('Payment payName: ' +payName);
+		console.log('Payment custId: '  +custId);
+		
+	})
+}
 
