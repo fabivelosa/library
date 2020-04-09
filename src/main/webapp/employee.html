@@ -1,5 +1,56 @@
 <!DOCTYPE html>
 
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	
+<title> Authenticated as STAFF </title>
+
+<link rel="shortcut icon" href="images/favicon.jpeg">
+
+ <!--includes the bootstrap 4 from a CDN -->
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+ <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+ <!-- Custom styles for Data Tables -->
+<script type="text/javascript" src="js/jquery.dataTables.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
+<link rel="stylesheet" href="css/jquery.dataTables.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.1/css/buttons.dataTables.min.css">
+
+<!-- JQuery ui-->
+<script src="js/jquery-ui.js"></script>
+<link rel="stylesheet" href="css/jquery-ui.css">
+
+
+ <!-- Font Awesome Solid + Brands -->
+  <link href="css/solid.css" rel="stylesheet">
+  <link href="css/fontawesome.css" rel="stylesheet">
+  <script defer src="js/solid.js"></script>
+  <script defer src="js/fontawesome.js"></script>
+
+
+<!-- JavaScript -->
+<script src="js/transactions.js"></script> <!-- Paul Barry Transacitons js file added -->
+<script src="js/employee.js"></script>
+
+<!-- CSS -->
+<link rel="stylesheet" href="css/style.css">
+   
+</head>
+
+<body>
+
+<br>
+
+<div class="container">
+  
+  <br>
+
   <div id="tabs">
   <!-- Nav tabs -->
   <ul class="nav nav-tabs" role="tablist">
@@ -376,7 +427,8 @@
 				<table id="table_id" class="display" style="width: 100%">
 					<thead>
 						<tr>
-							<th>ID</th>
+							<th>Transaction ID</th>
+							<th>Customer ID</th>
 							<th>Date</th>
 							<th>Name</th>
 							<th>Type</th>
@@ -387,9 +439,11 @@
 						</tr>
 					</thead>
 					<tbody id="table_body"></tbody>
+
 					<tfoot>
 						<tr>
-							<th>ID</th>
+							<th>Transaction ID</th>
+							<th>Customer ID</th>
 							<th>Date</th>
 							<th>Name</th>
 							<th>Type</th>
@@ -398,6 +452,8 @@
 							<th>Closing Balance</th>
 						</tr>
 					</tfoot>
+
+
 				</table>
 			</div>
 		</div>
@@ -437,18 +493,26 @@
     <div id="menu6" class="container tab-pane fade"><br>
       <h3>Payment</h3>
       <p>Message a customer today.</p>
-        <select id="cmbCategory" name="cmbCategory" class="form-control selectpicker">
-			<option value="">Select user Category</option>
-			<option>MEMBERSHIP</option>
-			<option>WALK_IN_CUSTOMER</option>
-			<option>CLASS</option>
-      </select>
-      <label class="col-md-4 control-label">Amount</label>
-	  <span class="input-group-addon"></span> 
-	  <input id="amount" name="amount" class="form-control" type="text">
-      <label class="col-md-4 control-label">Customer</label>
-	  <span class="input-group-addon"></span> 
-	  <input id="custpay" name="custpay" class="form-control" type="text">
+
+	        <select id="cbCategory" name="cmbCategory" class="form-control selectpicker">
+				<option value="">Select type of Payment</option>
+				<option>Membership Fee</option>
+				<option>Walk-in Fee</option>
+				<option>Class Payment</option>
+	      </select>
+	      
+	      <label class="col-md-4 control-label">Customer</label>
+		  <span class="input-group-addon"></span> 
+	      <select id="userCmb" name="userCmb" class="form-control selectpicker"></select>
+	      
+	      <label class="col-md-4 control-label">Amount</label>
+		  <span class="input-group-addon"></span> 
+		  <input id="amount" name="amount" class="form-control" type="text">
+		 
+		   <div class="footer">
+      			 <button id="btn-pay" type="button" class="btn btn-info">Pay</button>
+           </div>
+
     </div>
   </div>
 </div>
