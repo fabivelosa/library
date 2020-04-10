@@ -66,6 +66,7 @@
 	calculateClassFee(); 
 	amount = calculatedClassFee;
 	updatedCustBalance = Number(custBalance) + Number(calculatedClassFee);
+	console.log('Updated Customer Balance is' +updatedCustBalance);
 	updateCustomerBalance(customerId, updatedCustBalance); //Update Customer Balance first
 	debitTransaction(customerId, name, amount, custBalance, updatedCustBalance); //Add Transaction to log
 	}
@@ -504,7 +505,7 @@ function renderList(data) {
    
 
     $.each(transactions,function (index, transaction) {
-    	console.log('renderlist values' + transaction.user_id);
+    	console.log('renderlist2222 values ' + transaction.user_id);
                 $('#table_body')
                     .append(
                         '<tr><td id="identify">' +
