@@ -81,6 +81,8 @@ function renderManagementContent() {
 	console.log('Display management content');
 	$.get('management.html', function(response) {
 		$('#main-container').html(response);
+
+		initManagement();
 	});
 }
 

@@ -1,9 +1,9 @@
-var rootURL = "http://localhost:8080/library/rest/classes";
+var rootURL = "http://localhost:8080/library/rest";
 
 var deleteClassId;
 var editClassId;
 
-$(document).ready(function() {
+function initManagement() {
 	findClasses();
 
 	$('#btn-save').click(function(){
@@ -14,7 +14,7 @@ $(document).ready(function() {
 			$.ajax({
 				type: 'PUT',
 				contentType: 'application/json',
-				url: rootURL + '/' + editClassId,
+				url: rootURL + '/classes/' + editClassId,
 				data: formData,
 				success: function() {
 					console.log('successfully update');
@@ -26,7 +26,7 @@ $(document).ready(function() {
 			$.ajax({
 				type: 'POST',
 				contentType: 'application/json',
-				url: rootURL,
+				url: rootURL + '/classes',
 				data: formData,
 				success: function(){
 					console.log('successfully created');
@@ -48,7 +48,7 @@ $(document).ready(function() {
 		console.log('Delete button clicked :' + deleteClassId);
 		$.ajax({
 			type: 'DELETE',
-			url: rootURL + '/' + deleteClassId,
+			url: rootURL + '/classes/' + deleteClassId,
 			success : function() {
 				findClasses();
 				$('#class-delete-modal').modal("hide");
@@ -64,7 +64,7 @@ $(document).ready(function() {
 		if (classId != undefined) {
 			$.ajax({
         		type : 'GET',
-        		url : rootURL + '/' + classId,
+        		url : rootURL + '/classes/' + classId,
         		dataType : "json",
         		success : renderDetails
 			});
@@ -72,7 +72,7 @@ $(document).ready(function() {
 			clearForm();
 		}
 	});
-});
+};
 
 
 var renderDetails = function(c) {
@@ -110,7 +110,7 @@ function findClasses(){
 	console.log('findClasses');
 	$.ajax({
 		type: 'GET',
-		url: rootURL,
+		url: rootURL + '/classes',
 		dataType: "json",
 		success: renderClasses
 	});
