@@ -8,6 +8,8 @@ public class ClassesDTO {
 	private String class_title, class_category, class_slot, class_fee, class_start;
 	private int registrationId;
 	private String picture;
+	
+	private int attendance;
 
 
 	public int getClass_id() {
@@ -71,5 +73,17 @@ public class ClassesDTO {
 	@Override
 	public String toString() {
 		return "ClassesDTO [class_id=" + class_id + "]";
+	}
+	/**
+	 * @return the attendance
+	 */
+	public int getAttendance() {
+		return attendance;
+	}
+	/**
+	 * @param attendance the attendance to set
+	 */
+	public void setAttendance(int attendance) {
+		this.attendance = attendance;
 	}
 }
