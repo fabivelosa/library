@@ -207,7 +207,7 @@ console.log(data);
 												+ c.class_duration
 												+ '</td><td>'
 												+ (c.registrationId > 0 ? '<a href="#" data-identity="'+ c.registrationId+ '" data-toggle="modal" data-target="#class-unregStaff-modal">Unregister</a>'
-																		: '<a href="#" data-identity="'+ c.class_id+ '" data-toggle="modal" data-target="#class-regStaff-modal">Register</a>')
+																		: '<a href="#" data-identity="' + c.class_id +'" data-fee="'+ c.class_fee +'" data-toggle="modal" data-target="#class-regStaff-modal">Register</a>')
 												+ '</td></tr>');
 					});
 
@@ -691,8 +691,8 @@ function initRegisterClass() {
 		if ($('#weekly').is(":checked") || $('#whole').is(":checked")) {
 			var classId = $('#class-id').val();
 			
-			var userId = sessionStorage.getItem("auth-id"); //Paul Barry
-	    	custId = userId; //Paul Barry - added for convenience to get Cust ID
+			/*var userId = sessionStorage.getItem("auth-id"); //Paul Barry
+*/	    	custId = currentUser; //Paul Barry - added for convenience to get Cust ID
 	    	console.log('classId: ' + classId); //Paul Barry
 	    	
 	    	console.log('Fee is: '+fee); //Paul Barry
@@ -713,7 +713,12 @@ function initRegisterClass() {
 					$('#class-regStaff-modal').modal("hide");
 				}
 			});
+			
+			//Paul Barry Transaction call
+	    	console.log('Inside Paul Barrys Class registration code');
+	    	classRegistration(custId, fee, paymentType);
 		}
+		
 	});
 
 	$('#btn-staff-unregister').click(function() {
