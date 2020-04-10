@@ -7,9 +7,7 @@ window.initEmployee = function initEmployee() {
 	
 	$("#tabs").tabs({
 		activate : function(event, ui) {
-			if (ui.newTab.index() == 0) {//Sign-in people
-				initRegisterUser();
-			} else if (ui.newTab.index() == 1) {//Membership
+			if (ui.newTab.index() == 1) {//Membership
 				findAllUsersMember();
 				initMembership();
 			} else if (ui.newTab.index() == 2) {//Register on Class
@@ -21,11 +19,11 @@ window.initEmployee = function initEmployee() {
 			} else if (ui.newTab.index() == 4) {//Check Account
 				findAllUsers(4);
 				initUserTransactions();
-			} else if (ui.newTab.index() == 5) {//Reports
-				findAttendance();
-			}else if (ui.newTab.index() == 6) {//Payments
-				findAllUsers(6)
+			} else if (ui.newTab.index() == 5) {//Payments
+				findAllUsers(5)
 				initUserPayment();
+			}else if (ui.newTab.index() == 6) {//Reports
+				findAttendance();
 			}
 		}
 	});
@@ -33,6 +31,8 @@ window.initEmployee = function initEmployee() {
 	$('#contact_form').submit(function(){
 		event.preventDefault();
 	});
+	initRegisterUser();
+	$("#success-message").hide();
 };
 
 function findAllClasses() {
@@ -84,7 +84,7 @@ function findAllUsers(tab) {
 			renderUserList(data);
 			else if (tab==4)
 			renderUserCombo(data);
-			else if (tab==6)
+			else if (tab==5)
 				renderUserCmb(data);
 		}
 	});
@@ -140,7 +140,7 @@ function findUserClasses(userId) {
 function findAttendance() {
 	$.ajax({
 		type : 'GET',
-		url : rootURL + '/classes/' + 1,
+		url : rootURL + '/classes',
 
 		dataType : "json",
 		success : function(data) {
@@ -232,7 +232,7 @@ function append(classes) {
 	pt.find('.classes-start').text(classes.class_start);
 	pt.find('.classes-duration').text(classes.class_duration);
 	pt.attr('id', 'classes-id-' + classes.class_id)
-	pt.find('.classes-image').attr('src', classes.class_image);
+	pt.find('.classes-image').attr('src', classes.picture);
 	pt.show();
 	$('#classes-row').append(pt);
 }
@@ -459,7 +459,6 @@ function initUpdateClasses() {
 
 function initRegisterUser() {
 
-$('#success_message').hide();
 
 $('#cmbCategory').change(function() {
 		if ($('#cmbCategory').val()=='WALK_IN_CUSTOMER'){
@@ -505,9 +504,10 @@ $('#cmbCategory').change(function() {
 		}
 })
 
+
 $('#btnSaveUser').click(function() {
 		console.log('click user');
-
+		
 	var formToJSON = function() {
 		return JSON.stringify({
 		"category" : $('#cmbCategory').val(),
@@ -527,6 +527,7 @@ $('#btnSaveUser').click(function() {
 		});
 	};
 
+	    	
 		console.log('addUser');
 		$.ajax({
 			type : 'POST',
@@ -535,8 +536,9 @@ $('#btnSaveUser').click(function() {
 			dataType : "json",
 			data : formToJSON(),
 			success : function(data, textStatus, jqXHR) {
-				alert('User created successfully');
-				$('#success_message').show();
+				 $("#success-message").hide();
+				 $("#success-message").fadeTo(2000, 500).slideUp(500, function(){
+				 $("#success-message").slideUp(500);});   
 				clearForm();
 			},
 			error : function(jqXHR, textStatus, errorThrown) {
@@ -563,70 +565,84 @@ $('#btnSaveUser').click(function() {
 }
 
 
-	
-
-function initMembership(){
-	$('#table_id-1 tbody').on('click', '#endBtn', function () {
-	       var row = $(this).parents('tr')[0];
-	       var table = $('#table_id-1').DataTable();
-	       var mydata = (table.row(row).data());
-	       var memberId = mydata["userId"];
-	       var formToData = JSON.stringify({
-	    		"endDate" : new Date(),
-				"userId": memberId
+function initMembership() {
+	$('#table_id-1 tbody').on(
+			'click',
+			'#endBtn',
+			function() {
+				var row = $(this).parents('tr')[0];
+				var table = $('#table_id-1').DataTable();
+				var mydata = (table.row(row).data());
+				var memberId = mydata["userId"];
+				var formToData = JSON.stringify({
+					"endDate" : new Date(),
+					"userId" : memberId
 				});
-	       console.log(formToData);
-		   var con=confirm("Are you sure you want to END membership of "+ mydata.user["lastname"]+"?");
+				console.log(formToData);
+				var con = confirm("Are you sure you want to END membership of "
+						+ mydata.user["lastname"] + "?");
 
-	       if(con){
-	          console.log('yes');
-	          $.ajax({
-					type : 'PUT',
-					contentType : 'application/json',
-					url : rootURL + '/membership/' + memberId,
-					data: formToData,
-					success : function() {
-						if ($.fn.dataTable.isDataTable('#table_id-1')) {
-							var table = $('#table_id-1').DataTable();
-							table.destroy();
-							table.clear();
+				if (con) {
+					console.log('yes');
+					$.ajax({
+						type : 'PUT',
+						contentType : 'application/json',
+						url : rootURL + '/membership/' + memberId,
+						data : formToData,
+						success : function() {
+							if ($.fn.dataTable.isDataTable('#table_id-1')) {
+								var table = $('#table_id-1').DataTable();
+								table.destroy();
+								table.clear();
+							}
+							findAllUsersMember();
 						}
-						 findAllUsersMember();
-						 }
+						
 					});
-	     }
-	});
+				}
+			});
 
-$('#table_id-1 tbody').on('click', '#createBtn', function () {
-	       var row = $(this).parents('tr')[0];
-	       var table = $('#table_id-1').DataTable();
-	       var mydata = (table.row(row).data());
-	       console.log('userid:'+mydata.user["userId"]);
-	       var memberId = mydata.user["userId"];
-	       var formToData = JSON.stringify({
-				"startDate" : new Date(), //start date is TODAY DATE
-				"endDate"   : new Date(new Date().setFullYear(new Date().getFullYear() + 1)), //END DATE is TODAY PLUS 1 YEAR
-				"userId"  : memberId
-				});
-	       console.log('formToData:'+formToData);
-	    var con=confirm("Are you sure you want to ADD membership for "+ mydata.user["lastname"]+"?");
-	       if(con){
-	          $.ajax({
-					type : 'POST',
-					contentType : 'application/json',
-					url : rootURL + '/membership/',
-					data: formToData,
-					success : function() {
-						if ($.fn.dataTable.isDataTable('#table_id-1')) {
-							var table = $('#table_id-1').DataTable();
-							table.destroy();
-							table.clear();
+	$('#table_id-1 tbody')
+			.on(
+					'click',
+					'#createBtn',
+					function() {
+						var row = $(this).parents('tr')[0];
+						var table = $('#table_id-1').DataTable();
+						var mydata = (table.row(row).data());
+						console.log('userid:' + mydata.user["userId"]);
+						var memberId = mydata.user["userId"];
+						var formToData = JSON
+								.stringify({
+									"startDate" : new Date(), // start date is
+									// TODAY DATE
+									"endDate" : new Date(new Date().setFullYear(new Date().getFullYear() + 1)), // END DATE is  TODAY PLUS 1 YEAR
+									"userId" : memberId
+								});
+						console.log('formToData:' + formToData);
+						var con = confirm("Are you sure you want to ADD membership for "
+								+ mydata.user["lastname"] + "?");
+						if (con) {
+							$.ajax({
+								type : 'POST',
+								contentType : 'application/json',
+								url : rootURL + '/membership/',
+								data : formToData,
+								success : function() {
+									if ($.fn.dataTable
+											.isDataTable('#table_id-1')) {
+										var table = $('#table_id-1')
+												.DataTable();
+										table.destroy();
+										table.clear();
+									}
+									findAllUsersMember();
+								}
+							});
 						}
-						 findAllUsersMember();
-						 }
+						// Paul Barry Add Membership Fee Transaction
+						membershipRegistration(memberId);
 					});
-	     }
-	});
 }
 
 function initRegisterClass() {
@@ -722,84 +738,7 @@ function initRegisterClass() {
 	});
 }
 
-function initUserTransactions(){
-
-	$("#userCombo").on("change", function(event) {
-		if ($.fn.dataTable.isDataTable('#table_id')) {
-			var table = $('#table_id').DataTable();
-			table.clear();
-			table.destroy();
-		}
-		findTransactionsByCustomerId(this.value);
-	});
-
-}
-
-//PAUL BEGIN
-/*Get all Transactions by Customer*/
-function findTransactionsByCustomerId(custId) {
-	console.log('findTransactionsByCustomerId: ' + custId);
-	$.ajax({
-		type : 'GET',
-		url : rootURL + '/transaction/search/' + custId,
-		dataType : "json",
-		 success: function (data) {
-			    console.log(data);
-			    /*Build the DataTable*/
-			    $.each(data,function (index, transaction) {
-			    	console.log('Building DataTable')
-			    	console.log('renderlist values' + transaction.user_id);
-			                $('#table_body')
-			                    .append(
-			                        '<tr><td id="identify">' +
-			                        transaction.transaction_id +
-//			                        '</td><td>' +
-//			                        transaction.user_id +
-			                        '</td><td>' +
-			                        transaction.date +
-			                        '</td><td>' +
-			                        transaction.name +
-			                        '<td>' +
-			                        transaction.type +
-			                        '</td><td>' +
-			                        transaction.user_ob +
-			                        '</td><td>' +
-			                        transaction.amount +
-			                        '</td><td>' +
-			                        transaction.user_cb +
-			                        '</td></tr>'
-			                     );
-			            });
-			    var table = $('#table_id').DataTable();
-			    //List Selection Formula
-			    $('#table_id tbody').on(
-			        'click',
-			        'tr',
-			        function () {
-			            if ($(this).hasClass('selected')) {
-			                $(this).removeClass('selected');
-			                data_id = null;
-			            } else {
-			                table.$('tr.selected').removeClass(
-			                    'selected');
-			                data_id = null;
-			                $(this).addClass('selected');
-
-			                data_id = table.cell(
-			                    '.selected #identify').data();
-			                alert(data_id);
-			            }
-			        });
-			}
-	});
-}
-/*END DATATABLES *************************************************************/
-//PAUL END
-
 function initUserPayment() {
-	
-	
-
 	$('#btn-pay').on('click', function(e) {
 		
 		var amount = $('#amount').val();
@@ -814,7 +753,6 @@ function initUserPayment() {
 }
 
 function initUserTransactions() {
-
 	$("#userCombo").on("change", function(event) {
 		if ($.fn.dataTable.isDataTable('#table_id')) {
 			var table = $('#table_id').DataTable();
@@ -823,5 +761,4 @@ function initUserTransactions() {
 		}
 		findTransactionsByCustomerId(this.value);
 	});
-
 }
