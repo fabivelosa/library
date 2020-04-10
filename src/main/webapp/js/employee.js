@@ -106,7 +106,7 @@ function findUserByName(name) {
 				alert("Not found! Please search by Last Name!");
 				$('#searchKey').val("");
 				$('#userList li').remove();
-				findAllUsers();
+				findAllUsers(2);
 			} else {
 				renderUserList(user);
 			}
@@ -122,6 +122,7 @@ function findUserById(userId) {
 		success : function(user) {
 			renderUserSelect(user);
 			findUserClasses(userId);
+			$('#searchKey').val("");
 		}
 	});
 }
@@ -140,7 +141,7 @@ function findUserClasses(userId) {
 function findAttendance() {
 	$.ajax({
 		type : 'GET',
-		url : rootURL + '/classes',
+		url : rootURL + '/attendance',
 
 		dataType : "json",
 		success : function(data) {
@@ -217,9 +218,9 @@ console.log(data);
 }
 
 function renderGrid(data) {
-	console.log($('#classes-item').length);
-	$(data).each(function(i, classes) {
-		append(classes);
+
+	$(data).each(function(i, data) {
+		append(data);
 	});
 }
 
@@ -230,9 +231,9 @@ function append(classes) {
 	pt.find('.classes-slot').text(classes.class_slot);
 	pt.find('.classes-fee').text(classes.class_fee);
 	pt.find('.classes-start').text(classes.class_start);
-	pt.find('.classes-duration').text(classes.class_duration);
+	pt.find('.classes-attendance').text(classes.attendance);
 	pt.attr('id', 'classes-id-' + classes.class_id)
-	pt.find('.classes-image').attr('src', classes.picture);
+	pt.find('.classes-image').attr('src', 'images/'+classes.picture);
 	pt.show();
 	$('#classes-row').append(pt);
 }
@@ -652,8 +653,28 @@ function initRegisterClass() {
 		findUserById(this.id);
 		currentUser= this.id;
 	});
+	
+	// Trigger search when pressing 'Return' on search key input field
+	$('#searchKey').keypress(function(e){
+		if(e.which == 13) {
+			search($('#searchKey').val());
+			e.preventDefault();
+			return false;
+	    }
+	});
+	
+	var search =function(searchKey) {
+		if (searchKey == '') 
+			findAllUsers(2);
+		else
+			findUserByName($('#searchKey').val())
+	};	
+
+	
 	$(document).on("click", "#btnSearch", function() {
-		findUserByName($('#searchKey').val())
+		//findUserByName($('#searchKey').val())
+		search($('#searchKey').val());
+		return false;
 	});
 
 	$('#class-regStaff-modal').on('show.bs.modal', function(event) {
