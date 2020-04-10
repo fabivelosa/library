@@ -71,14 +71,15 @@ public class RegistrationDAO {
 		String sql = null;
 		try {
 			c = DataBaseConnection.getConnection();
-			sql = "INSERT INTO library.registration (classId, memberId, regDate, feeDue, balanceDue ) " +
-			"VALUES (?,?,?,?,?);";
+			sql = "INSERT INTO library.registration (classId, memberId, regDate, feeDue, balanceDue, attendance ) " +
+			"VALUES (?,?,?,?,?,?);";
 			PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			ps.setInt(1, registration.getClassId());
 			ps.setInt(2, registration.getMemberId());
 			ps.setDate(3, new java.sql.Date(registration.getRegDate().getTime()));
 			ps.setDouble(4, registration.getFeeDue());
 			ps.setDouble(5, registration.getBalanceDue());
+			ps.setInt(6,1);//attendance=true
 			ps.executeUpdate();
 			ResultSet rs = ps.getGeneratedKeys();
 			rs.next();
