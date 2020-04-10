@@ -648,7 +648,8 @@ function initMembership() {
 function initRegisterClass() {
 	var fee; //Paul Barry
 	var currentUser;
-	$(document).on("click", "#userList a", function() {
+	$(document).on("click", "#userList a", function(e) {
+		e.stopPropagation();
 		findUserById(this.id);
 		currentUser= this.id;
 	});
@@ -678,7 +679,8 @@ function initRegisterClass() {
 		$('#whole').prop('checked', false);
 	});
 
-	$('#btn-staff-register').click(function() {
+	$('#btn-staff-register').click(function(e) {
+		e.stopPropagation();
 		var paymentType;
 		var custId; //Paul Barry - Customer ID required
 
@@ -745,7 +747,7 @@ function initRegisterClass() {
 
 function initUserPayment() {
 	$('#btn-pay').on('click', function(e) {
-		
+		e.stopPropagation();
 		var amount = $('#amount').val();
 		var payName = $('#cbCategory').val();
 		var custId	= $('#userCmb').val();
@@ -759,6 +761,7 @@ function initUserPayment() {
 
 function initUserTransactions() {
 	$("#userCombo").on("change", function(event) {
+		event.stopPropagation();
 		if ($.fn.dataTable.isDataTable('#table_id')) {
 			var table = $('#table_id').DataTable();
 			table.clear();
