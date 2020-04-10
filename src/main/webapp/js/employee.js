@@ -748,7 +748,7 @@ function initUserPayment() {
 		console.log('Payment amount: '  +amount);
 		console.log('Payment payName: ' +payName);
 		console.log('Payment custId: '  +custId);
-		
+		payment(custId, payName, amount);
 	})
 }
 

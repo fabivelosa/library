@@ -186,7 +186,7 @@
 				//findCustBalanceById(custId);   //Get Customer current Balance
 				name = paymentName;
 				amount = paymentAmount;
-				paymentUpdateCustomerBalance();
+				updatedCustBalance = Number(custBalance) - Number(calculatedClassFee);
 				updateCustomerBalance(custId, updatedCustBalance); //Update Customer Balance first
 				creditTransaction(custId, name, amount, custBalance, updatedCustBalance); //Add Transaction to log
 				return false;
@@ -323,7 +323,7 @@ function debitTransaction(customerId, custBalance){
 }
 
 /*Post Credit Transaction to Transaction logs*/
-function creditTransaction(custBalance){
+function creditTransaction(customerId, paymentName, paymentAmount, custBalance, updatedCustBalance){
 		console.log('POST creditTransaction');
 		console.log('Updated balance is '+ updatedCustBalance);
 		/*Post to Transaction Ledger*/
@@ -332,7 +332,7 @@ function creditTransaction(custBalance){
 			contentType : 'application/json',
 			url : transURL,
 			dataType : "json",
-			data : creditTransToJSON(custId, name, amount, custBalance, updatedCustBalance),
+			data : creditTransToJSON(customerId, paymentName, paymentAmount, custBalance, updatedCustBalance),
 			success : function(data, textStatus, jqXHR) {
 				alert('Credit transaction added successfully');
 				$('#btnMbr').hide();
@@ -391,14 +391,14 @@ function debitTransToJSON(customerId, name, amount) {
 }
 
 //JSON for Credit Transaction//
-function creditTransToJSON(custId, name, amount) {
+function creditTransToJSON(customerId, paymentName, paymentAmount, custBalance, updatedCustBalance) {
 	console.log('creditTransTOJSON');
-	console.log('User ID is '+ custId);
+	console.log('User ID is '+ customerId);
 	var stringified = JSON.stringify({
-		"user_id" : custId,
+		"user_id" : customerId,
 		/*"date" : '2020-03-03',*/
-		"name" : name, //Need to set this Variable
-		"amount" : amount, //Need to set this Variable
+		"name" : paymentName, //Need to set this Variable
+		"amount" : paymentAmount, //Need to set this Variable
 		"type" : 'CREDIT',
 		"user_ob" : custBalance,
 		"user_cb" : updatedCustBalance
